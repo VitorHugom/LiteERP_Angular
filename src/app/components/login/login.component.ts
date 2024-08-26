@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private loginService: LoginService) {}
+  constructor(private loginService: LoginService, private router: Router) {}
 
   onSubmit(): void {
     const credentials = {
@@ -28,8 +29,10 @@ export class LoginComponent {
     this.loginService.login(credentials).subscribe({
       next: (response) => {
         // Salva o token e o nome no sessionStorage
-        sessionStorage.setItem('token', response.token);
-        sessionStorage.setItem('nomeUsuario', response.nome);
+        sessionStorage.setItem('auth-token', response.token);
+        sessionStorage.setItem('username', response.nome);
+
+        this.router.navigate(['/gerencial-home']);
       },
       error: (error) => {
         console.error('Erro de login:', error);
