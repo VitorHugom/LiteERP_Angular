@@ -1,0 +1,27 @@
+<div class="liberacao-usuario-container">
+    <h1>Liberação de Usuário</h1>
+    
+    <form *ngIf="usuario">
+      <div class="form-group">
+        <label>ID:</label>
+        <input type="text" [value]="usuario.id" readonly>
+      </div>
+      
+      <div class="form-group">
+        <label>Nome:</label>
+        <input type="text" [value]="usuario.nomeUsuario" readonly>
+      </div>
+      
+      <div class="form-group">
+        <label>Email:</label>
+        <input type="text" [value]="usuario.email" readonly>
+      </div>
+      
+      <!-- Adicione mais campos conforme necessário -->
+      
+      <div class="button-group">
+        <button type="button" (click)="liberarUsuario()" class="liberar-button">Liberar</button>
+      </div>
+    </form>
+  </div>
+  

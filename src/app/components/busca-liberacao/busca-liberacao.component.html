@@ -1,31 +1,26 @@
 <div class="busca-liberacao-container">
   <h1>Buscar Usuários Bloqueados</h1>
   
-  <form (ngSubmit)="searchUsuarios()" class="busca-form">
-    <div class="form-group">
-      <label for="search">Buscar por</label>
-      <div class="search-controls">
-        <select [(ngModel)]="searchBy" name="searchBy" class="search-select">
-          <option value="nomeUsuario">Nome</option>
-          <option value="id">ID</option>
-        </select>
-        <input type="text" id="search" [(ngModel)]="searchQuery" name="search" placeholder="Buscar...">
-      </div>
-    </div>
-    <div class="button-group">
-      <button type="submit" class="submit-button">Buscar</button>
-    </div>
-  </form>
-
-  <div *ngIf="filteredUsuarios.length > 0; else noUsers">
-    <ul class="user-list">
-      <li *ngFor="let usuario of filteredUsuarios" (click)="autorizarUsuario(usuario.id)">
-        <span>{{ usuario.nomeUsuario }} (ID: {{ usuario.id }})</span>
-      </li>
-    </ul>
+  <div class="search-container">
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Buscar usuários..." class="search-input">
+    <select [(ngModel)]="searchBy" class="search-select">
+      <option value="nomeUsuario">Nome</option>
+      <option value="id">ID</option>
+    </select>
+    <button (click)="searchUsuarios()" class="search-button">Buscar</button>
   </div>
+
+  <ul *ngIf="filteredUsuarios.length > 0; else noUsers" class="user-list">
+    <li *ngFor="let usuario of filteredUsuarios" (click)="autorizarUsuario(usuario.id)" class="user-item">
+      {{ usuario.nomeUsuario }} (ID: {{ usuario.id }})
+    </li>
+  </ul>
   
   <ng-template #noUsers>
     <p>Nenhum usuário bloqueado encontrado.</p>
   </ng-template>
+  
+  <div class="button-container">
+    <button (click)="navigateToHome()" class="nav-button">Voltar para Home</button>
+  </div>
 </div>

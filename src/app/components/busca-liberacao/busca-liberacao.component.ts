@@ -48,4 +48,7 @@ export class BuscaLiberacaoComponent implements OnInit {
   autorizarUsuario(id: string): void {
     this.router.navigate(['/liberacao', id]);
   }
+  navigateToHome(): void {
+    this.router.navigate(['/gerencial-home']);
+  }
 }
