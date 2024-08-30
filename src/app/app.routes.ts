@@ -5,11 +5,13 @@ import { GerencialHomeComponent } from './components/gerencial-home/gerencial-ho
 import { CaixaHomeComponent } from './components/caixa-home/caixa-home.component';
 import { VendasHomeComponent } from './components/vendas-home/vendas-home.component';
 import { AuthGuard } from './services/auth-guard.service';
+import { BuscaLiberacaoComponent } from './components/busca-liberacao/busca-liberacao.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'gerencial-home', component: GerencialHomeComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'busca-liberacao', component: BuscaLiberacaoComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
   { path: 'caixa-home', component: CaixaHomeComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
   { path: 'vendas-home', component: VendasHomeComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_VENDAS'] }},
   { path: '', redirectTo: '/login', pathMatch: 'full' }

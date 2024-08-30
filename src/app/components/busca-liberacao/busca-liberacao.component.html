@@ -1,0 +1,31 @@
+<div class="busca-liberacao-container">
+  <h1>Buscar Usuários Bloqueados</h1>
+  
+  <form (ngSubmit)="searchUsuarios()" class="busca-form">
+    <div class="form-group">
+      <label for="search">Buscar por</label>
+      <div class="search-controls">
+        <select [(ngModel)]="searchBy" name="searchBy" class="search-select">
+          <option value="nomeUsuario">Nome</option>
+          <option value="id">ID</option>
+        </select>
+        <input type="text" id="search" [(ngModel)]="searchQuery" name="search" placeholder="Buscar...">
+      </div>
+    </div>
+    <div class="button-group">
+      <button type="submit" class="submit-button">Buscar</button>
+    </div>
+  </form>
+
+  <div *ngIf="filteredUsuarios.length > 0; else noUsers">
+    <ul class="user-list">
+      <li *ngFor="let usuario of filteredUsuarios" (click)="autorizarUsuario(usuario.id)">
+        <span>{{ usuario.nomeUsuario }} (ID: {{ usuario.id }})</span>
+      </li>
+    </ul>
+  </div>
+  
+  <ng-template #noUsers>
+    <p>Nenhum usuário bloqueado encontrado.</p>
+  </ng-template>
+</div>
