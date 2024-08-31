@@ -43,6 +43,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideHttpClient(
       withInterceptors([authInterceptor])
-    ), provideAnimationsAsync(),
+    ), provideAnimationsAsync(), provideAnimationsAsync(),
   ],
 };
