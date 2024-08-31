@@ -1,0 +1,52 @@
+.vendas-home-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f4f4f4;
+  
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px;
+      background-color: #007bff;
+      
+      .sair-button {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+  
+        &:hover {
+          background-color: #c82333;
+        }
+      }
+    }
+  
+    .main-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+      gap: 20px;
+  
+      .main-button {
+        width: 60%;
+        padding: 20px;
+        font-size: 1.5em;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-transform: uppercase;
+  
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+    }
+  }
+  
