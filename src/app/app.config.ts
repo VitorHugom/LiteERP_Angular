@@ -4,37 +4,7 @@ import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors, HttpInterceptorFn } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-
-// Define um tipo para representar os cabeçalhos
-interface HeadersMap {
-  [key: string]: string | null;
-}
-
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  if (req.url.includes('/auth')) {
-    return next(req);
-  }
-
-  const authToken = sessionStorage.getItem('auth-token');
-
-  if (authToken) {
-    const clonedRequest = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${authToken}`
-      }
-    });
-
-    // Cria um objeto para armazenar os cabeçalhos da requisição clonada
-    const clonedHeaders: HeadersMap = {};
-    clonedRequest.headers.keys().forEach(key => {
-      clonedHeaders[key] = clonedRequest.headers.get(key);
-    });
-    return next(clonedRequest);
-  } else {
-    console.log('Nenhum token encontrado, seguindo sem modificar a requisição.');
-    return next(req);
-  }
-};
+import { authInterceptor } from './services/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -42,6 +12,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideHttpClient(
+      withFetch(),
       withInterceptors([authInterceptor])
     ), provideAnimationsAsync(), provideAnimationsAsync(),
   ],

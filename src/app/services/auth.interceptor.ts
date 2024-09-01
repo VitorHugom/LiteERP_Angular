@@ -1,21 +1,28 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  console.log(`Interceptando a requisição para a URL: ${req.url}`);
+interface HeadersMap {
+  [key: string]: string | null;
+}
 
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (req.url.includes('/auth')) {
-    console.log('Exceção de URL, não adicionando o cabeçalho de autenticação.');
     return next(req);
   }
 
   const authToken = sessionStorage.getItem('auth-token');
-  console.log('Token no interceptor:', authToken);
 
   if (authToken) {
     const clonedRequest = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${authToken}`),
+      setHeaders: {
+        Authorization: `Bearer ${authToken}`
+      }
     });
-    console.log('Requisição clonada com cabeçalho de autorização:', clonedRequest);
+
+    // Cria um objeto para armazenar os cabeçalhos da requisição clonada
+    const clonedHeaders: HeadersMap = {};
+    clonedRequest.headers.keys().forEach(key => {
+      clonedHeaders[key] = clonedRequest.headers.get(key);
+    });
     return next(clonedRequest);
   } else {
     console.log('Nenhum token encontrado, seguindo sem modificar a requisição.');
