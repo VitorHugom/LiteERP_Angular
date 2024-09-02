@@ -7,14 +7,23 @@ import { VendasHomeComponent } from './components/vendas-home/vendas-home.compon
 import { AuthGuard } from './services/auth-guard.service';
 import { BuscaLiberacaoComponent } from './components/busca-liberacao/busca-liberacao.component';
 import { LiberacaoUsuarioComponent } from './components/liberacao-usuario/liberacao-usuario.component';
+import { ProdutoComponent } from './components/produto/produto.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+
   { path: 'signup', component: SignupComponent },
+  { path: 'clientes', component: ProdutoComponent },
+
   { path: 'gerencial-home', component: GerencialHomeComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
   { path: 'busca-liberacao', component: BuscaLiberacaoComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
   { path: 'caixa-home', component: CaixaHomeComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
+
   { path: 'vendas-home', component: VendasHomeComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_VENDAS'] }},
+
   { path: 'liberacao/:id', component: LiberacaoUsuarioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
