@@ -3,8 +3,8 @@
 </div>
 
 <div class="login-container">
-  <h2>Login</h2>
-  <form (ngSubmit)="onSubmit()">
+  <h2 class="login-container-title">Login</h2>
+  <form class="form-container" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="username">Nome de Usuário</label>
       <input type="text" id="username" [(ngModel)]="username" name="username" required>
