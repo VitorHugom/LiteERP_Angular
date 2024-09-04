@@ -7,13 +7,11 @@ import { VendasHomeComponent } from './components/vendas-home/vendas-home.compon
 import { AuthGuard } from './services/auth-guard.service';
 import { BuscaLiberacaoComponent } from './components/busca-liberacao/busca-liberacao.component';
 import { LiberacaoUsuarioComponent } from './components/liberacao-usuario/liberacao-usuario.component';
-import { ProdutoComponent } from './components/produto/produto.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
 
   { path: 'signup', component: SignupComponent },
-  { path: 'clientes', component: ProdutoComponent },
 
   { path: 'gerencial-home', component: GerencialHomeComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
