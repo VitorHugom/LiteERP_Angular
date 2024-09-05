@@ -1,0 +1,69 @@
+<div class="produto-detail-container">
+    <h1>Produtos</h1>
+  
+    <!-- Seletor de Abas -->
+    <div class="tab-selector">
+      <button [class.active]="activeTab === 'geral'" (click)="setActiveTab('geral')">Geral</button>
+      <button [class.active]="activeTab === 'tributacao'" (click)="setActiveTab('tributacao')">Tributação</button>
+      <button [class.active]="activeTab === 'valores'" (click)="setActiveTab('valores')">Valores</button>
+    </div>
+  
+    <!-- Conteúdo das Abas -->
+    <div *ngIf="activeTab === 'geral'" class="tab-content">
+      <div class="form-group">
+        <label for="id">ID</label>
+        <span>{{ isNew ? 'Será gerado automaticamente' : produto.id }}</span>
+      </div>
+      <div class="form-group">
+        <label for="descricao">Descrição</label>
+        <input type="text" id="descricao" [(ngModel)]="produto.descricao" name="descricao">
+      </div>
+      <div class="form-group">
+        <label for="grupoProdutos">Grupo de Produtos</label>
+        <input type="number" id="grupoProdutos" [(ngModel)]="produto.grupoProdutos" name="grupoProdutos">
+      </div>
+      <div class="form-group">
+        <label for="dataUltimaCompra">Data da Última Compra</label>
+        <input type="date" id="dataUltimaCompra" [(ngModel)]="produto.dataUltimaCompra" name="dataUltimaCompra">
+      </div>
+    </div>
+  
+    <div *ngIf="activeTab === 'tributacao'" class="tab-content">
+      <div class="form-group">
+        <label for="codEan">Código EAN</label>
+        <input type="text" id="codEan" [(ngModel)]="produto.codEan" name="codEan">
+      </div>
+      <div class="form-group">
+        <label for="codNcm">Código NCM</label>
+        <input type="text" id="codNcm" [(ngModel)]="produto.codNcm" name="codNcm">
+      </div>
+      <div class="form-group">
+        <label for="codCest">Código CEST</label>
+        <input type="text" id="codCest" [(ngModel)]="produto.codCest" name="codCest">
+      </div>
+    </div>
+  
+    <div *ngIf="activeTab === 'valores'" class="tab-content">
+      <div class="form-group">
+        <label for="precoCompra">Preço de Compra</label>
+        <input type="number" id="precoCompra" [(ngModel)]="produto.precoCompra" name="precoCompra">
+      </div>
+      <div class="form-group">
+        <label for="precoVenda">Preço de Venda</label>
+        <input type="number" id="precoVenda" [(ngModel)]="produto.precoVenda" name="precoVenda">
+      </div>
+      <div class="form-group">
+        <label for="peso">Peso</label>
+        <input type="number" id="peso" [(ngModel)]="produto.peso" name="peso">
+      </div>
+    </div>
+  
+    <!-- Botões de Ação -->
+    <div class="button-group">
+      <button (click)="onNew()" type="button" class="novo-button">Novo</button>
+      <button (click)="onSave()" type="submit" class="gravar-button">Gravar</button>
+      <button (click)="onDelete()" *ngIf="!isNew" type="button" class="deletar-button">Deletar</button>
+      <button (click)="onConsultar()" type="button" class="consultar-button">Consultar</button>
+    </div>
+  </div>
+  

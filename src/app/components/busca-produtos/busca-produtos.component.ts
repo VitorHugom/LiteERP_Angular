@@ -47,7 +47,7 @@ export class BuscaProdutosComponent implements OnInit {
   }
 
   viewProduto(id: string): void {
-    this.router.navigate(['/produto', id]);
+    this.router.navigate(['/produtos', id]);
   }
 
   navigateToHome(): void {
