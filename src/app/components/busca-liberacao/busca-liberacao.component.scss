@@ -78,6 +78,9 @@
     padding: 0;
 
     .user-item {
+      display: flex;  /* Adiciona Flexbox */
+      justify-content: space-between;  /* Espaço entre os elementos */
+      align-items: center;  /* Centraliza verticalmente */
       padding: 10px;
       margin-bottom: 10px;
       background-color: white;
@@ -85,8 +88,16 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: clamp(0.8em, 2vw, 1em);
+      transition: background-color 0.3s;
+
       &:hover {
         background-color: #f1f1f1;
+      }
+
+      .categoria {
+        margin-left: auto;  /* Empurra a categoria para a direita */
+        text-align: right;
+        text-transform: uppercase;
       }
     }
   }
