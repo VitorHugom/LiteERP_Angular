@@ -30,6 +30,13 @@
         </div>
         <button type="submit" class="signup-button">Registrar</button>
     </form>
+
     <!-- Mensagem de feedback -->
-    <div *ngIf="message" class="message">{{ message }}</div>
-</div>
+  <div *ngIf="message" class="message">
+    <div class="modal">
+      <span class="modal-title">
+      {{message}}
+      </span>
+      <a href="/login" class="modal-link-login">Login</a>
+    </div>
+  </div>
