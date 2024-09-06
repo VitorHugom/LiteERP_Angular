@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   imports: [FormsModule, CommonModule, RouterModule],
   providers: [ProdutosService]
 })
-export class BuscaProdutosComponent implements OnInit {
+export class ProdutosBuscaComponent implements OnInit {
   produtos: any[] = [];
   filteredProdutos: any[] = [];
   searchQuery: string = '';

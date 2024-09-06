@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BuscaProdutosComponent } from './busca-produtos.component';
+import { ProdutosBuscaComponent } from './busca-produtos.component';
 
-describe('BuscaProdutosComponent', () => {
-  let component: BuscaProdutosComponent;
-  let fixture: ComponentFixture<BuscaProdutosComponent>;
+describe('ProdutosBuscaComponent', () => {
+  let component: ProdutosBuscaComponent;
+  let fixture: ComponentFixture<ProdutosBuscaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BuscaProdutosComponent]
+      imports: [ProdutosBuscaComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BuscaProdutosComponent);
+    fixture = TestBed.createComponent(ProdutosBuscaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
