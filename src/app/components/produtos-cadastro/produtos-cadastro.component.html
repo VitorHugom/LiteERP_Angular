@@ -65,5 +65,10 @@
       <button (click)="onDelete()" *ngIf="!isNew" type="button" class="deletar-button">Deletar</button>
       <button (click)="onConsultar()" type="button" class="consultar-button">Consultar</button>
     </div>
+
+    <!-- Caixa de Feedback -->
+    <div *ngIf="message" class="feedback-box" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
+      {{ message }}
+    </div>
   </div>
   

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProdutosService } from '../../services/produtos.service'; // Certifique-se do caminho correto
+import { ProdutosService } from '../../services/produtos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,9 +9,9 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   templateUrl: './produtos-cadastro.component.html',
   styleUrls: ['./produtos-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule] // Adiciona FormsModule para funcionar com ngModel
+  imports: [CommonModule, FormsModule]
 })
-export class CadastroProdutoComponent implements OnInit {
+export class ProdutosCadastroComponent implements OnInit {
   isNew = true;
   produto: any = {
     id: null,
@@ -28,6 +28,8 @@ export class CadastroProdutoComponent implements OnInit {
   };
 
   activeTab = 'geral'; // Aba ativa, começa com "geral"
+  message: string | null = null; // Mensagem de feedback
+  isSuccess: boolean = true; // Status da operação
 
   constructor(
     private produtoService: ProdutosService,
@@ -52,23 +54,52 @@ export class CadastroProdutoComponent implements OnInit {
 
   onSave(): void {
     if (this.isNew) {
-      // Lógica para cadastrar novo produto
-      console.log('Cadastrando novo produto', this.produto);
-      // Chamar o serviço de criação
+      this.produtoService.createProduto(this.produto).subscribe({
+        next: (response) => {
+          this.produto = response;  // Atualiza o produto com a resposta, que inclui o ID
+          this.isNew = false;       // Agora não é mais um novo produto
+          this.exibirMensagem('Produto cadastrado com sucesso!', true);
+        },
+        error: (err) => {
+          this.exibirMensagem('Erro ao cadastrar produto. Tente novamente.', false);
+          console.error('Erro ao cadastrar produto:', err);
+        }
+      });
     } else {
-      // Lógica para atualizar produto existente
-      console.log('Salvando alterações no produto', this.produto);
-      // Chamar o serviço de atualização
+      this.produtoService.updateProduto(this.produto.id, this.produto).subscribe({
+        next: (response) => {
+          this.exibirMensagem('Produto atualizado com sucesso!', true);
+        },
+        error: (err) => {
+          this.exibirMensagem('Erro ao atualizar produto. Tente novamente.', false);
+          console.error('Erro ao atualizar produto:', err);
+        }
+      });
+    }
+  }
+  
+
+  onDelete(): void {
+    if (this.produto.id) {
+      const confirmacao = confirm('Tem certeza que deseja deletar este produto?');
+      if (confirmacao) {
+        this.produtoService.deleteProduto(this.produto.id).subscribe({
+          next: () => {
+            this.exibirMensagem('Produto deletado com sucesso!', true);
+            this.router.navigate(['/busca-produtos']);
+          },
+          error: (err) => {
+            this.exibirMensagem('Erro ao deletar produto. Tente novamente.', false);
+            console.error('Erro ao deletar produto:', err);
+          }
+        });
+      }
+    } else {
+      this.exibirMensagem('Nenhum produto selecionado para deletar.', false);
     }
   }
 
-  onDelete(): void {
-    // Lógica para deletar o produto
-    console.log('Deletando produto', this.produto.id);
-  }
-
   onNew(): void {
-    // Limpar o formulário para um novo cadastro
     this.isNew = true;
     this.produto = {
       id: null,
@@ -90,7 +121,15 @@ export class CadastroProdutoComponent implements OnInit {
   }
 
   onConsultar(): void {
-    // Lógica para consultar produtos
     this.router.navigate(['/busca-produtos']);
+  }
+
+  // Função para exibir mensagem com timeout de 5 segundos
+  exibirMensagem(mensagem: string, isSuccess: boolean): void {
+    this.message = mensagem;
+    this.isSuccess = isSuccess;
+    setTimeout(() => {
+      this.message = null;
+    }, 3000); // Mensagem desaparece após 5 segundos
   }
 }
