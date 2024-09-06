@@ -39,7 +39,7 @@ export class ProdutosCadastroComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    if (id && id !== 'novo') {
       this.isNew = false;
       this.produtoService.getProdutoById(id).subscribe({
         next: (data) => {
@@ -49,10 +49,33 @@ export class ProdutosCadastroComponent implements OnInit {
           console.error('Erro ao carregar produto:', err);
         }
       });
+    } else {
+      this.isNew = true; // Indica que é um novo produto
     }
-  }
+  }  
 
   onSave(): void {
+    // Verificações de campos obrigatórios
+    if (!this.produto.descricao) {
+      this.exibirMensagem('Descrição é obrigatória.', false);
+      return;
+    }
+  
+    if (!this.produto.codEan) {
+      this.exibirMensagem('Código EAN é obrigatório.', false);
+      return;
+    }
+    // Validação do NCM
+    if (!this.produto.codNcm || this.produto.codNcm.length !== 8) {
+      this.exibirMensagem('Código NCM deve conter 8 dígitos numéricos.', false);
+      return;
+    }
+  
+    if (!this.produto.precoVenda) {
+      this.exibirMensagem('Preço de venda é obrigatório.', false);
+      return;
+    }
+  
     if (this.isNew) {
       this.produtoService.createProduto(this.produto).subscribe({
         next: (response) => {
@@ -77,6 +100,7 @@ export class ProdutosCadastroComponent implements OnInit {
       });
     }
   }
+  
   
 
   onDelete(): void {

@@ -53,4 +53,8 @@ export class ProdutosBuscaComponent implements OnInit {
   navigateToHome(): void {
     this.router.navigate(['/gerencial-home']);
   }
+
+  createNovoProduto(): void {
+    this.router.navigate(['/produtos/novo']);
+  }
 }
