@@ -3,8 +3,8 @@
 </div>
 
 <div class="signup-container">
-    <h2>Signup</h2>
-    <form (ngSubmit)="onSubmit()">
+    <h2 class="signup-container-title">Signup</h2>
+    <form class="form-container" (ngSubmit)="onSubmit()">
         <!-- Campos do formulário -->
         <div class="form-group">
             <label for="username">Nome de Usuário</label>
@@ -30,6 +30,13 @@
         </div>
         <button type="submit" class="signup-button">Registrar</button>
     </form>
+
     <!-- Mensagem de feedback -->
-    <div *ngIf="message" class="message">{{ message }}</div>
-</div>
+  <div *ngIf="message" class="message">
+    <div class="modal">
+      <span class="modal-title">
+      {{message}}
+      </span>
+      <a href="/login" class="modal-link-login">OK</a>
+    </div>
+  </div>
