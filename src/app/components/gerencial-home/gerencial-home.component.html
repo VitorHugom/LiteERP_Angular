@@ -1,24 +1,55 @@
-<div class="container">
-    <aside class="sidebar">
-      <nav>
-        <ul>
-          <li><a href="#">Cadastro</a></li>
-          <li><a href="#">Vendas</a></li>
-          <li><a href="#">Faturamento</a></li>
-          <li><a href="#">Compras</a></li>
-          <li><a href="#">Configuração</a></li>
-          <li><a href="/busca-liberacao">Liberar Usuarios</a></li>
-        </ul>
-      </nav>
-    </aside>
+<div class="container" [class.collapsed]="isSidebarCollapsed">
+  <aside class="sidebar" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <div class="toggle-button">
+      <button (click)="toggleSidebar()">☰</button>
+    </div>
+    <nav>
+      <!-- Renderiza os menus apenas se a barra não estiver recolhida -->
+      <ul *ngIf="!isSidebarCollapsed">
+        <li>
+          <a href="javascript:void(0)" (click)="toggleMenu('cadastro')">Cadastro</a>
+          <ul *ngIf="expandedMenu === 'cadastro'">
+            <li><a [routerLink]="['/clientes']">Clientes</a></li>
+            <li><a [routerLink]="['/fornecedores']">Fornecedores</a></li>
+            <li><a [routerLink]="['/busca-produtos']">Produtos</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="javascript:void(0)" (click)="toggleMenu('vendas')">Vendas</a>
+          <ul *ngIf="expandedMenu === 'vendas'">
+            <li><a [routerLink]="['/pdv']">PDV</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="javascript:void(0)" (click)="toggleMenu('faturamento')">Faturamento</a>
+          <ul *ngIf="expandedMenu === 'faturamento'">
+            <li><a [routerLink]="['/emissao-nfe']">Emissão de NFe</a></li>
+            <li><a [routerLink]="['/envio-nfe']">Envio de NFe</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="javascript:void(0)" (click)="toggleMenu('compras')">Compras</a>
+          <ul *ngIf="expandedMenu === 'compras'">
+            <li><a [routerLink]="['/recebimento-mercadorias']">Recebimento de Mercadorias</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="javascript:void(0)" (click)="toggleMenu('administrador')">Administrador</a>
+          <ul *ngIf="expandedMenu === 'administrador'">
+            <li><a [routerLink]="['/alterar-senha']">Alterar Senha</a></li>
+            <li><a [routerLink]="['/busca-liberacao']">Liberar Usuários</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
 
-    <header class="topbar">
-      <button (click)="logout()">Sair</button>
-    </header>
+  <header class="topbar">
+    <button (click)="logout()">Sair</button>
+  </header>
 
-    <main class="content">
-      <!-- Aqui você pode adicionar o conteúdo da home, gráficos, relatórios etc. -->
-      <h1>Bem-vindo à área Gerencial</h1>
-      <p>Esta é a sua página inicial da área gerencial do ERP.</p>
-    </main>
-  </div>
+  <main class="content">
+    <h1>Bem-vindo à área Gerencial</h1>
+    <p>Esta é a sua página inicial da área gerencial do ERP.</p>
+  </main>
+</div>

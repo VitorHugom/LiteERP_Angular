@@ -12,7 +12,8 @@
 
   <ul *ngIf="filteredUsuarios.length > 0; else noUsers" class="user-list">
     <li *ngFor="let usuario of filteredUsuarios" (click)="autorizarUsuario(usuario.id)" class="user-item">
-      {{ usuario.nomeUsuario }} (ID: {{ usuario.id }})
+      <span>(ID {{ usuario.id }}) - {{ usuario.nomeUsuario }}</span>
+      <span class="categoria">{{ usuario.categoria.nome_categoria }}</span>
     </li>
   </ul>
   

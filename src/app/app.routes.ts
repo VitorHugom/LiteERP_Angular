@@ -7,6 +7,8 @@ import { VendasHomeComponent } from './components/vendas-home/vendas-home.compon
 import { AuthGuard } from './services/auth-guard.service';
 import { BuscaLiberacaoComponent } from './components/busca-liberacao/busca-liberacao.component';
 import { LiberacaoUsuarioComponent } from './components/liberacao-usuario/liberacao-usuario.component';
+import { ProdutosBuscaComponent } from './components/produtos-busca/busca-produtos.component';
+import { ProdutosCadastroComponent } from './components/produtos-cadastro/produtos-cadastro.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -22,6 +24,9 @@ export const routes: Routes = [
   { path: 'vendas-home', component: VendasHomeComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_VENDAS'] }},
 
   { path: 'liberacao/:id', component: LiberacaoUsuarioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
+  { path: 'produtos/:id', component: ProdutosCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'busca-produtos', component: ProdutosBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
