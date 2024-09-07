@@ -31,7 +31,7 @@ export class SignupComponent {
         { id: 2, nome: 'Gerencial' },
         { id: 3, nome: 'Caixa' }
     ];
-
+    isModalOpen: boolean = false
     message: string = '';  // Propriedade para armazenar a mensagem de feedback
 
     constructor(private signupService: SignupService) {}
@@ -44,25 +44,32 @@ export class SignupComponent {
             senha: this.signupData.password,
             categoria_id: this.signupData.categoriaId
         };
-    
+
         // Enviando a requisição de registro
         this.signupService.register(requestData).subscribe({
             next: (response: any) => {
                 // A lógica aqui será executada para qualquer resposta, independentemente do status
                 // Limpa os campos do formulário
                 this.resetForm();
-    
+
                 // Mostra mensagem de sucesso
+                this.isModalOpen = true
                 this.message = 'Dados enviados, aguardando liberação.';
             },
             error: (error: HttpErrorResponse) => {
                 console.error('Erro ao registrar usuário:', error);
-    
+
                 // A lógica aqui será executada se ocorrer um erro no envio ou na resposta
+                this.isModalOpen = true
                 this.message = 'Erro ao enviar dados. Tente novamente.';
             }
         });
-    }    
+    }
+
+    closeModal(){
+      this.isModalOpen = false
+    }
+
 
     resetForm(): void {
         this.signupData = {
