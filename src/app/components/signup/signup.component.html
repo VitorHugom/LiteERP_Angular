@@ -28,15 +28,20 @@
                 <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">{{ categoria.nome }}</option>
             </select>
         </div>
-        <button type="submit" class="signup-button">Registrar</button>
+        <div class="form-buttons">
+
+          <a href="/login" class="link-login">Voltar</a>
+          <button type="submit" class="signup-button">Registrar</button>
+        </div>
     </form>
 
     <!-- Mensagem de feedback -->
-  <div *ngIf="message" class="message">
+  <div *ngIf="isModalOpen" class="message">
     <div class="modal">
+      <span (click)="closeModal()" class="close-button">&times;</span>
       <span class="modal-title">
       {{message}}
       </span>
-      <a href="/login" class="modal-link-login">OK</a>
+      <button (click)="closeModal()" class="modal-button">OK</button>
     </div>
   </div>
