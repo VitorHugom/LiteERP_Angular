@@ -5,7 +5,7 @@
     </div>
     <nav>
       <!-- Renderiza os menus dinamicamente -->
-      <ul>
+      <ul *ngIf="!isSidebarCollapsed">
         <li *ngFor="let item of menuItems">
           <a href="javascript:void(0)" (click)="toggleMenu(item.label)">
             {{ item.label }}
