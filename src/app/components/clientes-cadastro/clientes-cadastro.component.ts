@@ -115,10 +115,10 @@ export class ClientesCadastroComponent implements OnInit {
   }
 
   onSave(): void {
-    if (this.isPessoaFisica && !this.cliente.cpfCnpj) {
+    if (this.isPessoaFisica && !this.cliente.cpf) {
       this.exibirMensagem('Preencha o CPF.', false);
       return;
-    } else if (!this.isPessoaFisica && !this.cliente.cpfCnpj) {
+    } else if (!this.isPessoaFisica && !this.cliente.cnpj) {
       this.exibirMensagem('Preencha o CNPJ.', false);
       return;
     }
