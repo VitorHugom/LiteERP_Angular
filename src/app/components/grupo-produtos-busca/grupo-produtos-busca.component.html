@@ -1,0 +1,28 @@
+<div class="busca-grupo-produtos-container">
+    <h1>Buscar Grupos de Produtos</h1>
+    
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchQuery" (keydown.enter)="searchGruposProdutos()" placeholder="Buscar grupos..." class="search-input">
+      <select [(ngModel)]="searchBy" class="search-select">
+        <option value="nome">Nome</option>
+        <option value="id">ID</option>
+      </select>
+      <button (click)="searchGruposProdutos()" class="search-button">Buscar</button>
+    </div>
+  
+    <ul *ngIf="filteredGrupos.length > 0; else noGroups" class="group-list">
+      <li *ngFor="let grupo of filteredGrupos" (click)="viewGrupo(grupo.id)" class="group-item">
+        (ID: {{ grupo.id }}) {{ grupo.nome }}
+      </li>
+    </ul>
+  
+    <ng-template #noGroups>
+      <p>Nenhum grupo encontrado.</p>
+    </ng-template>
+  
+    <div class="button-container">
+      <button (click)="navigateToHome()" class="nav-button">Voltar para Home</button>
+      <button (click)="createNovoGrupo()" class="nav-button novo-button">Novo</button>
+    </div>
+  </div>
+  

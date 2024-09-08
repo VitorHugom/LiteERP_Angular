@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 export class GerencialHomeComponent {
   isSidebarCollapsed = false;
   expandedMenu: string | null = null;
+  expandedMenu_2: string | null = null;
 
   constructor(private router: Router) {}
 
@@ -27,6 +28,13 @@ export class GerencialHomeComponent {
     // Abre o menu apenas se a barra lateral não estiver recolhida
     if (!this.isSidebarCollapsed) {
       this.expandedMenu = this.expandedMenu === menu ? null : menu;
+    }
+  }
+
+  toggleMenu_2(menu: string): void {
+    // Abre o menu apenas se a barra lateral não estiver recolhida
+    if (!this.isSidebarCollapsed) {
+      this.expandedMenu_2 = this.expandedMenu_2 === menu ? null : menu;
     }
   }
 

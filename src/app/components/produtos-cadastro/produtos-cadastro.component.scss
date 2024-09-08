@@ -43,7 +43,7 @@
       font-size: clamp(0.8em, 2vw, 1em);
     }
 
-    input, span {
+    input, select, span {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
@@ -52,6 +52,16 @@
       font-size: clamp(0.8em, 2vw, 1em);
       background-color: #f9f9f9;
       color: #555;
+    }
+
+    select {
+      background-color: #fff;
+      appearance: none;
+      padding-right: 30px;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB...'); /* ícone de seta para baixo */
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
     }
 
     span {

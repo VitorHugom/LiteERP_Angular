@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SignupService } from '../../services/signup.service';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 interface Categoria {
     id: number;
@@ -14,7 +16,7 @@ interface Categoria {
     standalone: true,
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.scss'],
-    imports: [FormsModule, CommonModule, HttpClientModule],
+    imports: [FormsModule, CommonModule, RouterModule],
     providers: [SignupService]
 })
 export class SignupComponent {
@@ -25,6 +27,7 @@ export class SignupComponent {
         confirmPassword: '',
         categoriaId: null as number | null
     };
+    
 
     categorias: Categoria[] = [
         { id: 1, nome: 'Vendas' },
@@ -34,7 +37,7 @@ export class SignupComponent {
     isModalOpen: boolean = false
     message: string = '';  // Propriedade para armazenar a mensagem de feedback
 
-    constructor(private signupService: SignupService) {}
+    constructor(private signupService: SignupService, private router: Router) {}
 
     onSubmit(): void {
         // Cria o objeto de requisição com categoria_id como número
@@ -68,6 +71,7 @@ export class SignupComponent {
 
     closeModal(){
       this.isModalOpen = false
+      this.router.navigate(['/login']);
     }
 
 
@@ -80,4 +84,7 @@ export class SignupComponent {
             categoriaId: null
         };
     }
+    navigateToLogin(): void {
+        this.router.navigate(['/login']);
+      }
 }

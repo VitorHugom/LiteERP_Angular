@@ -9,6 +9,8 @@ import { BuscaLiberacaoComponent } from './components/busca-liberacao/busca-libe
 import { LiberacaoUsuarioComponent } from './components/liberacao-usuario/liberacao-usuario.component';
 import { ProdutosBuscaComponent } from './components/produtos-busca/busca-produtos.component';
 import { ProdutosCadastroComponent } from './components/produtos-cadastro/produtos-cadastro.component';
+import { GrupoProdutosBuscaComponent } from './components/grupo-produtos-busca/grupo-produtos-busca.component';
+import { GrupoProdutosCadastroComponent } from './components/grupo-produtos-cadastro/grupo-produtos-cadastro.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -27,6 +29,8 @@ export const routes: Routes = [
 
   { path: 'produtos/:id', component: ProdutosCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
   { path: 'busca-produtos', component: ProdutosBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'grupo-produtos-busca', component: GrupoProdutosBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'grupo-produtos/:id', component: GrupoProdutosCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

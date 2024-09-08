@@ -53,4 +53,7 @@ export class LiberacaoUsuarioComponent implements OnInit {
       }
     });
   }
+  navigateToBuscaLiberacao(){
+    this.router.navigate(['/busca-liberacao']); // Redireciona para a tela de busca-liberacao
+  }
 }

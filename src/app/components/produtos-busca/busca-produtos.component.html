@@ -2,7 +2,7 @@
   <h1>Buscar Produtos</h1>
   
   <div class="search-container">
-    <input type="text" [(ngModel)]="searchQuery" placeholder="Buscar produtos..." class="search-input">
+    <input type="text" [(ngModel)]="searchQuery"  (keydown.enter)="searchProdutos()" placeholder="Buscar produtos..." class="search-input">
     <select [(ngModel)]="searchBy" class="search-select">
       <option value="descricao">Descrição</option>
       <option value="id">ID</option>

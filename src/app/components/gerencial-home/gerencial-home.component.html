@@ -7,11 +7,15 @@
       <!-- Renderiza os menus apenas se a barra não estiver recolhida -->
       <ul *ngIf="!isSidebarCollapsed">
         <li>
-          <a href="javascript:void(0)" (click)="toggleMenu('cadastro')">Cadastro</a>
+          <a href="javascript:void(0)" (click)="toggleMenu('cadastro')">Cadastros</a>
           <ul *ngIf="expandedMenu === 'cadastro'">
             <li><a [routerLink]="['/clientes']">Clientes</a></li>
             <li><a [routerLink]="['/fornecedores']">Fornecedores</a></li>
-            <li><a [routerLink]="['/busca-produtos']">Produtos</a></li>
+            <a href="javascript:void(0)" (click)="toggleMenu_2('Produtos')">Produtos</a>
+              <ul *ngIf="expandedMenu_2 === 'Produtos'">
+            <li><a [routerLink]="['/busca-produtos']">Cadastro</a></li>
+            <li><a [routerLink]="['/grupo-produtos-busca']">Grupo de Produtos</a></li>
+          </ul>
           </ul>
         </li>
         <li>

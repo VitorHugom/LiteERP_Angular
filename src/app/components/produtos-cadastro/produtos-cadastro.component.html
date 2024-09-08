@@ -1,5 +1,5 @@
 <div class="produto-detail-container">
-  <h1>Produtos</h1>
+  <h1>Cadastro de Produto</h1>
 
   <!-- Seletor de Abas -->
   <div class="tab-selector">
@@ -20,7 +20,9 @@
     </div>
     <div class="form-group">
       <label for="grupoProdutos">Grupo de Produtos</label>
-      <input type="number" id="grupoProdutos" [(ngModel)]="produto.grupoProdutos" name="grupoProdutos">
+      <select id="grupoProdutos" [(ngModel)]="produto.grupoProdutos" name="grupoProdutos">
+        <option *ngFor="let grupo of gruposProdutos" [ngValue]="grupo">{{ grupo.nome }}</option>
+      </select>
     </div>
     <div class="form-group">
       <label for="dataUltimaCompra">Data da Última Compra</label>
@@ -28,6 +30,7 @@
     </div>
   </div>
 
+  <!-- Conteúdo Tributação -->
   <div *ngIf="activeTab === 'tributacao'" class="tab-content">
     <div class="form-group">
       <label for="codEan">Código EAN</label>
@@ -44,6 +47,7 @@
     </div>
   </div>
 
+  <!-- Conteúdo Valores -->
   <div *ngIf="activeTab === 'valores'" class="tab-content">
     <div class="form-group">
       <label for="precoCompra">Preço de Compra</label>

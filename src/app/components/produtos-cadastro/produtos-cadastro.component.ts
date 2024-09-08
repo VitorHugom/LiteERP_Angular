@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProdutosService } from '../../services/produtos.service';
+import { GrupoProdutosService } from '../../services/grupo-produtos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -26,24 +27,29 @@ export class ProdutosCadastroComponent implements OnInit {
     precoVenda: null,
     peso: null
   };
-
+  
+  gruposProdutos: any[] = []; // Armazena todos os grupos de produtos
   activeTab = 'geral'; // Aba ativa, começa com "geral"
   message: string | null = null; // Mensagem de feedback
   isSuccess: boolean = true; // Status da operação
 
   constructor(
     private produtoService: ProdutosService,
+    private grupoProdutosService: GrupoProdutosService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+  
     if (id && id !== 'novo') {
       this.isNew = false;
       this.produtoService.getProdutoById(id).subscribe({
         next: (data) => {
           this.produto = data;
+          // Carregar grupos de produtos após obter o produto
+          this.loadGruposProdutos();
         },
         error: (err) => {
           console.error('Erro ao carregar produto:', err);
@@ -51,57 +57,61 @@ export class ProdutosCadastroComponent implements OnInit {
       });
     } else {
       this.isNew = true; // Indica que é um novo produto
+      this.loadGruposProdutos(); // Carregar grupos de produtos para novos produtos
     }
-  }  
+  }
+  
+  // Carregar grupos de produtos
+  loadGruposProdutos(): void {
+    this.grupoProdutosService.getGruposProdutos().subscribe({
+      next: (data) => {
+        this.gruposProdutos = data; // Recebe e armazena os grupos de produtos
+        if (this.produto.grupoProdutos) {
+          // Atualiza grupo de produtos após carregar todos os grupos disponíveis
+          this.produto.grupoProdutos = this.gruposProdutos.find(grupo => grupo.id === this.produto.grupoProdutos.id);
+        }
+      },
+      error: (err) => {
+        console.error('Erro ao carregar grupos de produtos:', err);
+      }
+    });
+  }
 
   onSave(): void {
-    // Verificações de campos obrigatórios
-    if (!this.produto.descricao) {
-      this.exibirMensagem('Descrição é obrigatória.', false);
+    if (!this.produto.descricao || !this.produto.codEan || !this.produto.precoVenda) {
+      this.exibirMensagem('Preencha todos os campos obrigatórios.', false);
       return;
     }
-  
-    if (!this.produto.codEan) {
-      this.exibirMensagem('Código EAN é obrigatório.', false);
-      return;
-    }
-    // Validação do NCM
+
     if (!this.produto.codNcm || this.produto.codNcm.length !== 8) {
-      this.exibirMensagem('Código NCM deve conter 8 dígitos numéricos.', false);
-      return;
-    }
-  
-    if (!this.produto.precoVenda) {
-      this.exibirMensagem('Preço de venda é obrigatório.', false);
+      this.exibirMensagem('Código NCM deve conter 8 dígitos.', false);
       return;
     }
   
     if (this.isNew) {
       this.produtoService.createProduto(this.produto).subscribe({
         next: (response) => {
-          this.produto = response;  // Atualiza o produto com a resposta, que inclui o ID
-          this.isNew = false;       // Agora não é mais um novo produto
+          this.produto = response;
+          this.isNew = false;
           this.exibirMensagem('Produto cadastrado com sucesso!', true);
         },
         error: (err) => {
-          this.exibirMensagem('Erro ao cadastrar produto. Tente novamente.', false);
-          console.error('Erro ao cadastrar produto:', err);
+          this.exibirMensagem('Erro ao cadastrar produto.', false);
+          console.error(err);
         }
       });
     } else {
       this.produtoService.updateProduto(this.produto.id, this.produto).subscribe({
-        next: (response) => {
+        next: () => {
           this.exibirMensagem('Produto atualizado com sucesso!', true);
         },
         error: (err) => {
-          this.exibirMensagem('Erro ao atualizar produto. Tente novamente.', false);
-          console.error('Erro ao atualizar produto:', err);
+          this.exibirMensagem('Erro ao atualizar produto.', false);
+          console.error(err);
         }
       });
     }
   }
-  
-  
 
   onDelete(): void {
     if (this.produto.id) {
