@@ -27,7 +27,7 @@ export class GerencialHomeComponent {
       subItems: [
         { label: 'Clientes', 
           subItems: [
-            { label: 'Cadastro', routerLink: '/clientes' },
+            { label: 'Cadastro', routerLink: '/clientes-busca' },
             { label: 'Relatórios', routerLink: '/relatorio-clientes' }
           ]
         },

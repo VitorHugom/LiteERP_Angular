@@ -1,0 +1,99 @@
+<div class="cliente-detail-container">
+    <div class="info-header">
+      <div class="info-item">
+        <strong>ID:</strong> {{ idDisplay }}
+      </div>
+      <div class="form-group tipo-pessoa-group">
+        <label for="tipoPessoa"><strong>Tipo de Pessoa:</strong></label>
+        <div *ngIf="isNew" class="input-inline">
+          <select id="tipoPessoa" [(ngModel)]="cliente.tipoPessoa" name="tipoPessoa">
+            <option value="fisica">Pessoa Física</option>
+            <option value="juridica">Pessoa Jurídica</option>
+          </select>
+        </div>
+        <div *ngIf="!isNew" class="input-inline">
+          <span>{{ cliente.tipoPessoa === 'fisica' ? 'Pessoa Física' : 'Pessoa Jurídica' }}</span>
+        </div>
+      </div>
+      <div class="info-item cpf-cnpj-group">
+        <label><strong>{{ cliente.tipoPessoa === 'fisica' ? 'CPF:' : 'CNPJ:' }}</strong></label>
+        <div *ngIf="isNew" class="input-inline">
+          <input 
+            type="text" 
+            [(ngModel)]="cliente.cpfCnpj" 
+            [attr.placeholder]="cliente.tipoPessoa === 'fisica' ? 'Digite o CPF' : 'Digite o CNPJ'" 
+            [mask]="cpfCnpjMask"
+            [ngModelOptions]="{ updateOn: 'blur' }" 
+          />
+        </div>
+        <div *ngIf="!isNew" class="input-inline">
+          <span>{{ cliente.tipoPessoa === 'fisica' ? cliente.cpf : cliente.cnpj }}</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="tab-selector">
+      <button [class.active]="activeTab === 'geral'" (click)="setActiveTab('geral')">Geral</button>
+      <button [class.active]="activeTab === 'endereco'" (click)="setActiveTab('endereco')">Endereço</button>
+      <button [class.active]="activeTab === 'contato'" (click)="setActiveTab('contato')">Contato</button>
+    </div>
+  
+    <div *ngIf="activeTab === 'geral'" class="tab-content">
+      <div class="form-group">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" [(ngModel)]="cliente.nomeFantasia" name="nome" />
+      </div>
+      <div class="form-group">
+        <label for="razaoSocial">Razão Social</label>
+        <input type="text" id="razaoSocial" [(ngModel)]="cliente.razaoSocial" name="razaoSocial" />
+      </div>
+
+      <div class="form-group">
+        <label for="vendedorId">ID do Vendedor</label>
+        <input type="number" id="vendedorId" [(ngModel)]="cliente.vendedor.id" name="vendedorId" placeholder="Insira o ID do vendedor" />
+      </div>
+    </div>
+  
+    <div *ngIf="activeTab === 'endereco'" class="tab-content">
+      <div class="form-group">
+        <label for="endereco">Endereço</label>
+        <input type="text" id="endereco" [(ngModel)]="cliente.endereco" name="endereco" />
+      </div>
+      <div class="form-group">
+        <label for="cidade">Cidade</label>
+        <input type="text" id="cidade" [(ngModel)]="cidadeInput" (input)="onSearchCidades($event)" name="cidade" />
+        <ul *ngIf="cidades.length > 0 && showCidadesList" class="autocomplete-list">
+          <li *ngFor="let cidade of cidades" (click)="onSelectCidade(cidade)">
+            {{ cidade.nome }} ({{ cidade.estado }})
+          </li>
+        </ul>
+      </div>
+      <div class="form-group">
+        <label for="estado">Estado</label>
+        <input type="text" id="estado" [(ngModel)]="cliente.cidade.estado" name="estado" />
+      </div>
+    </div>
+  
+    <div *ngIf="activeTab === 'contato'" class="tab-content">
+      <div class="form-group">
+        <label for="telefone">Telefone</label>
+        <input type="text" id="telefone" [(ngModel)]="cliente.telefone" name="telefone" />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" [(ngModel)]="cliente.email" name="email" />
+      </div>
+    </div>
+  
+    <div class="button-group">
+      <button (click)="onNew()" type="button" class="button novo-button">Novo</button>
+      <button (click)="onSave()" type="submit" class="button gravar-button">Gravar</button>
+      <button *ngIf="!isNew" (click)="onDelete()" type="button" class="button deletar-button">Deletar</button>
+      <button (click)="onConsultar()" type="button" class="button consultar-button">Consultar</button>
+    </div>
+  
+    <div *ngIf="message" class="feedback-box" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
+      {{ message }}
+    </div>
+  </div>
+  
