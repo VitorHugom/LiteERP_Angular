@@ -4,44 +4,29 @@
       <button (click)="toggleSidebar()">☰</button>
     </div>
     <nav>
-      <!-- Renderiza os menus apenas se a barra não estiver recolhida -->
-      <ul *ngIf="!isSidebarCollapsed">
-        <li>
-          <a href="javascript:void(0)" (click)="toggleMenu('cadastro')">Cadastros</a>
-          <ul *ngIf="expandedMenu === 'cadastro'">
-            <li><a [routerLink]="['/clientes']">Clientes</a></li>
-            <li><a [routerLink]="['/fornecedores']">Fornecedores</a></li>
-            <a href="javascript:void(0)" (click)="toggleMenu_2('Produtos')">Produtos</a>
-              <ul *ngIf="expandedMenu_2 === 'Produtos'">
-            <li><a [routerLink]="['/busca-produtos']">Cadastro</a></li>
-            <li><a [routerLink]="['/grupo-produtos-busca']">Grupo de Produtos</a></li>
-          </ul>
-          </ul>
-        </li>
-        <li>
-          <a href="javascript:void(0)" (click)="toggleMenu('vendas')">Vendas</a>
-          <ul *ngIf="expandedMenu === 'vendas'">
-            <li><a [routerLink]="['/pdv']">PDV</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="javascript:void(0)" (click)="toggleMenu('faturamento')">Faturamento</a>
-          <ul *ngIf="expandedMenu === 'faturamento'">
-            <li><a [routerLink]="['/emissao-nfe']">Emissão de NFe</a></li>
-            <li><a [routerLink]="['/envio-nfe']">Envio de NFe</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="javascript:void(0)" (click)="toggleMenu('compras')">Compras</a>
-          <ul *ngIf="expandedMenu === 'compras'">
-            <li><a [routerLink]="['/recebimento-mercadorias']">Recebimento de Mercadorias</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="javascript:void(0)" (click)="toggleMenu('administrador')">Administrador</a>
-          <ul *ngIf="expandedMenu === 'administrador'">
-            <li><a [routerLink]="['/alterar-senha']">Alterar Senha</a></li>
-            <li><a [routerLink]="['/busca-liberacao']">Liberar Usuários</a></li>
+      <!-- Renderiza os menus dinamicamente -->
+      <ul>
+        <li *ngFor="let item of menuItems">
+          <a href="javascript:void(0)" (click)="toggleMenu(item.label)">
+            {{ item.label }}
+          </a>
+          <ul *ngIf="isMenuExpanded(item.label)">
+            <li *ngFor="let subItem of item.subItems">
+              <a *ngIf="!subItem.subItems" [routerLink]="subItem.routerLink">
+                {{ subItem.label }}
+              </a>
+              <!-- Submenus aninhados -->
+              <div *ngIf="subItem.subItems">
+                <a href="javascript:void(0)" (click)="toggleMenu(subItem.label)">
+                  {{ subItem.label }}
+                </a>
+                <ul *ngIf="isMenuExpanded(subItem.label)">
+                  <li *ngFor="let subSubItem of subItem.subItems">
+                    <a [routerLink]="subSubItem.routerLink">{{ subSubItem.label }}</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
           </ul>
         </li>
       </ul>
