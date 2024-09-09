@@ -6,6 +6,7 @@
     </div>
     <nav class="sidebar-navigation">
       <!-- Renderiza os menus dinamicamente -->
+<<<<<<< HEAD
       <ul class="list-itens">
         <li class="item" *ngFor="let item of menuItems">
           <div class="item-main">
@@ -16,6 +17,14 @@
             </a>
           </div>
           <ul class="item-subtitem" *ngIf="isMenuExpanded(item.label)">
+=======
+      <ul *ngIf="!isSidebarCollapsed">
+        <li *ngFor="let item of menuItems">
+          <a href="javascript:void(0)" (click)="toggleMenu(item.label)">
+            {{ item.label }}
+          </a>
+          <ul *ngIf="isMenuExpanded(item.label)">
+>>>>>>> 80b0db0b2bf6e9dcaa5cde0ceceac308c744d49e
             <li *ngFor="let subItem of item.subItems">
               <a *ngIf="!subItem.subItems" [routerLink]="subItem.routerLink">
                 {{ subItem.label }}
