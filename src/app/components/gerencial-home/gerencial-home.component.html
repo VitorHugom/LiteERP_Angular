@@ -1,16 +1,21 @@
 <div class="container" [class.collapsed]="isSidebarCollapsed">
+
   <aside class="sidebar" [class.sidebar-collapsed]="isSidebarCollapsed">
     <div class="toggle-button">
-      <button (click)="toggleSidebar()">☰</button>
+      <button (click)="toggleSidebar()"><img src="images/icone-menu.png" alt=""></button>
     </div>
-    <nav>
+    <nav class="sidebar-navigation">
       <!-- Renderiza os menus dinamicamente -->
-      <ul>
-        <li *ngFor="let item of menuItems">
-          <a href="javascript:void(0)" (click)="toggleMenu(item.label)">
-            {{ item.label }}
-          </a>
-          <ul *ngIf="isMenuExpanded(item.label)">
+      <ul class="list-itens">
+        <li class="item" *ngFor="let item of menuItems">
+          <div class="item-main">
+
+            <img (mouseenter)="openSideBar()" src="{{item.image}}" alt="" >
+            <a class="link-text" href="javascript:void(0)" (click)="toggleMenu(item.label)">
+              <span>{{ item.label }}</span>
+            </a>
+          </div>
+          <ul class="item-subtitem" *ngIf="isMenuExpanded(item.label)">
             <li *ngFor="let subItem of item.subItems">
               <a *ngIf="!subItem.subItems" [routerLink]="subItem.routerLink">
                 {{ subItem.label }}
@@ -41,4 +46,5 @@
     <h1>Bem-vindo à área Gerencial</h1>
     <p>Esta é a sua página inicial da área gerencial do ERP.</p>
   </main>
+
 </div>

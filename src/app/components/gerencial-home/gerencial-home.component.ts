@@ -4,10 +4,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 interface MenuItem {
+  image?:string;
   label: string;
   routerLink?: string;
   subItems?: MenuItem[];
 }
+
 
 @Component({
   selector: 'app-gerencial-home',
@@ -23,9 +25,11 @@ export class GerencialHomeComponent {
   // Definindo a estrutura dos menus e submenus
   menuItems: MenuItem[] = [
     {
+
+      image:'images/icone-cadastro.png',
       label: 'Cadastros',
       subItems: [
-        { label: 'Clientes', 
+        { label: 'Clientes',
           subItems: [
             { label: 'Cadastro', routerLink: '/clientes' },
             { label: 'Relatórios', routerLink: '/relatorio-clientes' }
@@ -50,12 +54,14 @@ export class GerencialHomeComponent {
       ]
     },
     {
+      image:'images/icone-vendas.png',
       label: 'Vendas',
       subItems: [
         { label: 'PDV', routerLink: '/pdv' }
       ]
     },
     {
+      image:'images/icone-faturamento.png',
       label: 'Faturamento',
       subItems: [
         { label: 'Emissão de NFe', routerLink: '/emissao-nfe' },
@@ -63,12 +69,14 @@ export class GerencialHomeComponent {
       ]
     },
     {
+      image:'images/icone-compra.png',
       label: 'Compras',
       subItems: [
         { label: 'Recebimento de Mercadorias', routerLink: '/recebimento-mercadorias' }
       ]
     },
     {
+      image:'images/icone-administrador.png',
       label: 'Administrador',
       subItems: [
         { label: 'Alterar Senha', routerLink: '/alterar-senha' },
@@ -86,6 +94,11 @@ export class GerencialHomeComponent {
       this.activeMenus = {}; // Fecha todos os menus ao recolher a sidebar
     }
   }
+
+  openSideBar(){
+    this.isSidebarCollapsed = false
+  }
+
 
   // Função para controlar os menus abertos/fechados
   toggleMenu(menuLabel: string): void {
