@@ -45,7 +45,7 @@
 
     input, select, span {
       width: 100%;
-      padding: 10px;
+      padding: 10px 0px;
       border: 1px solid #ccc;
       border-radius: 4px;
       display: block;
@@ -132,5 +132,9 @@
 @media (max-width: 600px) {
   .button-group {
     flex-direction: column;
+  }
+
+  .produto-detail-container{
+    max-width: 320px;
   }
 }
