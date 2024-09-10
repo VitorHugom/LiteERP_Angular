@@ -96,12 +96,12 @@ export class ClientesCadastroComponent implements OnInit {
 
   // Função que define se o campo de CPF ou CNPJ é exibido com base na seleção de tipo de pessoa
   get isPessoaFisica(): boolean {
-    return this.cliente.tipoPessoa === 'FISICA';
+    return this.cliente.tipoPessoa === 'fisica';
   }
 
   // Função para mascarar CPF ou CNPJ
   get cpfCnpjMask(): string {
-    return this.cliente.tipoPessoa === 'FISICA' ? '000.000.000-00' : '00.000.000/0000-00';
+    return this.cliente.tipoPessoa === 'fisica' ? '000.000.000-00' : '00.000.000/0000-00';
   }
 
   // Função que define se o campo CPF/CNPJ é editável (somente quando for novo cliente)
@@ -115,22 +115,6 @@ export class ClientesCadastroComponent implements OnInit {
   }
 
   onSave(): void {
-    if (this.isPessoaFisica && !this.cliente.cpf) {
-      this.exibirMensagem('Preencha o CPF.', false);
-      return;
-    } else if (!this.isPessoaFisica && !this.cliente.cnpj) {
-      this.exibirMensagem('Preencha o CNPJ.', false);
-      return;
-    }
-  
-    if (this.isPessoaFisica) {
-      this.cliente.cpf = this.cliente.cpfCnpj;
-      this.cliente.cnpj = '';
-    } else {
-      this.cliente.cnpj = this.cliente.cpfCnpj;
-      this.cliente.cpf = '';
-    }
-  
     if (!this.cliente.razaoSocial || !this.cliente.email) {
       this.exibirMensagem('Preencha todos os campos obrigatórios.', false);
       return;
@@ -138,6 +122,23 @@ export class ClientesCadastroComponent implements OnInit {
   
     this.isLoading = true;
     if (this.isNew) {
+
+      if (this.isPessoaFisica && !this.cliente.cpfCnpj) {
+        this.exibirMensagem('Preencha o CPF.', false);
+        return;
+      } else if (!this.isPessoaFisica && !this.cliente.cpfCnpj) {
+        this.exibirMensagem('Preencha o CNPJ.', false);
+        return;
+      }
+      if (this.isPessoaFisica) {
+        this.cliente.cpf = this.cliente.cpfCnpj;
+        this.cliente.cnpj = '';
+      } else {
+        this.cliente.cnpj = this.cliente.cpfCnpj;
+        this.cliente.cpf = '';
+      } 
+
+
       this.clientesService.createCliente(this.cliente).subscribe({
         next: (response) => {
           this.cliente = response;
