@@ -72,7 +72,7 @@ export class GerencialHomeComponent {
       image:'images/icone-compra.png',
       label: 'Compras',
       subItems: [
-        { label: 'Recebimento de Mercadorias', routerLink: '/recebimento-mercadorias' }
+        { label: 'Mercadorias', routerLink: '/recebimento-mercadorias' }
       ]
     },
     {
