@@ -50,9 +50,15 @@
       </div>
     
       <div class="form-group">
-        <label for="vendedorId">ID do Vendedor</label>
-        <input type="number" id="vendedorId" [(ngModel)]="cliente.vendedor.id" name="vendedorId" placeholder="Insira o ID do vendedor" />
+        <label for="vendedor">Vendedor</label>
+        <input type="text" id="vendedor" [(ngModel)]="vendedorInput" (input)="onSearchVendedores($event)" name="vendedor" />
+        <ul *ngIf="vendedores.length > 0 && showVendedoresList" class="autocomplete-list">
+          <li *ngFor="let vendedor of vendedores" (click)="onSelectVendedor(vendedor)">
+            {{ vendedor.nome }} ({{ vendedor.email }})
+          </li>
+        </ul>
       </div>
+      
     
       <div class="ie-container">
         <label for="estadoInscricaoEstadual">Possui Inscrição Estadual?</label>

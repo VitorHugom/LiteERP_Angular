@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CidadesService } from '../../services/cidades.service';
+import { VendedoresService } from '../../services/vendedores.service';
 
 @Component({
   selector: 'app-cadastro-cliente',
@@ -59,6 +60,13 @@ export class ClientesCadastroComponent implements OnInit {
   currentPage: number = 0; // Página atual do lazy loading
   pageSize: number = 10; // Quantidade de registros por página
 
+  vendedorInput: string = '';
+  vendedores: any[] = [];
+  showVendedoresList: boolean = false;
+  currentPageVendedores: number = 0;
+  pageSizeVendedores: number = 10;
+  loadingVendedores: boolean = false;
+
   activeTab = 'geral'; // Aba ativa, começa com "geral"
   message: string | null = null;
   isSuccess: boolean = true;
@@ -68,6 +76,7 @@ export class ClientesCadastroComponent implements OnInit {
   constructor(
     private cidadesService: CidadesService, 
     private clientesService: ClientesService,
+    private vendedoresService: VendedoresService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -81,6 +90,7 @@ export class ClientesCadastroComponent implements OnInit {
         next: (data) => {
           this.cliente = data;
           this.cidadeInput = this.cliente.cidade?.nome || '';
+          this.vendedorInput = this.cliente.vendedor?.nome || '';
           this.isLoading = false;
         },
         error: (err) => {
@@ -244,6 +254,8 @@ export class ClientesCadastroComponent implements OnInit {
     };
     this.cidadeInput = '',
     this.cidades = [];
+    this.vendedorInput = '',
+    this.vendedores = [];
     this.isNew = true;
     this.message = null;
   }
@@ -319,6 +331,55 @@ export class ClientesCadastroComponent implements OnInit {
     if (!this.loadingCidades) {
       this.currentPage++;  // Incrementa a página atual para buscar mais resultados
       this.searchCidadesLazy();  // Busca mais cidades
+    }
+  }
+
+  onSearchVendedores(event: Event): void {
+    const inputValue = (event.target as HTMLInputElement).value;
+    if (inputValue.length >= 2) { 
+      this.vendedorInput = inputValue;
+      this.currentPage = 0;  
+      this.searchVendedoresLazy();  
+    } else {
+      this.vendedores = [];  
+      this.showVendedoresList = false;  
+    }
+  }
+
+  searchVendedoresLazy(): void {
+    this.loadingVendedores = true; 
+
+    this.vendedoresService.searchVendedores(this.vendedorInput, this.currentPage, this.pageSize).subscribe({
+      next: (response) => {
+        if (Array.isArray(response)) {
+          if (this.currentPage === 0) {
+            this.vendedores = response;
+          } else {
+            this.vendedores = [...this.vendedores, ...response];
+          }
+          this.showVendedoresList = true;
+        } else {
+          this.vendedores = [];
+        }
+        this.loadingVendedores = false;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar vendedores:', err);
+        this.loadingVendedores = false;
+      }
+    });
+  }
+
+  onSelectVendedor(vendedor: any): void {
+    this.cliente.vendedor = vendedor;  
+    this.vendedorInput = vendedor.nome;  
+    this.showVendedoresList = false;
+  }
+
+  onScrollVendedores(): void {
+    if (!this.loadingVendedores) {
+      this.currentPage++;
+      this.searchVendedoresLazy();
     }
   }
 
