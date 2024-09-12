@@ -151,6 +151,52 @@
           }
         }
       }
+      .ie-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      
+      .ie-container label {
+          margin-right: 10px;
+          font-weight: bold;
+      }
+      
+      .ie-select {
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          background-color: #fff; /* Cor de fundo */
+          transition: border 0.3s, background-color 0.3s;
+          font-size: 14px;
+          cursor: pointer;
+          outline: none;
+          appearance: none; /* Remove a aparência padrão */
+          color: #333;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+          &:hover {
+            background-color: #e0e0e0;
+          }
+      }
+      
+      .ie-select:focus {
+          border-color: #e7e7e7; /* Cor de borda ao focar */
+          background-color: #f1f1f1; /* Mudança de cor ao focar */
+      }
+      
+      .ie-input {
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          width: 100%;
+          font-size: 14px;
+          transition: border 0.3s;
+      }
+      
+      .ie-input:focus {
+          border-color: #d6d6d6; /* Cor da borda no foco */
+      }
     }
 
     .button-group {

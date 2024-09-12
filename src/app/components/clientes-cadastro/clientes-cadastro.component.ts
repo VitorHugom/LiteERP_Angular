@@ -90,7 +90,7 @@ export class ClientesCadastroComponent implements OnInit {
         }
       });
     } else {
-      this.isNew = true;
+      this.onNew();
     }
   }
 
@@ -191,6 +191,7 @@ export class ClientesCadastroComponent implements OnInit {
   }
 
   onNew(): void {
+    const today = new Date();
     this.cliente = {
       id: null,
       tipoPessoa: 'FISICA',
@@ -238,9 +239,11 @@ export class ClientesCadastroComponent implements OnInit {
       },
       observacao: '',
       status: true,
-      dataCadastro: '',
+      dataCadastro: today.toISOString().split('T')[0],
       limiteCredito: 0
     };
+    this.cidadeInput = '',
+    this.cidades = [];
     this.isNew = true;
     this.message = null;
   }
@@ -317,5 +320,12 @@ export class ClientesCadastroComponent implements OnInit {
       this.currentPage++;  // Incrementa a página atual para buscar mais resultados
       this.searchCidadesLazy();  // Busca mais cidades
     }
-  }  
+  } 
+
+  setEstadoInscricaoEstadual(event: Event): void {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    
+    // Convertendo para booleano
+    this.cliente.estadoInscricaoEstadual = selectedValue === 'true';
+  }
 }

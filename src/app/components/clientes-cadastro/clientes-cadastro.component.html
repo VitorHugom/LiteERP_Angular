@@ -43,16 +43,49 @@
         <label for="nome">Nome</label>
         <input type="text" id="nome" [(ngModel)]="cliente.nomeFantasia" name="nome" />
       </div>
+    
       <div class="form-group">
         <label for="razaoSocial">Razão Social</label>
         <input type="text" id="razaoSocial" [(ngModel)]="cliente.razaoSocial" name="razaoSocial" />
       </div>
-
+    
       <div class="form-group">
         <label for="vendedorId">ID do Vendedor</label>
         <input type="number" id="vendedorId" [(ngModel)]="cliente.vendedor.id" name="vendedorId" placeholder="Insira o ID do vendedor" />
       </div>
-    </div>
+    
+      <div class="ie-container">
+        <label for="estadoInscricaoEstadual">Possui Inscrição Estadual?</label>
+        <select id="estadoInscricaoEstadual" [(ngModel)]="cliente.estadoInscricaoEstadual" (change)="setEstadoInscricaoEstadual($event)" class="ie-select">
+          <option [value]="true">Sim</option>
+          <option [value]="false">Não</option>
+        </select>
+      </div>
+      
+      <!-- Campo de inscrição estadual -->
+      <div class="form-group" *ngIf="cliente.estadoInscricaoEstadual">
+        <label for="inscricaoEstadual">Inscrição Estadual</label>
+        <input type="text" id="inscricaoEstadual" [(ngModel)]="cliente.inscricaoEstadual" name="inscricaoEstadual" placeholder="Insira a inscrição estadual" class="ie-input"/>
+      </div>      
+    
+      <!-- Campo para RG -->
+      <div class="form-group">
+        <label for="rg">RG</label>
+        <input type="text" id="rg" [(ngModel)]="cliente.rg" name="rg" placeholder="Insira o RG" />
+      </div>
+    
+      <!-- Campo para Data de Nascimento -->
+      <div class="form-group">
+        <label for="dataNascimento">Data de Nascimento</label>
+        <input type="date" id="dataNascimento" [(ngModel)]="cliente.dataNascimento" name="dataNascimento" />
+      </div>
+    
+      <!-- Campo imutável para Data de Cadastro -->
+      <div class="form-group">
+        <label for="dataCadastro">Data de Cadastro</label>
+        <input type="date" id="dataCadastro" [(ngModel)]="cliente.dataCadastro" name="dataCadastro" readonly />
+      </div>
+    </div>    
   
     <div *ngIf="activeTab === 'endereco'" class="tab-content">
       <div class="form-group">
@@ -70,7 +103,7 @@
       </div>
       <div class="form-group">
         <label for="estado">Estado</label>
-        <input type="text" id="estado" [(ngModel)]="cliente.cidade.estado" name="estado" />
+        <input type="text" id="estado" [(ngModel)]="cliente.cidade.estado" name="estado" readonly/>
       </div>
     </div>
   
