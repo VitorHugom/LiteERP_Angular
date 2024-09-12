@@ -249,7 +249,7 @@ export class ClientesCadastroComponent implements OnInit {
       },
       observacao: '',
       status: true,
-      dataCadastro: today.toISOString().split('T')[0],
+      dataCadastro: today.toISOString(),
       limiteCredito: 0
     };
     this.cidadeInput = '',
