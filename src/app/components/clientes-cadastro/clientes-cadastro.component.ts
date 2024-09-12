@@ -313,14 +313,14 @@ export class ClientesCadastroComponent implements OnInit {
     this.cliente.cidade = cidade;  // Associa a cidade selecionada ao cliente
     this.cidadeInput = cidade.nome;  // Atualiza o input de cidade com o nome selecionado
     this.showCidadesList = false;  // Oculta a lista de cidades após a seleção
-  }  
+  }
 
   onScroll(): void {
     if (!this.loadingCidades) {
       this.currentPage++;  // Incrementa a página atual para buscar mais resultados
       this.searchCidadesLazy();  // Busca mais cidades
     }
-  } 
+  }
 
   setEstadoInscricaoEstadual(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
