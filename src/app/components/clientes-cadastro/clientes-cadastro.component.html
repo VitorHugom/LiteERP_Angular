@@ -39,14 +39,23 @@
     </div>
   
     <div *ngIf="activeTab === 'geral'" class="tab-content">
-      <div class="form-group">
-        <label for="nome">Nome</label>
-        <input type="text" id="nome" [(ngModel)]="cliente.nomeFantasia" name="nome" />
+      <div *ngIf="cliente.tipoPessoa === 'juridica'" class="tab-content">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" [(ngModel)]="cliente.nomeFantasia" name="nome" />
+        </div>
+      
+        <div class="form-group">
+          <label for="razaoSocial">Razão Social</label>
+          <input type="text" id="razaoSocial" [(ngModel)]="cliente.razaoSocial" name="razaoSocial" />
+        </div>
       </div>
-    
-      <div class="form-group">
-        <label for="razaoSocial">Razão Social</label>
-        <input type="text" id="razaoSocial" [(ngModel)]="cliente.razaoSocial" name="razaoSocial" />
+
+      <div *ngIf="cliente.tipoPessoa === 'fisica'" class="tab-content">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" [(ngModel)]="cliente.razaoSocial" name="nome" />
+        </div>
       </div>
     
       <div class="form-group">
@@ -77,7 +86,14 @@
       <!-- Campo para RG -->
       <div class="form-group">
         <label for="rg">RG</label>
-        <input type="text" id="rg" [(ngModel)]="cliente.rg" name="rg" placeholder="Insira o RG" />
+        <input 
+          type="text" 
+          id="rg" 
+          [(ngModel)]="cliente.rg" 
+          name="rg" 
+          placeholder="Insira o RG"
+          maxlength="14"
+        />
       </div>
     
       <!-- Campo para Data de Nascimento -->
@@ -96,8 +112,17 @@
     <div *ngIf="activeTab === 'endereco'" class="tab-content">
       <div class="form-group">
         <label for="cep">CEP</label>
-        <input type="text" id="cep" [(ngModel)]="cliente.cep" name="cep" />
+        <input 
+          type="text" 
+          id="cep" 
+          [(ngModel)]="cliente.cep" 
+          name="cep" 
+          [mask]="cepMask" 
+          placeholder="Digite o CEP"
+          (blur)="onBuscarCep()"
+        />
       </div>
+           
       <div class="form-group">
         <label for="endereco">Endereço</label>
         <input type="text" id="endereco" [(ngModel)]="cliente.endereco" name="endereco" />
@@ -134,12 +159,26 @@
     <div *ngIf="activeTab === 'contato'" class="tab-content">
       <div class="form-group">
         <label for="celular">Celular</label>
-        <input type="text" id="celular" [(ngModel)]="cliente.celular" name="celular" />
+        <input 
+          type="text" 
+          id="celular" 
+          [(ngModel)]="cliente.celular" 
+          name="celular" 
+          [mask]="celularMask"
+          placeholder="Digite o celular"
+        />
       </div>
       <div class="form-group">
         <label for="telefone">Telefone</label>
-        <input type="text" id="telefone" [(ngModel)]="cliente.telefone" name="telefone" />
-      </div>
+        <input 
+          type="text" 
+          id="telefone" 
+          [(ngModel)]="cliente.telefone" 
+          name="telefone" 
+          [mask]="telefoneMask"
+          placeholder="Digite o telefone"
+        />
+      </div>      
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="email" [(ngModel)]="cliente.email" name="email" />

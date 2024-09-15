@@ -114,6 +114,22 @@ export class ClientesCadastroComponent implements OnInit {
     return this.cliente.tipoPessoa === 'fisica' ? '000.000.000-00' : '00.000.000/0000-00';
   }
 
+  // Função para mascarar o CEP
+  get cepMask(): string {
+    return '00000-000';
+  }
+
+  // Função para mascarar o celular
+get celularMask(): string {
+  return '(00) 00000-0000'; // Máscara para celular com 9 dígitos
+}
+
+// Função para mascarar o telefone fixo
+get telefoneMask(): string {
+  return '(00) 0000-0000'; // Máscara para telefone fixo com 8 dígitos
+}
+
+
   // Função que define se o campo CPF/CNPJ é editável (somente quando for novo cliente)
   get isCpfCnpjEditable(): boolean {
     return this.isNew;
@@ -388,5 +404,39 @@ export class ClientesCadastroComponent implements OnInit {
     
     // Convertendo para booleano
     this.cliente.estadoInscricaoEstadual = selectedValue === 'true';
+  }
+
+  // Método para buscar o endereço pelo CEP
+  onBuscarCep(): void {
+    if (this.cliente.cep.length === 8) {
+      this.clientesService.getEnderecoByCep(this.cliente.cep).subscribe({
+        next: (data) => {
+          if (!data.erro) {
+            this.cliente.endereco = data.logradouro;
+            this.cliente.bairro = data.bairro;
+            this.cliente.cidade.nome = data.localidade;
+            this.cliente.cidade.estado = data.uf;
+
+            // Busca a cidade pelo código IBGE e atualiza o campo cidade
+            this.clientesService.getCidadeByCodigoIbge(data.ibge).subscribe({
+              next: (cidade) => {
+                this.cliente.cidade = cidade;  // Atualiza o cliente com os dados da cidade
+                this.cidadeInput = cidade.nome;  // Atualiza o campo de input de cidade
+              },
+              error: (err) => {
+                console.error('Erro ao buscar cidade pelo código IBGE:', err);
+              }
+            });
+          } else {
+            console.error('CEP não encontrado');
+          }
+        },
+        error: (err) => {
+          console.error('Erro ao buscar CEP:', err);
+        }
+      });
+    } else {
+      console.error('CEP inválido');
+    }
   }
 }

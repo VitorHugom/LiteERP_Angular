@@ -23,4 +23,24 @@ export class VendedoresService {
   getVendedorById(id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${id}`);
   }
+
+  // Busca todos os vendedores
+  getVendedores(): Observable<any> {
+    return this.http.get(this.baseUrl);
+  }
+
+  // Cria um novo vendedor
+  createVendedor(vendedor: any): Observable<any> {
+    return this.http.post(this.baseUrl, vendedor);
+  }
+
+  // Atualiza um vendedor existente
+  updateVendedor(id: number, vendedor: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}`, vendedor);
+  }
+
+  // Deleta um vendedor pelo ID
+  deleteVendedor(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
 }

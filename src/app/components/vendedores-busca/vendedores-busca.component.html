@@ -1,0 +1,28 @@
+<div class="busca-vendedores-container">
+    <h1>Buscar Vendedores</h1>
+    
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchQuery" (keydown.enter)="searchVendedores()" placeholder="Buscar vendedores..." class="search-input">
+      <select [(ngModel)]="searchBy" class="search-select">
+        <option value="nome">Nome</option>
+        <option value="id">ID</option>
+      </select>
+      <button (click)="searchVendedores()" class="search-button">Buscar</button>
+    </div>
+  
+    <ul *ngIf="filteredVendedores.length > 0; else noVendedores" class="vendedores-list">
+      <li *ngFor="let vendedor of filteredVendedores" (click)="viewVendedor(vendedor.id)" class="vendedores-item">
+        (ID: {{ vendedor.id }}) {{ vendedor.nome }} - {{ vendedor.email }} - {{ vendedor.telefone }}
+      </li>
+    </ul>
+  
+    <ng-template #noVendedores>
+      <p>Nenhum vendedor encontrado.</p>
+    </ng-template>
+  
+    <div class="button-container">
+      <button (click)="navigateToHome()" class="nav-button">Voltar para Home</button>
+      <button (click)="createNovoVendedor()" class="nav-button novo-button">Novo</button>
+    </div>
+  </div>
+  
