@@ -7,6 +7,16 @@
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
     font-family: Arial, sans-serif;
 
+    .link-back{
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+      color: #000;
+    }
+    .link-back img{
+      width: 12px;
+    }
+
     .autocomplete-list {
         list-style-type: none;
         padding: 0;
@@ -156,12 +166,12 @@
         align-items: center;
         margin-bottom: 15px;
       }
-      
+
       .ie-container label {
           margin-right: 10px;
           font-weight: bold;
       }
-      
+
       .ie-select {
           padding: 10px;
           border: 1px solid #ccc;
@@ -179,12 +189,12 @@
             background-color: #e0e0e0;
           }
       }
-      
+
       .ie-select:focus {
           border-color: #e7e7e7; /* Cor de borda ao focar */
           background-color: #f1f1f1; /* Mudança de cor ao focar */
       }
-      
+
       .ie-input {
           padding: 10px;
           border: 1px solid #ccc;
@@ -193,7 +203,7 @@
           font-size: 14px;
           transition: border 0.3s;
       }
-      
+
       .ie-input:focus {
           border-color: #d6d6d6; /* Cor da borda no foco */
       }

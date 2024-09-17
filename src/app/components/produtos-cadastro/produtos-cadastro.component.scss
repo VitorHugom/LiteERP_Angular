@@ -6,6 +6,16 @@
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
+  .link-back{
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    color: #000;
+  }
+  .link-back img{
+    width: 12px;
+  }
+
   h1 {
     text-align: center;
     color: #333;
