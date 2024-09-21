@@ -14,6 +14,7 @@ import { GrupoProdutosCadastroComponent } from './components/grupo-produtos-cada
 import { ClientesBuscaComponent } from './components/clientes-busca/clientes-busca.component';
 import { ClientesCadastroComponent } from './components/clientes-cadastro/clientes-cadastro.component';
 import { VendedoresBuscaComponent } from './components/vendedores-busca/vendedores-busca.component';
+import { PedidosBuscaComponent } from './components/pedidos-busca/pedidos-busca.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -37,6 +38,7 @@ export const routes: Routes = [
   { path: 'clientes-busca', component: ClientesBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
   { path: 'clientes/:id', component: ClientesCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
   { path: 'vendedores-busca', component: VendedoresBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'pedidos-busca', component: PedidosBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

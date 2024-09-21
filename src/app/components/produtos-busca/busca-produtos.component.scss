@@ -17,7 +17,6 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    flex-wrap: nowrap;
 
     .search-input, .search-select, .search-button {
       padding: 10px;
@@ -51,70 +50,68 @@
     }
   }
 
+  .product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .product-table th, .product-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .product-table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+  }
+
+  .product-table tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+  }
+
   .button-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
     margin-top: 20px;
+  }
 
-    .nav-button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      text-decoration: none;
-      color: white;
-      font-size: clamp(0.8em, 2vw, 1em);
-      background-color: #007bff;
+  .nav-button, .novo-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    font-size: clamp(0.8em, 2vw, 1em);
+  }
 
-      &:hover {
-        background-color: #0056b3;
-      }
-    }
+  .nav-button {
+    background-color: #007bff;
 
-    .novo-button {
-      background-color: #28a745;
-
-      &:hover {
-        background-color: #218838;
-      }
+    &:hover {
+      background-color: #0056b3;
     }
   }
 
-  .product-list {
-    list-style-type: none;
-    padding: 0;
+  .novo-button {
+    background-color: #28a745;
 
-    .product-item {
-      padding: 10px;
-      margin-bottom: 10px;
-      background-color: white;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: clamp(0.8em, 2vw, 1em);
-
-      &:hover {
-        background-color: #f1f1f1;
-      }
+    &:hover {
+      background-color: #218838;
     }
   }
 }
 
 @media (max-width: 600px) {
   .search-container {
-    .search-input {
-      flex: 1;
-    }
+    flex-direction: column;
 
-    .search-select {
-      flex: 0 1 80px;
-    }
-
-    .search-button {
-      flex: 0 1 60px;
+    .search-input, .search-select, .search-button {
+      width: 100%;
+      margin-bottom: 10px;
     }
   }
 

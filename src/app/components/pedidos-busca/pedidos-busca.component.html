@@ -1,0 +1,47 @@
+<div class="busca-pedidos-container">
+    <h1>Buscar Pedidos</h1>
+    
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchQuery" (keydown.enter)="searchPedidos()" placeholder="Buscar pedidos..." class="search-input">
+      <select [(ngModel)]="searchBy" class="search-select">
+        <option value="id">ID</option>
+        <option value="cliente">Cliente</option>
+        <option value="vendedor">Vendedor</option>
+      </select>
+      <button (click)="searchPedidos()" class="search-button">Buscar</button>
+    </div>
+  
+    <!-- Tabela de resultados -->
+    <table *ngIf="filteredPedidos.length > 0; else noPedidos" class="pedido-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Vendedor</th>
+          <th>Data Emissão</th>
+          <th>Valor Total</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pedido of filteredPedidos" (click)="viewPedido(pedido.id)" class="pedido-item">
+          <td>{{ pedido.id }}</td>
+          <td>{{ pedido.cliente.razaoSocial }}</td>
+          <td>{{ pedido.vendedor?.nome }}</td>
+          <td>{{ pedido.dataEmissao | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ pedido.valorTotal | currency:'BRL' }}</td>
+          <td>{{ pedido.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <ng-template #noPedidos>
+      <p>Nenhum pedido encontrado.</p>
+    </ng-template>
+  
+    <div class="button-container">
+      <button (click)="navigateToHome()" class="nav-button">Voltar para Home</button>
+      <button (click)="createNovoPedido()" class="nav-button novo-button">Novo</button>
+    </div>
+  </div>
+  

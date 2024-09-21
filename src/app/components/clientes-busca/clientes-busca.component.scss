@@ -29,17 +29,17 @@
 
     .search-input {
       flex: 1;
-      min-width: 150px;
+      min-width: 100px;
     }
 
     .search-select {
       flex: 0 1;
-      min-width: 100px;
+      min-width: 80px;
     }
 
     .search-button {
       flex: 0 1;
-      min-width: 80px;
+      min-width: 60px;
       background-color: #007bff;
       color: white;
       border: none;
@@ -47,6 +47,30 @@
 
       &:hover {
         background-color: #0056b3;
+      }
+    }
+  }
+
+  .client-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    tbody tr {
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f1f1f1;
       }
     }
   }
@@ -82,91 +106,23 @@
       }
     }
   }
-
-  .client-list {
-    list-style-type: none;
-    padding: 0;
-
-    .client-item {
-      padding: 10px;
-      margin-bottom: 10px;
-      background-color: white;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: clamp(0.8em, 2vw, 1em);
-
-      &:hover {
-        background-color: #f1f1f1;
-      }
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .search-container {
-    flex-direction: column;
-
-    .search-input, .search-select, .search-button {
-      width: 100%;
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
-  }
-
-  .button-container {
-    flex-direction: column;
-
-    .nav-button {
-      width: 100%;
-    }
-  }
-
-  .client-list {
-    .client-item {
-      font-size: 1em; /* Ajusta o tamanho da fonte para dispositivos médios */
-    }
-  }
 }
 
 @media (max-width: 600px) {
-  .busca-clientes-container {
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 1.8em; /* Tamanho um pouco menor para telas menores */
-  }
-
   .search-container {
     flex-direction: column;
 
     .search-input, .search-select, .search-button {
       width: 100%;
-      margin-right: 0;
       margin-bottom: 10px;
-    }
-
-    .search-button {
-      width: 100%;
-      padding: 12px; /* Um pouco maior para toque mais fácil */
     }
   }
 
   .button-container {
     flex-direction: column;
-    width: 100%;
 
-    .nav-button {
+    .nav-button, .novo-button {
       width: 100%;
-      padding: 12px; /* Melhora a usabilidade em dispositivos móveis */
-    }
-  }
-
-  .client-list {
-    .client-item {
-      font-size: 0.9em; /* Reduz um pouco o tamanho da fonte para se ajustar em dispositivos menores */
-      padding: 8px;
     }
   }
 }

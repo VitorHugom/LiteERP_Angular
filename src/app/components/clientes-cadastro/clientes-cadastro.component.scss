@@ -228,6 +228,9 @@
 
         &.gravar-button {
           background-color: #4caf50;
+          &:hover {
+            background-color: #3e8f40;
+          }
         }
 
         &.deletar-button {

@@ -27,8 +27,8 @@
           />
         </div>
         <div *ngIf="!isNew" class="input-inline">
-          <span>{{ cliente.tipoPessoa === 'fisica' ? cliente.cpf : cliente.cnpj }}</span>
-        </div>
+          <span>{{ formatCpfCnpj(cliente.tipoPessoa === 'fisica' ? cliente.cpf : cliente.cnpj, cliente.tipoPessoa) }}</span>
+        </div>        
       </div>
     </div>
   
@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <div *ngIf="cliente.tipoPessoa === 'fisica'" class="tab-content">
+      <div *ngIf="cliente.tipoPessoa != 'juridica'" class="tab-content">
         <div class="form-group">
           <label for="nome">Nome</label>
           <input type="text" id="nome" [(ngModel)]="cliente.razaoSocial" name="nome" />

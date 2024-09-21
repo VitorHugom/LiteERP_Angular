@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { NgxMaskPipe, NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { ClientesService } from '../../services/clientes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { VendedoresService } from '../../services/vendedores.service';
   templateUrl: './clientes-cadastro.component.html',
   styleUrls: ['./clientes-cadastro.component.scss'],
   imports: [CommonModule, FormsModule, NgxMaskDirective],
-  providers: [provideNgxMask()]
+  providers: [provideNgxMask(), NgxMaskPipe]
 })
 export class ClientesCadastroComponent implements OnInit {
   isNew = true;
@@ -78,7 +78,8 @@ export class ClientesCadastroComponent implements OnInit {
     private clientesService: ClientesService,
     private vendedoresService: VendedoresService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private maskPipe: NgxMaskPipe
   ) {}
 
   ngOnInit(): void {
@@ -120,15 +121,20 @@ export class ClientesCadastroComponent implements OnInit {
   }
 
   // Função para mascarar o celular
-get celularMask(): string {
-  return '(00) 00000-0000'; // Máscara para celular com 9 dígitos
-}
+  get celularMask(): string {
+    return '(00) 00000-0000'; // Máscara para celular com 9 dígitos
+  }
 
-// Função para mascarar o telefone fixo
-get telefoneMask(): string {
-  return '(00) 0000-0000'; // Máscara para telefone fixo com 8 dígitos
-}
+  // Função para mascarar o telefone fixo
+  get telefoneMask(): string {
+    return '(00) 0000-0000'; // Máscara para telefone fixo com 8 dígitos
+  }
 
+  // Função para formatar o CPF ou CNPJ
+  formatCpfCnpj(value: string, tipo: string): string {
+    const mask = tipo === 'fisica' ? '000.000.000-00' : '00.000.000/0000-00';
+    return this.maskPipe.transform(value, mask);
+  }
 
   // Função que define se o campo CPF/CNPJ é editável (somente quando for novo cliente)
   get isCpfCnpjEditable(): boolean {

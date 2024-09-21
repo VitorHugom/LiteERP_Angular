@@ -57,7 +57,7 @@ export class GerencialHomeComponent {
       image:'images/icone-vendas.png',
       label: 'Vendas',
       subItems: [
-        { label: 'PDV', routerLink: '/pdv' }
+        { label: 'Pedidos de Venda', routerLink: '/pedidos-busca' }
       ]
     },
     {
