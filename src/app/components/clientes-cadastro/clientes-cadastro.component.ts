@@ -11,7 +11,7 @@ import { VendedoresService } from '../../services/vendedores.service';
   standalone: true,
   templateUrl: './clientes-cadastro.component.html',
   styleUrls: ['./clientes-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule, NgxMaskDirective],
+  imports: [CommonModule, FormsModule, NgxMaskDirective, RouterLink],
   providers: [provideNgxMask(), NgxMaskPipe]
 })
 export class ClientesCadastroComponent implements OnInit {
