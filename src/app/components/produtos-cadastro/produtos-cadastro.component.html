@@ -1,4 +1,8 @@
 <div class="produto-detail-container">
+  <a class="link-back" [routerLink]="['/clientes-busca']">
+    <img src="images/icone-back.png" alt="">
+    voltar
+  </a>
   <h1>Cadastro de Produto</h1>
 
   <!-- Seletor de Abas -->
@@ -35,7 +39,7 @@
     <div class="form-group">
       <label for="codEan">Código EAN</label>
       <input type="text" id="codEan" [(ngModel)]="produto.codEan" name="codEan" maxlength="13" placeholder="Digite até 13 dígitos">
-    </div>    
+    </div>
     <div class="form-group">
       <label for="codNcm">Código NCM</label>
       <input type="text" id="codNcm" [(ngModel)]="produto.codNcm" name="codNcm" maxlength="8" pattern="[0-9]*">
@@ -53,12 +57,12 @@
       <label for="precoCompra">Preço de Compra</label>
       <input type="number" id="precoCompra" [(ngModel)]="produto.precoCompra" name="precoCompra" step="0.01" min="0" placeholder="0.00">
     </div>
-    
+
     <div class="form-group">
       <label for="precoVenda">Preço de Venda</label>
       <input type="number" id="precoVenda" [(ngModel)]="produto.precoVenda" name="precoVenda" required step="0.01" min="0" placeholder="0.00">
       <span *ngIf="!produto.precoVenda" class="error-message">Preço de venda é obrigatório.</span>
-    </div>    
+    </div>
     <div class="form-group">
       <label for="peso">Peso em KG</label>
       <input type="number" id="peso" [(ngModel)]="produto.peso" name="peso">

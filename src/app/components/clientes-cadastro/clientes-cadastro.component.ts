@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxMaskPipe, NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { ClientesService } from '../../services/clientes.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CidadesService } from '../../services/cidades.service';
 import { VendedoresService } from '../../services/vendedores.service';
-
 @Component({
   selector: 'app-cadastro-cliente',
   standalone: true,
@@ -74,7 +73,7 @@ export class ClientesCadastroComponent implements OnInit {
   showAlert = false; // Exibir mensagem de sucesso ou erro
 
   constructor(
-    private cidadesService: CidadesService, 
+    private cidadesService: CidadesService,
     private clientesService: ClientesService,
     private vendedoresService: VendedoresService,
     private route: ActivatedRoute,
@@ -151,7 +150,7 @@ export class ClientesCadastroComponent implements OnInit {
       this.exibirMensagem('Preencha todos os campos obrigatórios.', false);
       return;
     }
-  
+
     this.isLoading = true;
     if (this.isNew) {
 
@@ -168,7 +167,7 @@ export class ClientesCadastroComponent implements OnInit {
       } else {
         this.cliente.cnpj = this.cliente.cpfCnpj;
         this.cliente.cpf = '';
-      } 
+      }
 
 
       this.clientesService.createCliente(this.cliente).subscribe({
@@ -197,7 +196,7 @@ export class ClientesCadastroComponent implements OnInit {
         }
       });
     }
-  }  
+  }
 
   onDelete(): void {
     if (this.cliente.id) {
@@ -298,8 +297,8 @@ export class ClientesCadastroComponent implements OnInit {
 
   onSearchCidades(event: Event): void {
     const inputValue = (event.target as HTMLInputElement).value;
-  
-    if (inputValue.length >= 2) { 
+
+    if (inputValue.length >= 2) {
       this.cidadeInput = inputValue;
       this.currentPage = 0;  // Reinicia a página para uma nova busca
       this.searchCidadesLazy();  // Executa a busca com a nova entrada
@@ -308,15 +307,15 @@ export class ClientesCadastroComponent implements OnInit {
       this.showCidadesList = false;  // Oculta a lista
     }
   }
-  
+
 
   searchCidadesLazy(): void {
     this.loadingCidades = true;  // Ativa o indicador de carregamento
-  
+
     this.cidadesService.searchCidades(this.cidadeInput, this.currentPage, this.pageSize).subscribe({
       next: (response) => {
         console.log("Resposta do serviço de cidades:", response);
-  
+
         // Verifica se a resposta é uma lista de cidades
         if (Array.isArray(response)) {
           if (this.currentPage === 0) {
@@ -340,9 +339,9 @@ export class ClientesCadastroComponent implements OnInit {
       }
     });
   }
-  
-  
-  
+
+
+
   onSelectCidade(cidade: any): void {
     this.cliente.cidade = cidade;  // Associa a cidade selecionada ao cliente
     this.cidadeInput = cidade.nome;  // Atualiza o input de cidade com o nome selecionado
@@ -358,18 +357,18 @@ export class ClientesCadastroComponent implements OnInit {
 
   onSearchVendedores(event: Event): void {
     const inputValue = (event.target as HTMLInputElement).value;
-    if (inputValue.length >= 2) { 
+    if (inputValue.length >= 2) {
       this.vendedorInput = inputValue;
-      this.currentPage = 0;  
-      this.searchVendedoresLazy();  
+      this.currentPage = 0;
+      this.searchVendedoresLazy();
     } else {
-      this.vendedores = [];  
-      this.showVendedoresList = false;  
+      this.vendedores = [];
+      this.showVendedoresList = false;
     }
   }
 
   searchVendedoresLazy(): void {
-    this.loadingVendedores = true; 
+    this.loadingVendedores = true;
 
     this.vendedoresService.searchVendedores(this.vendedorInput, this.currentPage, this.pageSize).subscribe({
       next: (response) => {
@@ -393,8 +392,8 @@ export class ClientesCadastroComponent implements OnInit {
   }
 
   onSelectVendedor(vendedor: any): void {
-    this.cliente.vendedor = vendedor;  
-    this.vendedorInput = vendedor.nome;  
+    this.cliente.vendedor = vendedor;
+    this.vendedorInput = vendedor.nome;
     this.showVendedoresList = false;
   }
 
@@ -407,7 +406,7 @@ export class ClientesCadastroComponent implements OnInit {
 
   setEstadoInscricaoEstadual(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    
+
     // Convertendo para booleano
     this.cliente.estadoInscricaoEstadual = selectedValue === 'true';
   }

@@ -1,17 +1,21 @@
 <div class="grupo-produtos-container">
+    <a class="link-back" [routerLink]="['/grupo-produtos-busca']">
+      <img src="images/icone-back.png" alt="">
+      voltar
+    </a>
     <h1>Cadastro de Grupo de Produtos</h1>
-  
+
     <!-- Formulário de Cadastro -->
     <div class="form-group">
       <label for="id">ID</label>
       <span>{{ isNew ? 'Será gerado automaticamente' : grupoProduto.id }}</span>
     </div>
-  
+
     <div class="form-group">
       <label for="nome">Nome</label>
       <input type="text" id="nome" [(ngModel)]="grupoProduto.nome" name="nome">
     </div>
-  
+
     <!-- Botões de Ação -->
     <div class="button-group">
       <button (click)="onNew()" type="button" class="novo-button">Novo</button>
@@ -19,10 +23,9 @@
       <button (click)="onDelete()" *ngIf="!isNew" type="button" class="deletar-button">Deletar</button>
       <button (click)="onConsultar()" type="button" class="consultar-button">Consultar</button>
     </div>
-  
+
     <!-- Caixa de Feedback -->
     <div *ngIf="message" class="feedback-box" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
       {{ message }}
     </div>
   </div>
-  

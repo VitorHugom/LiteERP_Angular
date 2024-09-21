@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProdutosService } from '../../services/produtos.service';
 import { GrupoProdutosService } from '../../services/grupo-produtos.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router,RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   templateUrl: './produtos-cadastro.component.html',
   styleUrls: ['./produtos-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule,RouterLink]
 })
 export class ProdutosCadastroComponent implements OnInit {
   isNew = true;
@@ -27,7 +27,7 @@ export class ProdutosCadastroComponent implements OnInit {
     precoVenda: null,
     peso: null
   };
-  
+
   gruposProdutos: any[] = []; // Armazena todos os grupos de produtos
   activeTab = 'geral'; // Aba ativa, começa com "geral"
   message: string | null = null; // Mensagem de feedback
@@ -42,7 +42,7 @@ export class ProdutosCadastroComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-  
+
     if (id && id !== 'novo') {
       this.isNew = false;
       this.produtoService.getProdutoById(id).subscribe({
@@ -60,7 +60,7 @@ export class ProdutosCadastroComponent implements OnInit {
       this.loadGruposProdutos(); // Carregar grupos de produtos para novos produtos
     }
   }
-  
+
   // Carregar grupos de produtos
   loadGruposProdutos(): void {
     this.grupoProdutosService.getGruposProdutos().subscribe({
@@ -87,7 +87,7 @@ export class ProdutosCadastroComponent implements OnInit {
       this.exibirMensagem('Código NCM deve conter 8 dígitos.', false);
       return;
     }
-  
+
     if (this.isNew) {
       this.produtoService.createProduto(this.produto).subscribe({
         next: (response) => {

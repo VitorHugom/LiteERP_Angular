@@ -1,4 +1,9 @@
 <div class="cliente-detail-container">
+  <a class="link-back" [routerLink]="['/busca-produtos']">
+    <img src="images/icone-back.png" alt="">
+    voltar
+  </a>
+
     <div class="info-header">
       <div class="info-item">
         <strong>ID:</strong> {{ idDisplay }}
@@ -18,12 +23,12 @@
       <div class="info-item cpf-cnpj-group">
         <label><strong>{{ cliente.tipoPessoa === 'fisica' ? 'CPF:' : 'CNPJ:' }}</strong></label>
         <div *ngIf="isNew" class="input-inline">
-          <input 
-            type="text" 
-            [(ngModel)]="cliente.cpfCnpj" 
-            [attr.placeholder]="cliente.tipoPessoa === 'fisica' ? 'Digite o CPF' : 'Digite o CNPJ'" 
+          <input
+            type="text"
+            [(ngModel)]="cliente.cpfCnpj"
+            [attr.placeholder]="cliente.tipoPessoa === 'fisica' ? 'Digite o CPF' : 'Digite o CNPJ'"
             [mask]="cpfCnpjMask"
-            [ngModelOptions]="{ updateOn: 'blur' }" 
+            [ngModelOptions]="{ updateOn: 'blur' }"
           />
         </div>
         <div *ngIf="!isNew" class="input-inline">
@@ -31,20 +36,20 @@
         </div>        
       </div>
     </div>
-  
+
     <div class="tab-selector">
       <button [class.active]="activeTab === 'geral'" (click)="setActiveTab('geral')">Geral</button>
       <button [class.active]="activeTab === 'endereco'" (click)="setActiveTab('endereco')">Endereço</button>
       <button [class.active]="activeTab === 'contato'" (click)="setActiveTab('contato')">Contato</button>
     </div>
-  
+
     <div *ngIf="activeTab === 'geral'" class="tab-content">
       <div *ngIf="cliente.tipoPessoa === 'juridica'" class="tab-content">
         <div class="form-group">
           <label for="nome">Nome</label>
           <input type="text" id="nome" [(ngModel)]="cliente.nomeFantasia" name="nome" />
         </div>
-      
+
         <div class="form-group">
           <label for="razaoSocial">Razão Social</label>
           <input type="text" id="razaoSocial" [(ngModel)]="cliente.razaoSocial" name="razaoSocial" />
@@ -57,7 +62,7 @@
           <input type="text" id="nome" [(ngModel)]="cliente.razaoSocial" name="nome" />
         </div>
       </div>
-    
+
       <div class="form-group">
         <label for="vendedor">Vendedor</label>
         <input type="text" id="vendedor" [(ngModel)]="vendedorInput" (input)="onSearchVendedores($event)" name="vendedor" />
@@ -67,8 +72,8 @@
           </li>
         </ul>
       </div>
-      
-    
+
+
       <div class="ie-container">
         <label for="estadoInscricaoEstadual">Possui Inscrição Estadual?</label>
         <select id="estadoInscricaoEstadual" [(ngModel)]="cliente.estadoInscricaoEstadual" (change)="setEstadoInscricaoEstadual($event)" class="ie-select">
@@ -76,53 +81,53 @@
           <option [value]="false">Não</option>
         </select>
       </div>
-      
+
       <!-- Campo de inscrição estadual -->
       <div class="form-group" *ngIf="cliente.estadoInscricaoEstadual">
         <label for="inscricaoEstadual">Inscrição Estadual</label>
         <input type="text" id="inscricaoEstadual" [(ngModel)]="cliente.inscricaoEstadual" name="inscricaoEstadual" placeholder="Insira a inscrição estadual" class="ie-input"/>
-      </div>      
-    
+      </div>
+
       <!-- Campo para RG -->
       <div class="form-group">
         <label for="rg">RG</label>
-        <input 
-          type="text" 
-          id="rg" 
-          [(ngModel)]="cliente.rg" 
-          name="rg" 
+        <input
+          type="text"
+          id="rg"
+          [(ngModel)]="cliente.rg"
+          name="rg"
           placeholder="Insira o RG"
           maxlength="14"
         />
       </div>
-    
+
       <!-- Campo para Data de Nascimento -->
       <div class="form-group">
         <label for="dataNascimento">Data de Nascimento</label>
         <input type="date" id="dataNascimento" [(ngModel)]="cliente.dataNascimento" name="dataNascimento" />
       </div>
-    
+
       <!-- Campo imutável para Data de Cadastro -->
       <div class="form-group">
         <label for="dataCadastro">Data de Cadastro</label>
         <input type="date" id="dataCadastro" [(ngModel)]="cliente.dataCadastro" name="dataCadastro" readonly />
       </div>
     </div>
-  
+
     <div *ngIf="activeTab === 'endereco'" class="tab-content">
       <div class="form-group">
         <label for="cep">CEP</label>
-        <input 
-          type="text" 
-          id="cep" 
-          [(ngModel)]="cliente.cep" 
-          name="cep" 
-          [mask]="cepMask" 
+        <input
+          type="text"
+          id="cep"
+          [(ngModel)]="cliente.cep"
+          name="cep"
+          [mask]="cepMask"
           placeholder="Digite o CEP"
           (blur)="onBuscarCep()"
         />
       </div>
-           
+
       <div class="form-group">
         <label for="endereco">Endereço</label>
         <input type="text" id="endereco" [(ngModel)]="cliente.endereco" name="endereco" />
@@ -144,7 +149,7 @@
           </li>
         </ul>
       </div>
-      
+
       <div class="form-group">
         <label for="bairro">Bairro</label>
         <input type="text" id="bairro" [(ngModel)]="cliente.bairro" name="bairro" />
@@ -155,45 +160,44 @@
         <input type="text" id="estado" [(ngModel)]="cliente.cidade.estado" name="estado" readonly/>
       </div>
     </div>
-  
+
     <div *ngIf="activeTab === 'contato'" class="tab-content">
       <div class="form-group">
         <label for="celular">Celular</label>
-        <input 
-          type="text" 
-          id="celular" 
-          [(ngModel)]="cliente.celular" 
-          name="celular" 
+        <input
+          type="text"
+          id="celular"
+          [(ngModel)]="cliente.celular"
+          name="celular"
           [mask]="celularMask"
           placeholder="Digite o celular"
         />
       </div>
       <div class="form-group">
         <label for="telefone">Telefone</label>
-        <input 
-          type="text" 
-          id="telefone" 
-          [(ngModel)]="cliente.telefone" 
-          name="telefone" 
+        <input
+          type="text"
+          id="telefone"
+          [(ngModel)]="cliente.telefone"
+          name="telefone"
           [mask]="telefoneMask"
           placeholder="Digite o telefone"
         />
-      </div>      
+      </div>
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="email" [(ngModel)]="cliente.email" name="email" />
       </div>
     </div>
-  
+
     <div class="button-group">
       <button (click)="onNew()" type="button" class="button novo-button">Novo</button>
       <button (click)="onSave()" type="submit" class="button gravar-button">Gravar</button>
       <button *ngIf="!isNew" (click)="onDelete()" type="button" class="button deletar-button">Deletar</button>
       <button (click)="onConsultar()" type="button" class="button consultar-button">Consultar</button>
     </div>
-  
+
     <div *ngIf="message" class="feedback-box" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
       {{ message }}
     </div>
   </div>
-  

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GrupoProdutosService } from '../../services/grupo-produtos.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   templateUrl: './grupo-produtos-cadastro.component.html',
   styleUrls: ['./grupo-produtos-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, RouterLink]
 })
 export class GrupoProdutosCadastroComponent implements OnInit {
   isNew = true;
@@ -17,7 +17,7 @@ export class GrupoProdutosCadastroComponent implements OnInit {
     id: null,
     nome: ''
   };
-  
+
   message: string | null = null; // Mensagem de feedback
   isSuccess: boolean = true; // Status da operação
 
@@ -29,7 +29,7 @@ export class GrupoProdutosCadastroComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    
+
     if (id && id !== 'novo') {
       this.isNew = false;
       // Carregar o grupo de produto existente
@@ -45,10 +45,10 @@ export class GrupoProdutosCadastroComponent implements OnInit {
     } else {
       this.isNew = true; // Indica que é um novo grupo
     }
-  
+
     // Caso haja algum outro carregamento necessário, você pode adicionar aqui
   }
-  
+
 
   onSave(): void {
     if (!this.grupoProduto.nome) {
