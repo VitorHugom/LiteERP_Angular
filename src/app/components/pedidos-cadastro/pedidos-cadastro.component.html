@@ -1,0 +1,65 @@
+<div class="pedido-detail-container">
+  <a class="link-back" [routerLink]="['/pedidos-busca']">
+    <img src="images/icone-back.png" alt="voltar">
+    voltar
+  </a>
+  <h1>Cadastro de Pedido de Venda</h1>
+
+  <div class="form-group">
+    <label for="id">ID</label>
+    <span>{{ isNew ? 'Será gerado automaticamente' : pedido.id }}</span>
+  </div>
+
+  <div class="form-group">
+    <label for="cliente">Cliente</label>
+    <input type="text" id="cliente" [(ngModel)]="clienteInput" (input)="onSearchClientes($event)" name="cliente">
+    <ul *ngIf="clientes.length > 0 && showClientesList" class="autocomplete-list">
+      <li *ngFor="let cliente of clientes" (click)="onSelectCliente(cliente)">
+        {{ cliente.razaoSocial || cliente.nomeFantasia }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label for="vendedor">Vendedor</label>
+    <input type="text" id="vendedor" [(ngModel)]="vendedorInput" (input)="onSearchVendedores($event)" name="vendedor">
+    <ul *ngIf="vendedores.length > 0 && showVendedoresList" class="autocomplete-list">
+      <li *ngFor="let vendedor of vendedores" (click)="onSelectVendedor(vendedor)">
+        {{ vendedor.nome }} ({{ vendedor.email }})
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label for="dataEmissao">Data de Emissão</label>
+    <input type="datetime-local" id="dataEmissao" [(ngModel)]="pedido.dataEmissao" name="dataEmissao" readonly>
+  </div>
+
+  <div class="form-group">
+    <label for="valorTotal">Valor Total</label>
+    <input type="number" id="valorTotal" [(ngModel)]="pedido.valorTotal" name="valorTotal" step="0.01" min="0" placeholder="0.00">
+  </div>
+
+  <div class="form-group">
+    <label for="tipoCobranca">Tipo de Cobrança</label>
+    <select id="tipoCobranca" [(ngModel)]="pedido.tipoCobranca" name="tipoCobranca">
+      <option *ngFor="let tipo of tiposCobranca" [ngValue]="tipo">{{ tipo.descricao }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="status">Status</label>
+    <input type="text" id="status" [(ngModel)]="pedido.status" name="status" placeholder="aguardando, aprovado, etc." readonly>
+  </div>
+
+  <div class="button-group">
+    <button (click)="onNew()" type="button" class="novo-button">Novo</button>
+    <button (click)="onSave()" type="submit" class="gravar-button">Gravar</button>
+    <button *ngIf="!isNew" (click)="onDelete()" type="button" class="deletar-button">Deletar</button>
+    <button (click)="onConsultar()" type="button" class="consultar-button">Consultar</button>
+  </div>
+
+  <div *ngIf="message" class="feedback-box" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
+    {{ message }}
+  </div>
+</div>

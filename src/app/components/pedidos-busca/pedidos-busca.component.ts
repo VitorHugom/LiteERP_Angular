@@ -49,7 +49,7 @@ export class PedidosBuscaComponent implements OnInit {
   }
 
   viewPedido(id: string): void {
-    this.router.navigate(['/pedidos', id]);
+    this.router.navigate(['/pedidos-cadastro', id]);
   }
 
   navigateToHome(): void {

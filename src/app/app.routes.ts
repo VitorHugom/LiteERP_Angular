@@ -15,6 +15,7 @@ import { ClientesBuscaComponent } from './components/clientes-busca/clientes-bus
 import { ClientesCadastroComponent } from './components/clientes-cadastro/clientes-cadastro.component';
 import { VendedoresBuscaComponent } from './components/vendedores-busca/vendedores-busca.component';
 import { PedidosBuscaComponent } from './components/pedidos-busca/pedidos-busca.component';
+import { PedidosCadastroComponent } from './components/pedidos-cadastro/pedidos-cadastro.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -39,6 +40,7 @@ export const routes: Routes = [
   { path: 'clientes/:id', component: ClientesCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
   { path: 'vendedores-busca', component: VendedoresBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
   { path: 'pedidos-busca', component: PedidosBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'pedidos-cadastro/:id', component: PedidosCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
