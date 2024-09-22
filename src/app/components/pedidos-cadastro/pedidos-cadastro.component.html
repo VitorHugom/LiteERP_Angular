@@ -1,8 +1,4 @@
 <div class="pedido-detail-container">
-  <a class="link-back" [routerLink]="['/pedidos-busca']">
-    <img src="images/icone-back.png" alt="voltar">
-    voltar
-  </a>
   <h1>Cadastro de Pedido de Venda</h1>
 
   <!-- Seletor de Abas -->
@@ -62,47 +58,52 @@
   </div>
 
   <!-- Conteúdo da Aba Itens do Pedido -->
-  <div *ngIf="activeTab === 'itens'" class="tab-content">
-    <h3>Itens do Pedido</h3>
+<div *ngIf="activeTab === 'itens'" class="tab-content">
 
-    <div class="form-group">
-      <label for="produto">Buscar Produto</label>
-      <input type="text" id="produto" [(ngModel)]="produtoInput" (input)="onSearchProdutos($event)" name="produto" placeholder="Digite o nome do produto...">
-      <ul *ngIf="produtos.length > 0 && showProdutosList" class="autocomplete-list">
-        <li *ngFor="let produto of produtos" (click)="onSelectProduto(produto)">
-          {{ produto.descricao }} - {{ produto.precoVenda | currency:'BRL' }}
-        </li>
-      </ul>
-    </div>
-
-    <!-- Tabela de Itens Selecionados -->
-    <h4>Itens Selecionados</h4>
-    <table *ngIf="pedido.itens.length > 0" class="itens-table">
-      <thead>
-        <tr>
-          <th>Produto</th>
-          <th>Quantidade</th>
-          <th>Valor Unitário</th>
-          <th>Valor Total</th>
-          <th>Ações</th> <!-- Coluna de ações -->
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of pedido.itens">
-          <td>{{ item.produto.descricao }}</td>
-          <td>{{ item.quantidade }}</td>
-          <td>{{ item.produto.precoVenda | currency:'BRL' }}</td>
-          <td>{{ (item.quantidade * item.produto.precoVenda) | currency:'BRL' }}</td>
-          <td>
-            <div class="action-buttons">
-              <button class="edit-button" (click)="onEditItem(item)">Editar</button>
-              <button class="delete-button" (click)="onDeleteItem(item)">Excluir</button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="form-group">
+    <label for="produto" class="titulo-secao">Buscar Produto</label>
+    <input type="text" id="produto" [(ngModel)]="produtoInput" (input)="onSearchProdutos($event)" name="produto" placeholder="Digite o nome do produto...">
+    <ul *ngIf="produtos.length > 0 && showProdutosList" class="autocomplete-list">
+      <li *ngFor="let produto of produtos" (click)="onSelectProduto(produto)">
+        {{ produto.descricao }} - {{ produto.precoVenda | currency:'BRL' }}
+      </li>
+    </ul>
   </div>
+
+  <!-- Título Itens Selecionados -->
+  <div class="form-group">
+    <label class="titulo-secao">Itens Selecionados</label>
+  </div>
+
+  <!-- Tabela de Itens Selecionados -->
+  <table *ngIf="pedido.itens.length > 0" class="itens-table">
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Valor Unitário</th>
+        <th>Valor Total</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of pedido.itens; let i = index">
+        <td>{{ item.produto.descricao }}</td>
+        <td>{{ item.quantidade }}</td>
+        <td>{{ item.produto.precoVenda | currency:'BRL' }}</td>
+        <td>{{ (item.quantidade * item.produto.precoVenda) | currency:'BRL' }}</td>
+        <td>
+          <div class="action-buttons">
+            <!-- Passando o índice 'i' do item ao invés do item em si -->
+            <button class="edit-button" (click)="onEditItem(i)">Editar</button>
+            <button class="delete-button" (click)="onDeleteItem(i)">Excluir</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
   <!-- Botões de Ação -->
   <div class="button-group">

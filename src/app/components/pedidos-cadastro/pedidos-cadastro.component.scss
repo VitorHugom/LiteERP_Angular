@@ -5,7 +5,7 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: relative; /* Garante que os elementos filhos com posição absoluta fiquem dentro do contêiner */
+  position: relative;
 
   .link-back {
     display: flex;
@@ -57,15 +57,24 @@
     }
   }
 
+  /* Títulos uniformes */
+  .titulo-secao {
+    display: block;
+    margin-bottom: 10px;
+    font-size: clamp(0.9em, 2vw, 1em); /* Igual ao label */
+    color: #555;
+    font-weight: bold;
+  }
+
   .form-group {
     margin-bottom: 15px;
-    position: relative;  /* Necessário para alinhar corretamente o autocomplete */
+    position: relative;
 
     label {
       display: block;
       margin-bottom: 5px;
       color: #555;
-      font-size: clamp(0.8em, 2vw, 1em);
+      font-size: clamp(0.9em, 2vw, 1em);
     }
 
     input, select, span {
@@ -83,7 +92,6 @@
       background-color: #e9ecef;
     }
 
-    /* Estilo para a lista de sugestões (autocomplete) */
     .autocomplete-list {
       list-style-type: none;
       padding: 0;
@@ -94,10 +102,10 @@
       border-radius: 4px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       background-color: white;
-      z-index: 2000; /* Garante que a lista fique acima de outros elementos */
-      width: 100%;  /* Alinhado ao tamanho do input */
+      z-index: 2000;
+      width: 100%;
       position: absolute;
-      top: 100%;  /* Posiciona logo abaixo do input */
+      top: 100%;
       left: 0;
     }
 
@@ -130,6 +138,38 @@
 
     th {
       background-color: #f2f2f2;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background-color 0.3s ease, color 0.3s ease;
+
+      &.edit-button {
+        background-color: #007bff;
+        color: white;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+
+      &.delete-button {
+        background-color: #dc3545;
+        color: white;
+
+        &:hover {
+          background-color: #c82333;
+        }
+      }
     }
   }
 

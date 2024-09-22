@@ -252,15 +252,17 @@ export class PedidosCadastroComponent implements OnInit {
   }
 
   onSave(): void {
+    // Verificação de campos obrigatórios
     if (!this.pedido.cliente || !this.pedido.vendedor || !this.pedido.valorTotal || !this.pedido.tipoCobranca) {
       this.exibirMensagem('Preencha todos os campos obrigatórios.', false);
       return;
     }
-
+  
+    // Definir a data de emissão para pedidos novos
     if (this.isNew) {
       this.pedido.dataEmissao = new Date().toISOString();
     }
-
+  
     const pedidoPayload = {
       idCliente: this.pedido.cliente.id,
       idVendedor: this.pedido.vendedor.id,
@@ -269,14 +271,24 @@ export class PedidosCadastroComponent implements OnInit {
       status: this.pedido.status,
       idTipoCobranca: this.pedido.tipoCobranca.id
     };
-
+  
+    // Armazenar os itens em uma variável temporária para preservá-los
+    const itensTemporarios = this.pedido.itens || [];
+  
+    // Se for um novo pedido, criar
     if (this.isNew) {
       this.pedidosService.createPedido(pedidoPayload).subscribe({
         next: (response) => {
+          // Atribuir o pedido retornado
           this.pedido = response;
-          this.isNew = false;
-          this.salvarItensEExcluirMarcados();
+  
+          // Garantir que o array de itens existe, mesmo que esteja vazio
+          this.pedido.itens = itensTemporarios.length > 0 ? itensTemporarios : [];
+  
+          // Salvar os itens e excluir os marcados
+          this.salvarItensEExcluirMarcados(response.id);
           this.exibirMensagem('Pedido cadastrado com sucesso!', true);
+          this.isNew = false;
         },
         error: (err) => {
           this.exibirMensagem('Erro ao cadastrar pedido.', false);
@@ -284,9 +296,15 @@ export class PedidosCadastroComponent implements OnInit {
         }
       });
     } else {
+       console.log("id pedido: "  + this.pedido.id)
+      // Se for uma atualização, atualizar o pedido existente
       this.pedidosService.updatePedido(this.pedido.id, pedidoPayload).subscribe({
         next: () => {
-          this.salvarItensEExcluirMarcados();
+          // Garantir que o array de itens existe, mesmo que esteja vazio
+          this.pedido.itens = itensTemporarios.length > 0 ? itensTemporarios : [];
+  
+          // Salvar os itens e excluir os marcados
+          this.salvarItensEExcluirMarcados(this.pedido.id);
           this.exibirMensagem('Pedido atualizado com sucesso!', true);
         },
         error: (err) => {
@@ -295,47 +313,43 @@ export class PedidosCadastroComponent implements OnInit {
         }
       });
     }
-  }
+  }  
   
-  saveItensDoPedido(): void {
-    if (!this.pedido.itens || this.pedido.itens.length === 0) {
-      return;
-    }
+  saveItensDoPedido(idPedido: number): void {
+    const idsItensExistentes = this.pedido.itens.map((item: { id: number }) => item.id);
   
     this.pedido.itens.forEach((item: any) => {
       const itemPayload = {
-        idPedido: this.pedido.id,
+        idPedido: idPedido,
         idProduto: item.produto.id,
         preco: item.produto.precoVenda,
         quantidade: item.quantidade
       };
-  
-      if (item.id) {
-        // Se o item já tem um ID, atualize-o
-        this.pedidosService.updateItemPedido(this.pedido.id, item.id, itemPayload).subscribe({
+    
+      // Verifique se o item é novo (id não existe)
+      if (!item.id) {
+        // Adiciona novo item
+        this.pedidosService.addItemPedido(idPedido.toString(), itemPayload).subscribe({
           next: (response) => {
-            console.log(`Item ${item.produto.descricao} atualizado com sucesso.`);
+            console.log('Item adicionado com sucesso:', response);
           },
           error: (err) => {
-            console.error(`Erro ao atualizar item ${item.produto.descricao}:`, err);
+            console.error('Erro ao adicionar item ao pedido:', err);
           }
         });
       } else {
-        // Se o item não tem ID, crie um novo
-        this.pedidosService.addItemPedido(this.pedido.id, itemPayload).subscribe({
+        // Atualiza item existente
+        this.pedidosService.updateItemPedido(idPedido, item.id, itemPayload).subscribe({
           next: (response) => {
-            console.log(`Item ${item.produto.descricao} salvo com sucesso.`);
+            console.log('Item atualizado com sucesso:', response);
           },
           error: (err) => {
-            console.error(`Erro ao salvar item ${item.produto.descricao}:`, err);
+            console.error('Erro ao atualizar item ao pedido:', err);
           }
         });
       }
-    });
+    });    
   }
-  
-  
-  
 
   onDelete(): void {
     if (this.pedido.id) {
@@ -447,45 +461,49 @@ export class PedidosCadastroComponent implements OnInit {
       this.searchProdutosLazy();
     }
   }
-  onEditItem(item: any): void {
+  onEditItem(index: number): void {
+    const item = this.pedido.itens[index]; // Acessa o item com base no índice
     const dialogRef = this.dialog.open(AddItemModalComponent, {
       width: '400px',
-      data: { produto: item.produto, quantidade: item.quantidade } // Passa o item atual para edição
+      data: { produto: item.produto, quantidade: item.quantidade }
     });
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Localiza o item correto com base no produto
-        const index = this.pedido.itens.findIndex((i: any) => i.produto.id === item.produto.id);
-        if (index !== -1) {
-          this.pedido.itens[index] = {
-            ...this.pedido.itens[index],
-            quantidade: result.quantidade
-          };
-          console.log('Item editado:', this.pedido.itens[index]);
-        }
+        // Atualiza o item correto com base no índice
+        this.pedido.itens[index] = {
+          ...this.pedido.itens[index],
+          quantidade: result.quantidade
+        };
+        console.log('Item editado:', this.pedido.itens[index]);
       }
     });
-  }  
+  }
   
-  onDeleteItem(item: any): void {
+  onDeleteItem(index: number): void {
     const confirmacao = confirm('Tem certeza que deseja excluir este item?');
     if (confirmacao) {
-      // Adiciona o item à lista de itens para excluir
+      const item = this.pedido.itens[index];
+      
       if (item.id) {
-        this.itensParaExcluir.push(item);
+        this.itensParaExcluir.push(item); // Adiciona o item à lista de exclusão
       }
-
-      // Remove o item da lista localmente (sem deletar do backend)
-      this.pedido.itens = this.pedido.itens.filter((i: any) => i.id !== item.id);
-      console.log('Item marcado para exclusão:', item);
+      
+      // Remove o item da lista de itens
+      this.pedido.itens.splice(index, 1);
+      console.log('Item excluído:', item);
     }
   }
 
-  salvarItensEExcluirMarcados(): void {
-    // Salvar os itens do pedido
-    this.saveItensDoPedido();
-
+  salvarItensEExcluirMarcados(idPedido: number): void {
+    if (idPedido) {
+      this.saveItensDoPedido(idPedido);
+    } else {
+      console.error('Erro: ID do pedido não encontrado.');
+      this.exibirMensagem('Erro ao salvar itens: ID do pedido não encontrado.', false);
+      return;
+    }
+  
     // Excluir itens marcados para exclusão
     if (this.itensParaExcluir.length > 0) {
       this.itensParaExcluir.forEach((item: any) => {
