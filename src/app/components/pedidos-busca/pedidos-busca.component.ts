@@ -57,6 +57,6 @@ export class PedidosBuscaComponent implements OnInit {
   }
 
   createNovoPedido(): void {
-    this.router.navigate(['/pedidos/novo']);
+    this.router.navigate(['/pedidos-cadastro/novo']);
   }
 }
