@@ -28,5 +28,8 @@ export class ProdutosService {
   deleteProduto(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
-  
+
+  searchProdutos(nome: string, page: number, size: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/search?nome=${nome}&page=${page}&size=${size}`);
+  }
 }

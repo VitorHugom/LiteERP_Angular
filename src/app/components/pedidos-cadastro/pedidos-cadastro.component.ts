@@ -3,16 +3,19 @@ import { PedidosService } from '../../services/pedidos.service';
 import { ClientesService } from '../../services/clientes.service';
 import { VendedoresService } from '../../services/vendedores.service';
 import { TiposCobrancaService } from '../../services/tipos-cobranca.service';
+import { ProdutosService } from '../../services/produtos.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AddItemModalComponent } from '../add-item-modal/add-item-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-cadastro-pedido',
   standalone: true,
   templateUrl: './pedidos-cadastro.component.html',
   styleUrls: ['./pedidos-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule, RouterLink]
+  imports: [CommonModule, FormsModule, RouterLink, AddItemModalComponent]
 })
 export class PedidosCadastroComponent implements OnInit {
   isNew = true;
@@ -23,11 +26,22 @@ export class PedidosCadastroComponent implements OnInit {
     dataEmissao: '',
     valorTotal: null,
     status: 'aguardando',
-    tipoCobranca: null
+    tipoCobranca: null,
+    itens: []
   };
+
+  itensParaExcluir: any[] = [];
+
+  activeTab: string = 'geral';
 
   clienteInput: string = '';  // Input para busca de clientes
   vendedorInput: string = '';  // Input para busca de vendedores
+  produtoInput: string = '';  // Campo de busca para produtos
+
+  produtos: any[] = [];
+  currentPageProdutos = 0;
+  loadingProdutos = false;
+  showProdutosList = false;
 
   clientes: any[] = [];
   vendedores: any[] = [];
@@ -51,24 +65,34 @@ export class PedidosCadastroComponent implements OnInit {
     private clientesService: ClientesService,
     private vendedoresService: VendedoresService,
     private tiposCobrancaService: TiposCobrancaService,
+    private produtosService: ProdutosService,
+    private dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
+  setActiveTab(tab: string): void {
+    this.activeTab = tab;
+  }
+
   ngOnInit(): void {
     this.loadTiposCobranca(); // Carrega os tipos de cobrança
-
+    
     const id = this.route.snapshot.paramMap.get('id');
     if (id && id !== 'novo') {
       this.isNew = false;
       this.pedidosService.getPedidoById(id).subscribe({
         next: (data) => {
           this.pedido = data;
+          this.pedido.itens = this.pedido.itens || []; // Garante que a propriedade itens exista
           this.clienteInput = this.pedido.cliente?.razaoSocial || this.pedido.cliente?.nomeFantasia;
           this.vendedorInput = this.pedido.vendedor?.nome;
-
+  
           // Verifica e associa o tipo de cobrança correto ao objeto
           this.matchTipoCobranca();
+  
+          // Carrega os itens do pedido
+          this.loadItensDoPedido(this.pedido.id);
         },
         error: (err) => {
           console.error('Erro ao carregar pedido:', err);
@@ -76,6 +100,35 @@ export class PedidosCadastroComponent implements OnInit {
       });
     }
   }
+  
+  
+  loadItensDoPedido(idPedido: string): void {
+    this.pedidosService.getItensPedido(idPedido).subscribe({
+      next: (itens) => {
+        this.pedido.itens = itens; // Atualiza a lista de itens no pedido
+        this.loadItensDoPedidoComProdutos(); // Carrega detalhes dos produtos
+        console.log('Itens carregados:', this.pedido.itens);
+      },
+      error: (err) => {
+        console.error('Erro ao carregar itens do pedido:', err);
+      }
+    });
+  }
+
+  loadItensDoPedidoComProdutos(): void {
+    this.pedido.itens.forEach((item: any, index: number) => {
+      this.produtosService.getProdutoById(item.idProduto).subscribe({
+        next: (produto) => {
+          this.pedido.itens[index].produto = produto; // Associa o produto completo ao item
+        },
+        error: (err) => {
+          console.error(`Erro ao carregar detalhes do produto para o item ${item.idProduto}:`, err);
+        }
+      });
+    });
+  }
+  
+  
 
   matchTipoCobranca(): void {
     if (this.pedido && this.pedido.tipoCobranca && this.tiposCobranca.length) {
@@ -199,26 +252,16 @@ export class PedidosCadastroComponent implements OnInit {
   }
 
   onSave(): void {
-    // Verificar campos obrigatórios
     if (!this.pedido.cliente || !this.pedido.vendedor || !this.pedido.valorTotal || !this.pedido.tipoCobranca) {
       this.exibirMensagem('Preencha todos os campos obrigatórios.', false);
-      console.log('Campos obrigatórios faltando:', {
-        cliente: this.pedido.cliente,
-        vendedor: this.pedido.vendedor,
-        valorTotal: this.pedido.valorTotal,
-        tipoCobranca: this.pedido.tipoCobranca
-      });
       return;
     }
-  
-    // Gerar data de emissão se for um novo pedido
+
     if (this.isNew) {
       this.pedido.dataEmissao = new Date().toISOString();
-      console.log('Data de emissão gerada automaticamente:', this.pedido.dataEmissao);
     }
-  
-    // Construir o payload com os dados adequados
-    const payload = {
+
+    const pedidoPayload = {
       idCliente: this.pedido.cliente.id,
       idVendedor: this.pedido.vendedor.id,
       dataEmissao: this.pedido.dataEmissao,
@@ -226,38 +269,73 @@ export class PedidosCadastroComponent implements OnInit {
       status: this.pedido.status,
       idTipoCobranca: this.pedido.tipoCobranca.id
     };
-  
-    // Log para verificação do payload
-    console.log('Payload preparado para envio:', payload);
-  
+
     if (this.isNew) {
-      this.pedidosService.createPedido(payload).subscribe({
+      this.pedidosService.createPedido(pedidoPayload).subscribe({
         next: (response) => {
-          console.log('Pedido criado com sucesso:', response);
           this.pedido = response;
           this.isNew = false;
-          this.matchTipoCobranca();  // Reassociar tipo de cobrança após salvar
+          this.salvarItensEExcluirMarcados();
           this.exibirMensagem('Pedido cadastrado com sucesso!', true);
         },
         error: (err) => {
-          console.error('Erro ao cadastrar pedido:', err);
           this.exibirMensagem('Erro ao cadastrar pedido.', false);
+          console.error('Erro ao cadastrar pedido:', err);
         }
       });
     } else {
-      this.pedidosService.updatePedido(this.pedido.id, payload).subscribe({
+      this.pedidosService.updatePedido(this.pedido.id, pedidoPayload).subscribe({
         next: () => {
-          console.log('Pedido atualizado com sucesso:', this.pedido);
-          this.matchTipoCobranca();  // Reassociar tipo de cobrança após atualização
+          this.salvarItensEExcluirMarcados();
           this.exibirMensagem('Pedido atualizado com sucesso!', true);
         },
         error: (err) => {
-          console.error('Erro ao atualizar pedido:', err);
           this.exibirMensagem('Erro ao atualizar pedido.', false);
+          console.error('Erro ao atualizar pedido:', err);
         }
       });
     }
-  }  
+  }
+  
+  saveItensDoPedido(): void {
+    if (!this.pedido.itens || this.pedido.itens.length === 0) {
+      return;
+    }
+  
+    this.pedido.itens.forEach((item: any) => {
+      const itemPayload = {
+        idPedido: this.pedido.id,
+        idProduto: item.produto.id,
+        preco: item.produto.precoVenda,
+        quantidade: item.quantidade
+      };
+  
+      if (item.id) {
+        // Se o item já tem um ID, atualize-o
+        this.pedidosService.updateItemPedido(this.pedido.id, item.id, itemPayload).subscribe({
+          next: (response) => {
+            console.log(`Item ${item.produto.descricao} atualizado com sucesso.`);
+          },
+          error: (err) => {
+            console.error(`Erro ao atualizar item ${item.produto.descricao}:`, err);
+          }
+        });
+      } else {
+        // Se o item não tem ID, crie um novo
+        this.pedidosService.addItemPedido(this.pedido.id, itemPayload).subscribe({
+          next: (response) => {
+            console.log(`Item ${item.produto.descricao} salvo com sucesso.`);
+          },
+          error: (err) => {
+            console.error(`Erro ao salvar item ${item.produto.descricao}:`, err);
+          }
+        });
+      }
+    });
+  }
+  
+  
+  
 
   onDelete(): void {
     if (this.pedido.id) {
@@ -304,5 +382,123 @@ export class PedidosCadastroComponent implements OnInit {
     setTimeout(() => {
       this.message = null;
     }, 3000);
+  }
+
+  onSearchProdutos(event: Event): void {
+    const inputValue = (event.target as HTMLInputElement).value;
+    if (inputValue.length >= 2) {
+      this.produtoInput = inputValue;
+      this.currentPageProdutos = 0;
+      this.searchProdutosLazy();
+    } else {
+      this.produtos = [];
+      this.showProdutosList = false;
+    }
+  }
+
+  searchProdutosLazy(): void {
+    this.loadingProdutos = true;
+    const pageSize = 10;  // Definir o tamanho da página
+  
+    this.produtosService.searchProdutos(this.produtoInput, this.currentPageProdutos, pageSize).subscribe({
+      next: (response) => {
+        if (this.currentPageProdutos === 0) {
+          this.produtos = response;
+        } else {
+          this.produtos = [...this.produtos, ...response];
+        }
+        this.showProdutosList = true;
+        this.loadingProdutos = false;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar produtos:', err);
+        this.loadingProdutos = false;
+      }
+    });
+  }
+  
+
+  onSelectProduto(produto: any): void {
+    this.openAddItemModal(produto);
+    this.showProdutosList = false;
+  }
+
+  openAddItemModal(produto: any): void {
+    const dialogRef = this.dialog.open(AddItemModalComponent, {
+      width: '400px',
+      data: { produto }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (!this.pedido.itens) {
+          this.pedido.itens = [];
+        }
+        this.pedido.itens.push(result);
+        console.log('Itens do pedido:', this.pedido.itens);
+      }
+    });
+  }
+  
+
+  onScrollProdutos(): void {
+    if (!this.loadingProdutos) {
+      this.currentPageProdutos++;
+      this.searchProdutosLazy();
+    }
+  }
+  onEditItem(item: any): void {
+    const dialogRef = this.dialog.open(AddItemModalComponent, {
+      width: '400px',
+      data: { produto: item.produto, quantidade: item.quantidade } // Passa o item atual para edição
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Localiza o item correto com base no produto
+        const index = this.pedido.itens.findIndex((i: any) => i.produto.id === item.produto.id);
+        if (index !== -1) {
+          this.pedido.itens[index] = {
+            ...this.pedido.itens[index],
+            quantidade: result.quantidade
+          };
+          console.log('Item editado:', this.pedido.itens[index]);
+        }
+      }
+    });
+  }  
+  
+  onDeleteItem(item: any): void {
+    const confirmacao = confirm('Tem certeza que deseja excluir este item?');
+    if (confirmacao) {
+      // Adiciona o item à lista de itens para excluir
+      if (item.id) {
+        this.itensParaExcluir.push(item);
+      }
+
+      // Remove o item da lista localmente (sem deletar do backend)
+      this.pedido.itens = this.pedido.itens.filter((i: any) => i.id !== item.id);
+      console.log('Item marcado para exclusão:', item);
+    }
+  }
+
+  salvarItensEExcluirMarcados(): void {
+    // Salvar os itens do pedido
+    this.saveItensDoPedido();
+
+    // Excluir itens marcados para exclusão
+    if (this.itensParaExcluir.length > 0) {
+      this.itensParaExcluir.forEach((item: any) => {
+        this.pedidosService.deleteItemPedido(item.id).subscribe({
+          next: () => {
+            console.log(`Item ${item.produto.descricao} excluído com sucesso.`);
+          },
+          error: (err) => {
+            console.error(`Erro ao excluir item ${item.produto.descricao}:`, err);
+          }
+        });
+      });
+      this.itensParaExcluir = []; // Limpar a lista de itens para excluir
+    }
   }
 }

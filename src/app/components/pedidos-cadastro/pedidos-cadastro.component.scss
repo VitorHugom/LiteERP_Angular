@@ -1,145 +1,205 @@
 .pedido-detail-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  
-    .link-back {
-      display: flex;
-      align-items: center;
-      margin-bottom: 5px;
-      color: #000;
-    }
-    .link-back img {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative; /* Garante que os elementos filhos com posição absoluta fiquem dentro do contêiner */
+
+  .link-back {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    color: #000;
+
+    img {
       width: 12px;
+      margin-right: 5px;
     }
-  
-    h1 {
-      text-align: center;
-      color: #333;
-      font-size: clamp(1.5em, 2.5vw, 2em);
+
+    &:hover {
+      color: #007bff;
     }
-  
-    .form-group {
-      margin-bottom: 15px;
-  
-      label {
-        display: block;
-        margin-bottom: 5px;
-        color: #555;
-        font-size: clamp(0.8em, 2vw, 1em);
-      }
-  
-      input, select, span {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        display: block;
-        font-size: clamp(0.8em, 2vw, 1em);
-        background-color: #f9f9f9;
-        color: #555;
-      }
-  
-      span {
-        background-color: #e9ecef;
-      }
-    }
-  
-    .button-group {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-  
-      button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        text-align: center;
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+    font-size: clamp(1.5em, 2.5vw, 2em);
+    margin-bottom: 20px;
+  }
+
+  .tab-selector {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #ccc;
+      cursor: pointer;
+      margin-right: 10px;
+      border-radius: 4px;
+      font-size: clamp(0.8em, 2vw, 1em);
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
         color: white;
-        flex: 1 1 calc(25% - 10px);
-  
-        &:hover {
-          opacity: 0.9;
-        }
       }
-  
-      .novo-button {
+
+      &.active {
+        background-color: #007bff;
+        color: white;
+      }
+    }
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+    position: relative;  /* Necessário para alinhar corretamente o autocomplete */
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      font-size: clamp(0.8em, 2vw, 1em);
+    }
+
+    input, select, span {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: block;
+      font-size: clamp(0.8em, 2vw, 1em);
+      background-color: #f9f9f9;
+      color: #555;
+    }
+
+    span {
+      background-color: #e9ecef;
+    }
+
+    /* Estilo para a lista de sugestões (autocomplete) */
+    .autocomplete-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 5px 0;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      z-index: 2000; /* Garante que a lista fique acima de outros elementos */
+      width: 100%;  /* Alinhado ao tamanho do input */
+      position: absolute;
+      top: 100%;  /* Posiciona logo abaixo do input */
+      left: 0;
+    }
+
+    .autocomplete-list li {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .itens-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      color: white;
+      flex: 1 1 calc(25% - 10px);
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 0.9;
+      }
+
+      &.novo-button {
         background-color: #28a745;
       }
-  
-      .gravar-button {
+
+      &.gravar-button {
         background-color: #007bff;
       }
-  
-      .deletar-button {
+
+      &.deletar-button {
         background-color: #dc3545;
       }
-  
-      .consultar-button {
+
+      &.consultar-button {
         background-color: #ffc107;
         color: #333;
       }
     }
-  
-    .feedback-box {
-      margin-top: 20px;
-      padding: 10px;
-      border-radius: 4px;
-      text-align: center;
-      font-size: 1.2em;
-    }
-  
-    .success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-  
-    .error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
   }
 
-  .autocomplete-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 5px 0;
-    max-height: 200px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    z-index: 1000;
-    position: absolute;
-    width: calc(100% - 22px); /* Ajuste para alinhar com o input */
-  }
-  
-  .autocomplete-list li {
+  .feedback-box {
+    margin-top: 20px;
     padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-    transition: background-color 0.2s ease;
-  
-    &:hover {
-      background-color: #f0f0f0;
-    }
-  
-    &:last-child {
-      border-bottom: none;
-    }
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1.2em;
   }
-  
-  .form-group {
-    position: relative; /* Necessário para alinhar a lista com o input */
+
+  .success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
   }
-  
-  
+
+  .error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+}
+
+@media (max-width: 600px) {
+  .button-group {
+    flex-direction: column;
+  }
+
+  .pedido-detail-container {
+    max-width: 320px;
+  }
+}
