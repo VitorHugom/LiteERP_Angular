@@ -1,21 +1,38 @@
-<div class="system-title-container">
-  <h1 class="system-title">LiteERP</h1>
-</div>
+<div class="container">
+  <h1 class="container__title">LiteERP</h1>
 
-<div class="login-container">
-  <h2 class="login-container-title">Login</h2>
-  <form class="form-container" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="username">Nome de Usuário</label>
-      <input type="text" id="username" [(ngModel)]="username" name="username" required>
+  <div class="login">
+
+    <span class="login__title">Log in</span>
+
+    <div class="login__request__link">
+      <span>Não tem conta? </span>
+      <a href="/signup" routerLink="/signup" class="small-link">Solicitar novo Login</a>
     </div>
-    <div class="form-group">
-      <label for="password">Senha</label>
-      <input type="password" id="password" [(ngModel)]="password" name="password" required>
-    </div>
-    <button type="submit" class="login-button">Login</button>
-  </form>
-  <div class="request-login-link">
-    <a href="/signup" routerLink="/signup" class="small-link">Solicitar novo login</a>
+
+    <ng-template [ngIf]="status">
+      <div class="login__modal">
+          <img class="login__modal__icone-alert" src="images/icone-alerta.png" alt="">{{errorMessage}}
+      </div>
+    </ng-template>
+
+
+
+    <form class="login__form" (ngSubmit)="onSubmit()">
+
+      <div class="login__form__itens">
+        <label for="username">Usúário</label>
+        <input type="text" id="username" [(ngModel)]="username" name="username" placeholder="Nome" required>
+      </div>
+
+      <div class="login__form__itens">
+        <label for="password">Senha</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" required placeholder="senha">
+      </div>
+
+      <button type="submit" class="login__form__button">Log in</button>
+    </form>
+
   </div>
+
 </div>

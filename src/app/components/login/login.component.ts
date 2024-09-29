@@ -13,9 +13,10 @@ import { Router } from '@angular/router';
   providers: [LoginService]
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
-  errorMessage: string = '';
+  username: string = ''
+  password: string = ''
+  errorMessage: string = ''
+  status: boolean = false
 
   constructor(private loginService: LoginService, private router: Router) {}
 
@@ -60,7 +61,8 @@ export class LoginComponent {
       },
       error: (error) => {
         console.error('Erro de login:', error);
-        this.errorMessage = 'Usuário ou senha incorretos. Tente novamente.';
+        this.errorMessage = 'Usuário ou senha incorretos';
+        this.status = true
       }
     });
   }
