@@ -41,7 +41,7 @@ p{
 
 
   .login__request__link{
-    margin-bottom: 40px;
+    // margin-bottom: 40px;
     font-size: 0.75rem;
     color: #A8A8A8;
 
@@ -58,6 +58,8 @@ p{
   .login__modal{
     width: 100%;
     font-size: 1rem;
+    padding: 8px;
+    margin: 4px 0;
     border-left: 6px solid #DB1F29;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -65,7 +67,7 @@ p{
     align-items: center;
     .login__modal__icone-alert{
       width: 20px;
-      margin: 0px 10px;
+      margin-right: 4px;
     }
 
   }
@@ -80,8 +82,8 @@ p{
 
   .login__form label{
     display: block;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 500;
     margin-bottom: 4px;
   }
 
@@ -100,13 +102,22 @@ p{
 
     &::placeholder{
       color:#8D8D8D;
+      font-size: 1rem;
     }
+  }
+
+  .login__form__itens__alert{
+    font-size: 0.75rem;
+    color: red;             /* Cor vermelha para destacar o erro */
+    margin-top: 4px;         /* Margem para separar do campo */
+    display: block;          /* Exibir o span como bloco */
   }
 
   .login__form__button{
     width: 100%;
     text-align: start;
-    padding: 16px;
+    padding: 15px 10px;
+    font-weight: 500;
     margin-top: 16px;
     background-color: #007bff;
     color: #fff;
@@ -129,6 +140,6 @@ p{
 @media (max-width: 600px) {
 
   .login{
-    max-width: 350px;
+    max-width: 348px;
   }
 }

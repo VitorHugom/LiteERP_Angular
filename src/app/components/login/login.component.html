@@ -10,29 +10,43 @@
       <a href="/signup" routerLink="/signup" class="small-link">Solicitar novo Login</a>
     </div>
 
-    <ng-template [ngIf]="status">
-      <div class="login__modal">
-          <img class="login__modal__icone-alert" src="images/icone-alerta.png" alt="">{{errorMessage}}
+      <div style="height: 48px;">
+        <ng-template [ngIf]="isError" class="login__modal">
+          <div class="login__modal">
+              <img class="login__modal__icone-alert" src="images/icone-alerta.png" alt="">{{errorMessage}}
+          </div>
+        </ng-template>
       </div>
-    </ng-template>
 
 
 
-    <form class="login__form" (ngSubmit)="onSubmit()">
+    <form class="login__form" (ngSubmit)="onSubmit()" [formGroup]="profileForm">
 
       <div class="login__form__itens">
-        <label for="username">Usúário</label>
-        <input type="text" id="username" [(ngModel)]="username" name="username" placeholder="Nome" required>
+        <label for="username">Usuário</label>
+        <input type="text" id="username" name="username" formControlName="username">
+        @if (profileForm.controls.username.errors?.['required']) {
+          <span class="login__form__itens__alert">Nome obrigatório</span>
+        }
       </div>
 
       <div class="login__form__itens">
         <label for="password">Senha</label>
-        <input type="password" id="password" [(ngModel)]="password" name="password" required placeholder="senha">
+        <input type="password" id="password" name="password" formControlName="password">
+        @if (profileForm.controls.password.errors?.['required']) {
+          <span class="login__form__itens__alert">
+            Senha obrigatório
+          </span>
+        } @else if (profileForm.controls.password.errors?.['minlength']) {
+          <span class="login__form__itens__alert">
+            Minimo 3 caracteres
+          </span>
+        }
+
       </div>
 
       <button type="submit" class="login__form__button">Log in</button>
     </form>
 
   </div>
-
 </div>
