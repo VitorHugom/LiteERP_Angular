@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 
 interface MenuItem {
   image?:string;
+  icone?: string
   label: string;
   routerLink?: string;
   subItems?: MenuItem[];
@@ -27,9 +28,11 @@ export class GerencialHomeComponent {
     {
 
       image:'images/icone-cadastro.png',
+      icone: 'images/icone-arrow.png',
       label: 'Cadastros',
       subItems: [
         { label: 'Clientes',
+          icone: 'images/icone-arrow.png',
           subItems: [
             { label: 'Cadastro', routerLink: '/clientes-busca' },
             { label: 'Relatórios', routerLink: '/relatorio-clientes' }
@@ -55,6 +58,7 @@ export class GerencialHomeComponent {
     },
     {
       image:'images/icone-vendas.png',
+      icone: 'images/icone-arrow.png',
       label: 'Vendas',
       subItems: [
         { label: 'Pedidos de Venda', routerLink: '/pedidos-busca' }
@@ -62,6 +66,7 @@ export class GerencialHomeComponent {
     },
     {
       image:'images/icone-faturamento.png',
+      icone: 'images/icone-arrow.png',
       label: 'Faturamento',
       subItems: [
         { label: 'Emissão de NFe', routerLink: '/emissao-nfe' },
@@ -70,6 +75,7 @@ export class GerencialHomeComponent {
     },
     {
       image:'images/icone-compra.png',
+      icone: 'images/icone-arrow.png',
       label: 'Compras',
       subItems: [
         { label: 'Mercadorias', routerLink: '/recebimento-mercadorias' }
@@ -77,6 +83,7 @@ export class GerencialHomeComponent {
     },
     {
       image:'images/icone-administrador.png',
+      icone: 'images/icone-arrow.png',
       label: 'Administrador',
       subItems: [
         { label: 'Alterar Senha', routerLink: '/alterar-senha' },

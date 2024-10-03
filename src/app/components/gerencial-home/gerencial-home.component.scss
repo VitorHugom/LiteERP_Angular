@@ -47,11 +47,39 @@
   }
 }
 
-.sidebar-navigation ul{
+.sidebar__navigation__list{
   padding: 0;
   margin: 0;
   list-style: none;
 }
+
+.navigation__list__item-main{
+  padding: 16px;
+  width: 100%;
+
+  &:hover{
+
+    transition: all 0.5s;
+    background-color: #a67c00;
+    cursor: pointer;
+  }
+}
+
+.navigation__list__item-main,
+.navigation__list__item-describe{
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.navigation__list__item-describe{
+  width: 100%;
+}
+
+.navigation__list__item img{
+  width: 14px;
+}
+
 
 .list-itens .item a{
   text-decoration: none;
@@ -64,34 +92,7 @@ nav{
 }
 
 
-.list-itens .item{
-  padding: 10px 25px;
-  width: 100%;
 
-  &:hover{
-
-    transition: all 0.5s;
-    background-color: #a67c00;
-  }
-}
-
-.item-subtitem li a,
-.item-subtitem li{
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-left: 20px;
-}
-
-.list-itens .item span{
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.list-itens .item .item-main{
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
 
 .sidebar {
   grid-row: 1 / 3;
@@ -106,22 +107,7 @@ nav{
 
 }
 
-.list-itens{
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 
-}
-.list-itens .item img{
-  width: 20px;
-
-}
-
-.list-itens .item .item-main a{
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
 .topbar {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
@@ -132,13 +118,11 @@ nav{
   padding: 20px;
 }
 
-.topbar button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
+.navigation__list__item-icone{
+  transform: rotate(180deg);
 }
+
+
 
 .content {
   grid-column: 2 / 3;
