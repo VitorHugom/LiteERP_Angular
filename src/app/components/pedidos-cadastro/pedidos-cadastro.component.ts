@@ -378,7 +378,8 @@ export class PedidosCadastroComponent implements OnInit {
       dataEmissao: '',
       valorTotal: null,
       status: 'aguardando',
-      tipoCobranca: null
+      tipoCobranca: null,
+      itens: []
     };
     this.clienteInput = '';
     this.vendedorInput = '';
