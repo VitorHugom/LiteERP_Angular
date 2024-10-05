@@ -5,21 +5,6 @@
 
     <span class="login__title">Log in</span>
 
-    <div class="login__request__link">
-      <span>Não tem conta? </span>
-      <a href="/signup" routerLink="/signup" class="small-link">Solicitar novo Login</a>
-    </div>
-
-      <div style="height: 48px;">
-        <ng-template [ngIf]="isError" class="login__modal">
-          <div class="login__modal">
-              <img class="login__modal__icone-alert" src="images/icone-alerta.png" alt="">{{errorMessage}}
-          </div>
-        </ng-template>
-      </div>
-
-
-
     <form class="login__form" (ngSubmit)="onSubmit()" [formGroup]="profileForm">
 
       <div class="login__form__itens">
@@ -47,6 +32,19 @@
 
       <button type="submit" class="login__form__button">Log in</button>
     </form>
+
+    <div style="height: 48px;">
+      <ng-template [ngIf]="isError" class="login__modal">
+        <div class="login__modal">
+            <img class="login__modal__icone-alert" src="images/icone-alerta.png" alt="">{{errorMessage}}
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="login__request__link">
+      <span>Não tem conta? </span>
+      <a href="/signup" routerLink="/signup" class="small-link">Solicitar novo Login</a>
+    </div>
 
   </div>
 </div>
