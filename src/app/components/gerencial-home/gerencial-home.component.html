@@ -50,7 +50,7 @@
                 </div>
 
 
-                <ul class="list list3-items list__sub-sub" *ngIf="isMenuExpanded(subItem.label)">
+                <ul class="list list3-items" *ngIf="isMenuExpanded(subItem.label)">
                   <li class="item" *ngFor="let subSubItem of subItem.subItems">
                     <a [routerLink]="subSubItem.routerLink"><span>{{ subSubItem.label }}</span></a>
                   </li>
