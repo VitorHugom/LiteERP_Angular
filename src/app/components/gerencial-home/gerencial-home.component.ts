@@ -20,7 +20,7 @@ interface MenuItem {
   imports: [CommonModule, RouterModule]
 })
 export class GerencialHomeComponent {
-  isSidebarCollapsed = false;
+  isSidebarCollapsed = true;
   activeMenus: { [key: string]: boolean } = {}; // Controla menus expandidos
 
   // Definindo a estrutura dos menus e submenus
@@ -41,6 +41,7 @@ export class GerencialHomeComponent {
         { label: 'Fornecedores', routerLink: '/fornecedores' },
         {
           label: 'Produtos',
+          icone: 'images/icone-arrow.png',
           subItems: [
             { label: 'Cadastro', routerLink: '/busca-produtos' },
             { label: 'Grupo de Produtos', routerLink: '/grupo-produtos-busca' },
