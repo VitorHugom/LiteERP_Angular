@@ -62,6 +62,11 @@ export class PedidosBuscaComponent implements OnInit {
   }
 
   createNovoPedido(): void {
-    this.router.navigate(['/pedidos-cadastro/novo']);
+    const role = sessionStorage.getItem('user-role');
+    if (role === 'ROLE_GERENCIAL'){
+      this.router.navigate(['/pedidos-cadastro/novo']);
+    }else if (role === 'ROLE_VENDAS'){
+      this.router.navigate(['/novo-pedido-vendas']);
+    }  
   }
 }
