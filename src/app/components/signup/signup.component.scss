@@ -1,32 +1,44 @@
-.system-title-container{
+*{
+  color: #333;
+}
+
+.container{
+  height: 100vh;
+}
+
+.container__title{
   text-align: center;
   margin-bottom: 20px;
 
+  .title{
+    font-size: 1.75rem;
+    color: #262626;
+    margin: 0;
+    text-align: center;
+
+  }
+
 }
 
-.system-title-container .system-title{
-  font-size: 1.75rem;
-  color: #333;
-  margin: 0;
-}
 
 // SIGNUP CONTAINER
 
 .signup-container{
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ddd;
+  padding: 32px;
+  border: 1px solid #DDD;
   border-radius: 5px;
-  background-color: #f9f9f9;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: #FFF;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);;
 }
 
 .signup-container .signup-container-title{
-  font-size: 1.5rem;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 2.5rem;
 }
 
 
@@ -36,30 +48,38 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 16px;
 }
 
-.form-container{
-  gap: 40px;
-}
 
 .form-container label{
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #555;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 4px;
 }
 
 .form-container input{
+  background-color:#F2F4F8;
   width: 100%;
-  padding: 10px 0;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 1rem;
   transition: border-color 0.3s;
 
   &:focus {
     border-color: #007bff;
     outline: none;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color:#F2F4F8;
+
+
+  }
+
+  &::placeholder{
+    color:#8D8D8D;
+    font-size: 1rem;
   }
 }
 
@@ -79,7 +99,7 @@
 
 .form-container .signup-button{
   width: 40%;
-  padding: 12px;
+  padding: 15px 12px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -87,6 +107,7 @@
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s;
+  text-align: start;
 
   &:hover {
     background-color: #0056b3;
@@ -95,17 +116,18 @@
 
 .form-container .back-button{
   width: 40%;
-  padding: 12px;
-  background-color: #ff0800;
+  padding: 15px 12px;
+  background-color: #303030;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
+  text-align: start;
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #b31500;
+    background-color: #262626;
   }
 }
 
@@ -114,8 +136,9 @@
     width: 100%;
     padding: 10px 0;
     border: 1px solid #ccc;
+    background-color: #F2F4F8;
     border-radius: 4px;
-    font-size: 1rem;
+    font-size: 0.875rem;
     transition: border-color 0.3s;
 
     &:focus {
