@@ -1,51 +1,53 @@
-<div class="system-title-container">
-    <h1 class="system-title">LiteERP</h1>
-</div>
-
-<div class="signup-container">
-    <h2 class="signup-container-title">Signup</h2>
-    <form class="form-container" (ngSubmit)="onSubmit()">
-        <!-- Campos do formulário -->
-        <div class="form-group">
-            <label for="username">Nome de Usuário</label>
-            <input type="text" id="username" [(ngModel)]="signupData.username" name="username" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" [(ngModel)]="signupData.email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="telefone">Telefone</label>
-            <input type="text" id="telefone" [(ngModel)]="signupData.telefone" name="telefone" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Senha</label>
-            <input type="password" id="password" [(ngModel)]="signupData.password" name="password" required>
-        </div>
-        <div class="form-group">
-            <label for="confirmPassword">Confirmação de Senha</label>
-            <input type="password" id="confirmPassword" [(ngModel)]="signupData.confirmPassword" name="confirmPassword" required>
-        </div>
-        <div class="form-group">
-            <label for="categoria">Categoria de Usuário</label>
-            <select id="categoria" [(ngModel)]="signupData.categoriaId" name="categoria" required>
-                <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">{{ categoria.nome }}</option>
-            </select>
-        </div>
-        <div class="form-buttons">
-
-            <button (click)="navigateToLogin()" class="back-button">Voltar</button>
-          <button type="submit" class="signup-button">Registrar</button>
-        </div>
-    </form>
-
-    <!-- Mensagem de feedback -->
-  <div *ngIf="isModalOpen" class="message">
-    <div class="modal">
-      <span (click)="closeModal()" class="close-button">&times;</span>
-      <span class="modal-title">
-      {{message}}
-      </span>
-      <button (click)="closeModal()" class="modal-button">OK</button>
-    </div>
+<div class="container">
+  <div class="container__title">
+      <h1 class="title">LiteERP</h1>
   </div>
+
+  <div class="signup-container">
+      <h2 class="signup-container-title">Signup</h2>
+      <form class="form-container" (ngSubmit)="onSubmit()">
+          <!-- Campos do formulário -->
+          <div class="form-group">
+              <label for="username">Nome de Usuário</label>
+              <input type="text" id="username" [(ngModel)]="signupData.username" name="username" required>
+          </div>
+          <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" [(ngModel)]="signupData.email" name="email" required>
+          </div>
+          <div class="form-group">
+              <label for="telefone">Telefone</label>
+              <input type="text" id="telefone" [(ngModel)]="signupData.telefone" name="telefone" required>
+          </div>
+          <div class="form-group">
+              <label for="password">Senha</label>
+              <input type="password" id="password" [(ngModel)]="signupData.password" name="password" required>
+          </div>
+          <div class="form-group">
+              <label for="confirmPassword">Confirmação de Senha</label>
+              <input type="password" id="confirmPassword" [(ngModel)]="signupData.confirmPassword" name="confirmPassword" required>
+          </div>
+          <div class="form-group">
+              <label for="categoria">Categoria de Usuário</label>
+              <select id="categoria" [(ngModel)]="signupData.categoriaId" name="categoria" required>
+                  <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">{{ categoria.nome }}</option>
+              </select>
+          </div>
+          <div class="form-buttons">
+
+              <button (click)="navigateToLogin()" class="back-button">Voltar</button>
+            <button type="submit" class="signup-button">Registrar</button>
+          </div>
+      </form>
+
+      <!-- Mensagem de feedback -->
+    <div *ngIf="isModalOpen" class="message">
+      <div class="modal">
+        <span (click)="closeModal()" class="close-button">&times;</span>
+        <span class="modal-title">
+        {{message}}
+        </span>
+        <button (click)="closeModal()" class="modal-button">OK</button>
+      </div>
+    </div>
+</div>
