@@ -47,6 +47,9 @@ export class LoginComponent {
           const token = response.token;
           const decodedToken = this.decodeToken(token);
           const role = decodedToken?.role;
+          const userId = decodedToken?.userId;
+
+          sessionStorage.setItem('userId', userId);
 
           if (role) {
             sessionStorage.setItem('user-role', role);
@@ -79,8 +82,6 @@ export class LoginComponent {
         }
       });
     }
-
-
   }
 
   private decodeToken(token: string): any {

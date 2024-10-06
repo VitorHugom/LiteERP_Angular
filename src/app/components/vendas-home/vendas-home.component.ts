@@ -23,7 +23,7 @@ export class VendasHomeComponent {
   }
 
   abrirPedidos(): void {
-    this.router.navigate(['/novo-pedido-vendas']);
+    this.router.navigate(['/pedidos-busca']);
   }
 
   abrirOrcamentos(): void {
@@ -31,6 +31,6 @@ export class VendasHomeComponent {
   }
 
   abrirClientes(): void {
-    this.router.navigate(['/clientes']);
+    this.router.navigate(['clientes-busca']);
   }
 }

@@ -43,4 +43,8 @@ export class VendedoresService {
   deleteVendedor(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  getVendedorByUserId(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/usuario/${userId}`);
+  }
 }

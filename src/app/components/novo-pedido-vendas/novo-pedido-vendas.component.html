@@ -48,5 +48,12 @@
     <div class="button-group">
       <button (click)="onFinalizarPedido()" type="button" class="consultar-button">Finalizar Pedido</button>
     </div>
-  </div>
+
+    <!-- Caixa de Feedback -->
+    <div *ngIf="message" class="feedback-box" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
+    {{ message }}
+    </div>
+</div>
+
+
   
