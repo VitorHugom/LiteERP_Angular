@@ -25,6 +25,8 @@ export class NovoPedidoVendas implements OnInit {
   showProdutosList = false;
   currentPageProdutos = 0;
   loadingProdutos = false;
+  message: string | null = null;
+  isSuccess: boolean = true;
 
   constructor(
     private dialog: MatDialog,
@@ -104,8 +106,7 @@ export class NovoPedidoVendas implements OnInit {
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Aqui você pode receber a confirmação de que o pedido foi salvo no modal
-        console.log('Pedido finalizado com sucesso!', result);
+        this.exibirMensagem('Pedido gravado com sucesso!', true);
         // Limpar ou redefinir o pedido se necessário
         this.onNew();
       }
@@ -141,5 +142,13 @@ export class NovoPedidoVendas implements OnInit {
   // Excluir item
   onDeleteItem(index: number): void {
     this.pedido.itens.splice(index, 1);
+  }
+
+  exibirMensagem(mensagem: string, isSuccess: boolean): void {
+    this.message = mensagem;
+    this.isSuccess = isSuccess;
+    setTimeout(() => {
+      this.message = null; // Limpa a mensagem após 3 segundos
+    }, 3000);
   }
 }

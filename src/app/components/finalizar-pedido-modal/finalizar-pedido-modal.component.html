@@ -1,23 +1,35 @@
-<h2 mat-dialog-title>Finalizar Pedido</h2>
-
-<mat-dialog-content class="mat-typography">
-  <div class="form-group">
-    <label for="cliente">Cliente:</label>
-    <input [(ngModel)]="clienteInput" type="text" id="cliente" placeholder="Digite o nome do cliente">
+<div class="finalizar-pedido-modal-container">
+    <h2 mat-dialog-title>Finalizar Pedido</h2>
+  
+    <mat-dialog-content class="mat-typography">
+      <!-- Busca de Cliente -->
+      <div class="form-group">
+        <label for="cliente">Cliente:</label>
+        <input [(ngModel)]="clienteInput" type="text" id="cliente" (input)="onSearchClientes($event)" placeholder="Digite o nome do cliente">
+        <ul *ngIf="clientes.length > 0 && showClientesList" class="autocomplete-list">
+          <li *ngFor="let cliente of clientes" (click)="onSelectCliente(cliente)">
+            {{ cliente.razaoSocial || cliente.nomeFantasia }}
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Tipo de Cobrança -->
+      <div class="form-group">
+        <label for="tipoCobranca">Tipo de Cobrança:</label>
+        <select [(ngModel)]="tipoCobranca" id="tipoCobranca">
+          <option *ngFor="let tipo of tiposCobranca" [ngValue]="tipo">{{ tipo.descricao }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="total">Total do Pedido:</label>
+        <span>{{ total | currency:'BRL' }}</span>
+      </div>
+    </mat-dialog-content>
+  
+    <mat-dialog-actions class="button-group">
+      <button mat-button class="cancel-button" (click)="onCancel()">Cancelar</button>
+      <button mat-button class="finalizar-button" (click)="onFinalizar()">Finalizar</button>
+    </mat-dialog-actions>
   </div>
-
-  <div class="form-group">
-    <label for="tipoCobranca">Tipo de Cobrança:</label>
-    <input [(ngModel)]="tipoCobranca" type="text" id="tipoCobranca" placeholder="Ex: à vista, parcelado">
-  </div>
-
-  <div class="form-group">
-    <label for="total">Total do Pedido:</label>
-    <span>{{ total | currency:'BRL' }}</span>
-  </div>
-</mat-dialog-content>
-
-<mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-button (click)="onFinalizar()">Finalizar</button>
-</mat-dialog-actions>
+  

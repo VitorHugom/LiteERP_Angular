@@ -53,7 +53,12 @@ export class PedidosBuscaComponent implements OnInit {
   }
 
   navigateToHome(): void {
-    this.router.navigate(['/gerencial-home']);
+    const role = sessionStorage.getItem('user-role');
+    if (role === 'ROLE_GERENCIAL'){
+      this.router.navigate(['/gerencial-home']);
+    }else if (role === 'ROLE_VENDAS'){
+      this.router.navigate(['/vendas-home']);
+    }    
   }
 
   createNovoPedido(): void {
