@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 
 interface MenuItem {
   image?:string;
+  icone?: string
   label: string;
   routerLink?: string;
   subItems?: MenuItem[];
@@ -19,7 +20,7 @@ interface MenuItem {
   imports: [CommonModule, RouterModule]
 })
 export class GerencialHomeComponent {
-  isSidebarCollapsed = false;
+  isSidebarCollapsed = true;
   activeMenus: { [key: string]: boolean } = {}; // Controla menus expandidos
 
   // Definindo a estrutura dos menus e submenus
@@ -27,9 +28,11 @@ export class GerencialHomeComponent {
     {
 
       image:'images/icone-cadastro.png',
+      icone: 'images/icone-arrow.png',
       label: 'Cadastros',
       subItems: [
         { label: 'Clientes',
+          icone: 'images/icone-arrow.png',
           subItems: [
             { label: 'Cadastro', routerLink: '/clientes-busca' },
             { label: 'Relatórios', routerLink: '/relatorio-clientes' }
@@ -38,6 +41,7 @@ export class GerencialHomeComponent {
         { label: 'Fornecedores', routerLink: '/fornecedores' },
         {
           label: 'Produtos',
+          icone: 'images/icone-arrow.png',
           subItems: [
             { label: 'Cadastro', routerLink: '/busca-produtos' },
             { label: 'Grupo de Produtos', routerLink: '/grupo-produtos-busca' },
@@ -55,6 +59,7 @@ export class GerencialHomeComponent {
     },
     {
       image:'images/icone-vendas.png',
+      icone: 'images/icone-arrow.png',
       label: 'Vendas',
       subItems: [
         { label: 'Pedidos de Venda', routerLink: '/pedidos-busca' }
@@ -62,6 +67,7 @@ export class GerencialHomeComponent {
     },
     {
       image:'images/icone-faturamento.png',
+      icone: 'images/icone-arrow.png',
       label: 'Faturamento',
       subItems: [
         { label: 'Emissão de NFe', routerLink: '/emissao-nfe' },
@@ -70,6 +76,7 @@ export class GerencialHomeComponent {
     },
     {
       image:'images/icone-compra.png',
+      icone: 'images/icone-arrow.png',
       label: 'Compras',
       subItems: [
         { label: 'Mercadorias', routerLink: '/recebimento-mercadorias' }
@@ -77,6 +84,7 @@ export class GerencialHomeComponent {
     },
     {
       image:'images/icone-administrador.png',
+      icone: 'images/icone-arrow.png',
       label: 'Administrador',
       subItems: [
         { label: 'Alterar Senha', routerLink: '/alterar-senha' },
@@ -101,7 +109,10 @@ export class GerencialHomeComponent {
 
 
   // Função para controlar os menus abertos/fechados
-  toggleMenu(menuLabel: string): void {
+  toggleMenu(menuLabel: string, isSidebarCollapsed?: boolean): void {
+    if(isSidebarCollapsed){
+      this.toggleSidebar()
+    }
     this.activeMenus[menuLabel] = !this.activeMenus[menuLabel];
   }
 

@@ -1,5 +1,5 @@
 *{
-  color: #525252;
+  color: #333;
 }
 
 p{
@@ -33,16 +33,17 @@ p{
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 
   .login__title{
+    display: block;
     font-size: 2rem;
     font-weight: 700;
     color: #000;
-    margin-bottom: 4px;
+    margin-bottom: 2.5rem;
   }
 
 
   .login__request__link{
     // margin-bottom: 40px;
-    padding-top: 20px;
+    padding-top: 4px;
     font-size: 0.75rem;
     color: #A8A8A8;
 
@@ -58,7 +59,7 @@ p{
 
   .login__modal{
     width: 100%;
-    font-size: 1rem;
+    font-size: 0.875rem;
     padding: 8px;
     margin: 4px 0;
     border-left: 6px solid #DB1F29;
@@ -96,9 +97,11 @@ p{
     font-size: 1rem;
     transition: border-color 0.3s;
 
+
     &:focus {
       border-color: #007bff;
       outline: none;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     }
 
     &::placeholder{
@@ -119,7 +122,7 @@ p{
     text-align: start;
     padding: 15px 10px;
     font-weight: 500;
-    margin-top: 16px;
+    margin-top: 1rem;
     background-color: #007bff;
     color: #fff;
     border: none;
