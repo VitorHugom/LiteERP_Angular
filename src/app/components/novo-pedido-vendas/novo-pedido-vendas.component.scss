@@ -78,11 +78,6 @@ background-color: #007bff;
 color: white;
 }
 
-.delete-button {
-background-color: #dc3545;
-color: white;
-}
-
 .button-group {
 display: flex;
 justify-content: space-between;
@@ -101,8 +96,11 @@ flex: 1 1 calc(33% - 10px);
 }
 
 .consultar-button {
-background-color: #ffc107;
-color: #333;
+    background-color: #ffc107;
+    color: #333;
+    &:hover {
+        background-color: #dba608;
+    }
 }
 
 .feedback-box {
@@ -124,3 +122,11 @@ background-color: #f8d7da;
 color: #721c24;
 border: 1px solid #f5c6cb;
 }
+
+.voltar-home-button {
+    background-color: #be0d0d;
+    color: white;
+    &:hover {
+        background-color: #a01111;
+    }
+}  

@@ -4,6 +4,7 @@ import { AddItemModalComponent } from '../add-item-modal/add-item-modal.componen
 import { PedidosService } from '../../services/pedidos.service';
 import { ProdutosService } from '../../services/produtos.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FinalizarPedidoModalComponent } from '../finalizar-pedido-modal/finalizar-pedido-modal.component';
 
@@ -31,7 +32,8 @@ export class NovoPedidoVendas implements OnInit {
   constructor(
     private dialog: MatDialog,
     private pedidosService: PedidosService,
-    private produtosService: ProdutosService
+    private produtosService: ProdutosService,
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
@@ -116,6 +118,10 @@ export class NovoPedidoVendas implements OnInit {
   onNew(): void {
     this.pedido.itens = [];
     this.produtoInput = '';
+  }
+
+  onVoltarParaHome(): void {
+    this.router.navigate(['/vendas-home']);  // Rota para a página inicial de pedidos
   }
   
   getTotalPedido(): number {
