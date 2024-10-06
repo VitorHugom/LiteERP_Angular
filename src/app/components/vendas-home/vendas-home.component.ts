@@ -18,8 +18,12 @@ export class VendasHomeComponent {
     this.router.navigate(['/login']);
   }
 
+  novoPedido(): void {
+    this.router.navigate(['/novo-pedido-vendas']);
+  }
+
   abrirPedidos(): void {
-    this.router.navigate(['/pedidos']);
+    this.router.navigate(['/novo-pedido-vendas']);
   }
 
   abrirOrcamentos(): void {
