@@ -108,7 +108,10 @@ export class GerencialHomeComponent {
 
 
   // Função para controlar os menus abertos/fechados
-  toggleMenu(menuLabel: string): void {
+  toggleMenu(menuLabel: string, isSidebarCollapsed?: boolean): void {
+    if(isSidebarCollapsed){
+      this.toggleSidebar()
+    }
     this.activeMenus[menuLabel] = !this.activeMenus[menuLabel];
   }
 

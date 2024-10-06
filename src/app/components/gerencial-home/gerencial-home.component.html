@@ -1,44 +1,65 @@
 <div class="container" [class.collapsed]="isSidebarCollapsed">
 
   <aside class="sidebar" [class.sidebar-collapsed]="isSidebarCollapsed">
-    <div class="toggle-button">
-      <button (click)="toggleSidebar()"><img src="images/icone-menu.png" alt=""></button>
+
+    <div class="sidebar__button">
+
+      <button class="sidebar__icon-toggle" (click)="toggleSidebar()">
+        <img src="images/icone-menu.png" alt="">
+      </button>
     </div>
-    <nav class="sidebar__navigation">
+
+    <nav class="navagation">
       <!-- Renderiza os menus dinamicamente -->
 
-      <ul class="sidebar__navigation__list" *ngFor="let item of menuItems">
+      <ul class="list list1-items" *ngFor="let item of menuItems">
 
-        <li class="navigation__list__item">
-          <div class="navigation__list__item-main" href="javascript:void(0)"  (click)="toggleMenu(item.label)">
-            <div class="navigation__list__item-image">
+        <li class="item">
+
+          <div class="item__main" href="javascript:void(0)"  (click)="toggleMenu(item.label,isSidebarCollapsed)" >
+
+            <div class="main-icone">
               <img src="{{item.image}}" alt="">
             </div>
 
-            <div class="navigation__list__item-describe">
+            <div class="main-describe">
               <span>{{item.label}}</span>
-              <img src="{{item.icone}}" alt="">
+              <img src="{{item.icone}}" [ngClass]="{'rotate':isMenuExpanded(item.label)}" alt="">
             </div>
+
           </div>
 
 
-          <ul class="item-subtitem" *ngIf="isMenuExpanded(item.label)">
-            <li *ngFor="let subItem of item.subItems">
-              <a *ngIf="!subItem.subItems" [routerLink]="subItem.routerLink">
-                {{ subItem.label }}
-              </a>
-              <!-- Submenus aninhados -->
-              <div *ngIf="subItem.subItems">
-                <a href="javascript:void(0)" (click)="toggleMenu(subItem.label)">
-                  {{ subItem.label }}
+          <ul class="list list2-items" *ngIf="isMenuExpanded(item.label)">
+
+            <li class="item"  *ngFor="let subItem of item.subItems">
+
+              <div  class="item-link" *ngIf="!subItem.subItems">
+                <a [routerLink]="subItem.routerLink">
+                  <span>{{ subItem.label }}</span>
                 </a>
-                <ul *ngIf="isMenuExpanded(subItem.label)">
-                  <li *ngFor="let subSubItem of subItem.subItems">
-                    <a [routerLink]="subSubItem.routerLink">{{ subSubItem.label }}</a>
+              </div>
+              <!-- Submenus aninhados -->
+              <div class="item-sub" *ngIf="subItem.subItems">
+
+                <div class="item-secondary"  (click)="toggleMenu(subItem.label)">
+                    <a  href="javascript:void(0)" >
+                    <span>{{ subItem.label }}</span>
+                    </a>
+                    <img src="images/icone-arrow.png" [ngClass]="{'rotate':isMenuExpanded(subItem.label)}" alt="">
+                </div>
+
+
+                <ul class="list list3-items list__sub-sub" *ngIf="isMenuExpanded(subItem.label)">
+                  <li class="item" *ngFor="let subSubItem of subItem.subItems">
+                    <a [routerLink]="subSubItem.routerLink"><span>{{ subSubItem.label }}</span></a>
                   </li>
                 </ul>
+
               </div>
+
             </li>
+
           </ul>
 
         </li>
