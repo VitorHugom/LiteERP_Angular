@@ -1,6 +1,6 @@
 <div class="busca-clientes-container">
   <h1>Buscar Clientes</h1>
-  
+
   <div class="search-container">
     <input type="text" [(ngModel)]="searchQuery" (keydown.enter)="searchClientes()" placeholder="Buscar clientes..." class="search-input">
     <select [(ngModel)]="searchBy" class="search-select">
@@ -15,7 +15,7 @@
   <table *ngIf="filteredClientes.length > 0; else noClients" class="client-table">
     <thead>
       <tr>
-        <th>ID</th> 
+        <th>ID</th>
         <th>Nome/Razão Social</th>
         <th>Vendedor</th>
       </tr>
