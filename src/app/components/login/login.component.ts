@@ -29,6 +29,7 @@ export class LoginComponent {
 
 
   onSubmit(): void {
+    this.profileForm.markAllAsTouched();
 
     if(this.profileForm.valid){
 

@@ -10,7 +10,7 @@
       <div class="login__form__itens">
         <label for="username">Usuário</label>
         <input type="text" id="username" name="username" formControlName="username">
-        @if (profileForm.controls.username.errors?.['required']) {
+        @if (profileForm.controls.username.errors?.['required'] && profileForm.controls.password.touched) {
           <span class="login__form__itens__alert">Nome obrigatório</span>
         }
       </div>
@@ -18,11 +18,11 @@
       <div class="login__form__itens">
         <label for="password">Senha</label>
         <input type="password" id="password" name="password" formControlName="password">
-        @if (profileForm.controls.password.errors?.['required']) {
+        @if (profileForm.controls.password.errors?.['required'] && profileForm.controls.password.touched) {
           <span class="login__form__itens__alert">
             Senha obrigatória
           </span>
-        } @else if (profileForm.controls.password.errors?.['minlength']) {
+        } @else if (profileForm.controls.password.errors?.['minlength'] && profileForm.controls.password.touched) {
           <span class="login__form__itens__alert">
             Minimo 3 caracteres
           </span>
