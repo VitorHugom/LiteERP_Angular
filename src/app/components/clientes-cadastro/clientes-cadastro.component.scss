@@ -62,7 +62,7 @@
       box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 
       .info-item {
-        font-size: 16px;
+        font-size: 1rem;
         display: flex;
         align-items: center;
 
@@ -84,10 +84,10 @@
 
         select,
         input {
-          padding: 10px 0px;
+          padding: 10px;
           border: 1px solid #ccc;
           border-radius: 5px;
-          font-size: 14px;
+          font-size: .875rem;
           outline: none;
           transition: border 0.3s;
 
@@ -136,6 +136,7 @@
 
     .tab-content {
       margin-bottom: 20px;
+      font-size: .875rem;
 
       .form-group {
         margin-bottom: 20px;
@@ -148,7 +149,7 @@
 
         input {
           width: 100%;
-          padding: 10px 0px;
+          padding: 10px;
           border: 1px solid #ccc;
           border-radius: 5px;
           font-size: 15px;
@@ -158,6 +159,10 @@
           &:focus {
             border-color: #4caf50;
           }
+          &::placeholder{
+            font-size: .875rem;
+          }
+
         }
       }
       .ie-container {
