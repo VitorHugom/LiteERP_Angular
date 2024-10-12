@@ -520,4 +520,11 @@ export class PedidosCadastroComponent implements OnInit {
       this.itensParaExcluir = []; // Limpar a lista de itens para excluir
     }
   }
+
+  getTotalPedido(): number {
+    return this.pedido.itens.reduce((total: number, item: { quantidade: number; produto: { precoVenda: number } }) => {
+      this.pedido.valorTotal = total + item.quantidade * item.produto.precoVenda;
+      return this.pedido.valorTotal;
+    }, 0);
+  }
 }

@@ -40,11 +40,6 @@
     </div>
 
     <div class="form-group">
-      <label for="valorTotal">Valor Total</label>
-      <input type="number" id="valorTotal" [(ngModel)]="pedido.valorTotal" name="valorTotal" step="0.01" min="0" placeholder="0.00">
-    </div>
-
-    <div class="form-group">
       <label for="tipoCobranca">Tipo de Cobrança</label>
       <select id="tipoCobranca" [(ngModel)]="pedido.tipoCobranca" name="tipoCobranca">
         <option *ngFor="let tipo of tiposCobranca" [ngValue]="tipo">{{ tipo.descricao }}</option>
@@ -58,52 +53,57 @@
   </div>
 
   <!-- Conteúdo da Aba Itens do Pedido -->
-<div *ngIf="activeTab === 'itens'" class="tab-content">
+  <div *ngIf="activeTab === 'itens'" class="tab-content">
 
-  <div class="form-group">
-    <label for="produto" class="titulo-secao">Buscar Produto</label>
-    <input type="text" id="produto" [(ngModel)]="produtoInput" (input)="onSearchProdutos($event)" name="produto" placeholder="Digite o nome do produto...">
-    <ul *ngIf="produtos.length > 0 && showProdutosList" class="autocomplete-list">
-      <li *ngFor="let produto of produtos" (click)="onSelectProduto(produto)">
-        {{ produto.descricao }} - {{ produto.precoVenda | currency:'BRL' }}
-      </li>
-    </ul>
+    <div class="form-group">
+      <label for="produto" class="titulo-secao">Buscar Produto</label>
+      <input type="text" id="produto" [(ngModel)]="produtoInput" (input)="onSearchProdutos($event)" name="produto" placeholder="Digite o nome do produto...">
+      <ul *ngIf="produtos.length > 0 && showProdutosList" class="autocomplete-list">
+        <li *ngFor="let produto of produtos" (click)="onSelectProduto(produto)">
+          {{ produto.descricao }} - {{ produto.precoVenda | currency:'BRL' }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Título Itens Selecionados -->
+    <div class="form-group">
+      <label class="titulo-secao">Itens Selecionados</label>
+    </div>
+
+    <!-- Tabela de Itens Selecionados -->
+    <table *ngIf="pedido.itens.length > 0" class="itens-table">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Quantidade</th>
+          <th>Valor Unitário</th>
+          <th>Valor Total</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of pedido.itens; let i = index">
+          <td>{{ item.produto.descricao }}</td>
+          <td>{{ item.quantidade }}</td>
+          <td>{{ item.produto.precoVenda | currency:'BRL' }}</td>
+          <td>{{ (item.quantidade * item.produto.precoVenda) | currency:'BRL' }}</td>
+          <td>
+            <div class="action-buttons">
+              <!-- Passando o índice 'i' do item ao invés do item em si -->
+              <button class="edit-button" (click)="onEditItem(i)">Editar</button>
+              <button class="delete-button" (click)="onDeleteItem(i)">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <!-- Título Itens Selecionados -->
+  <!-- Total do Pedido -->
   <div class="form-group">
-    <label class="titulo-secao">Itens Selecionados</label>
+    <label class="titulo-secao">Total do Pedido: </label>
+    <span>{{ getTotalPedido() | currency:'BRL' }}</span>
   </div>
-
-  <!-- Tabela de Itens Selecionados -->
-  <table *ngIf="pedido.itens.length > 0" class="itens-table">
-    <thead>
-      <tr>
-        <th>Produto</th>
-        <th>Quantidade</th>
-        <th>Valor Unitário</th>
-        <th>Valor Total</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of pedido.itens; let i = index">
-        <td>{{ item.produto.descricao }}</td>
-        <td>{{ item.quantidade }}</td>
-        <td>{{ item.produto.precoVenda | currency:'BRL' }}</td>
-        <td>{{ (item.quantidade * item.produto.precoVenda) | currency:'BRL' }}</td>
-        <td>
-          <div class="action-buttons">
-            <!-- Passando o índice 'i' do item ao invés do item em si -->
-            <button class="edit-button" (click)="onEditItem(i)">Editar</button>
-            <button class="delete-button" (click)="onDeleteItem(i)">Excluir</button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
 
   <!-- Botões de Ação -->
   <div class="button-group">
