@@ -1,0 +1,25 @@
+
+.container__gerencial {
+  display: grid;
+  grid-template-columns: auto 1fr; /* Sidebar com autp e o resto do espaço para o conteúdo */
+  grid-template-rows: auto 1fr; /* Topbar com altura automática e o resto para o conteúdo */
+  grid-template-areas:
+    "sidebar topbar"
+    "sidebar content"; /* Define as áreas */
+  height: 100vh; /* Preenche a altura total da tela */
+}
+
+.container__topbar {
+  grid-area: topbar;
+}
+
+.container__sidebar {
+  grid-area: sidebar;
+  // overflow-y: auto;
+}
+
+.container__content {
+  grid-area: content;
+  // overflow-y: auto;
+}
+
