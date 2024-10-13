@@ -59,13 +59,13 @@ export class LoginComponent {
             // Redireciona o usuário com base na role
             switch (role) {
               case 'ROLE_GERENCIAL':
-                this.router.navigate(['/gerencial-home']);
+                this.router.navigate(['/gerencial']);
                 break;
               case 'ROLE_VENDAS':
-                this.router.navigate(['/vendas-home']);
+                this.router.navigate(['/vendas']);
                 break;
               case 'ROLE_CAIXA':
-                this.router.navigate(['/caixa-home']);
+                this.router.navigate(['/caixa']);
                 break;
               default:
                 this.errorMessage = 'Role não reconhecida.';

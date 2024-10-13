@@ -49,6 +49,6 @@ export class BuscaLiberacaoComponent implements OnInit {
     this.router.navigate(['/liberacao', id]);
   }
   navigateToHome(): void {
-    this.router.navigate(['/gerencial-home']);
+    this.router.navigate(['/gerencial']);
   }
 }

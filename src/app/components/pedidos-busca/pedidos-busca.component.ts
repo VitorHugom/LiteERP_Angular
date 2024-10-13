@@ -55,10 +55,10 @@ export class PedidosBuscaComponent implements OnInit {
   navigateToHome(): void {
     const role = sessionStorage.getItem('user-role');
     if (role === 'ROLE_GERENCIAL'){
-      this.router.navigate(['/gerencial-home']);
+      this.router.navigate(['/gerencial']);
     }else if (role === 'ROLE_VENDAS'){
-      this.router.navigate(['/vendas-home']);
-    }    
+      this.router.navigate(['/venda']);
+    }
   }
 
   createNovoPedido(): void {
@@ -67,6 +67,6 @@ export class PedidosBuscaComponent implements OnInit {
       this.router.navigate(['/pedidos-cadastro/novo']);
     }else if (role === 'ROLE_VENDAS'){
       this.router.navigate(['/novo-pedido-vendas']);
-    }  
+    }
   }
 }

@@ -33,7 +33,7 @@ export class NovoPedidoVendas implements OnInit {
     private dialog: MatDialog,
     private pedidosService: PedidosService,
     private produtosService: ProdutosService,
-    private router: Router 
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -105,7 +105,7 @@ export class NovoPedidoVendas implements OnInit {
         total: this.getTotalPedido() // Calcula o total dos itens
       }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.exibirMensagem('Pedido gravado com sucesso!', true);
@@ -121,14 +121,14 @@ export class NovoPedidoVendas implements OnInit {
   }
 
   onVoltarParaHome(): void {
-    this.router.navigate(['/vendas-home']);  // Rota para a página inicial de pedidos
+    this.router.navigate(['/venda']);  // Rota para a página inicial de pedidos
   }
-  
+
   getTotalPedido(): number {
     return this.pedido.itens.reduce((total: number, item: { quantidade: number; produto: { precoVenda: number } }) => {
       return total + item.quantidade * item.produto.precoVenda;
     }, 0);  // O valor inicial de `total` é 0 e o tipo é número
-  }  
+  }
 
   // Editar item
   onEditItem(index: number): void {

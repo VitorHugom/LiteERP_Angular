@@ -51,7 +51,7 @@ export class VendedoresBuscaComponent implements OnInit {
   }
 
   navigateToHome(): void {
-    this.router.navigate(['/gerencial-home']);
+    this.router.navigate(['/gerencial']);
   }
 
   createNovoVendedor(): void {

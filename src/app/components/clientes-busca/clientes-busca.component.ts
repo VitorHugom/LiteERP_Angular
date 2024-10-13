@@ -61,10 +61,10 @@ export class ClientesBuscaComponent implements OnInit {
   navigateToHome(): void {
     const role = sessionStorage.getItem('user-role');
     if (role === 'ROLE_GERENCIAL'){
-      this.router.navigate(['/gerencial-home']);
+      this.router.navigate(['/gerencial']);
     }else if (role === 'ROLE_VENDAS'){
-      this.router.navigate(['/vendas-home']);
-    }  
+      this.router.navigate(['/venda']);
+    }
   }
 
   createNovoCliente(): void {

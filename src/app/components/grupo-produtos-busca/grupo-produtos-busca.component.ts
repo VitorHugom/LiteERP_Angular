@@ -51,7 +51,7 @@ export class GrupoProdutosBuscaComponent implements OnInit {
   }
 
   navigateToHome(): void {
-    this.router.navigate(['/gerencial-home']);
+    this.router.navigate(['/gerencial']);
   }
 
   createNovoGrupo(): void {
