@@ -1,29 +1,39 @@
 .busca-produtos-container {
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #ffff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
   h1 {
     text-align: center;
     color: #333;
-    font-size: clamp(1.5em, 2.5vw, 2em);
+    font-size: 2rem;
+  }
+
+  p{
+    font-size: .875rem;
   }
 
   .search-container {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    gap: 10px;
+    flex-wrap: nowrap;
+
 
     .search-input, .search-select, .search-button {
-      padding: 10px;
-      margin-right: 10px;
+      padding: 10px 20px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      font-size: clamp(0.8em, 2vw, 1em);
+      font-size: .875rem;
     }
 
     .search-input {
@@ -32,13 +42,11 @@
     }
 
     .search-select {
-      flex: 0 1 150px;
-      min-width: 80px;
+      flex: 0 1;
     }
 
     .search-button {
-      flex: 0 1 100px;
-      min-width: 60px;
+      flex: 0 1;
       background-color: #007bff;
       color: white;
       border: none;
@@ -53,29 +61,38 @@
   .product-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
   }
 
-  .product-table th, .product-table td {
-    padding: 10px;
+  th, td{
+    padding: .5rem .5rem .5rem 1rem;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    font-size: .875rem;
   }
 
-  .product-table th {
-    background-color: #f1f1f1;
-    font-weight: bold;
+  thead {
+    background-color: #E0E0E0;
   }
 
-  .product-table tr:hover {
-    background-color: #f1f1f1;
+  tbody{
+    background-color: #F4F4F4;
+  }
+
+
+
+  tbody tr {
     cursor: pointer;
+
+    &:hover {
+      background-color: #E8E8E8;
+    }
   }
 
   .button-container {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .nav-button, .novo-button {
@@ -85,7 +102,7 @@
     cursor: pointer;
     text-decoration: none;
     color: white;
-    font-size: clamp(0.8em, 2vw, 1em);
+    font-size: .875rem;
   }
 
   .nav-button {

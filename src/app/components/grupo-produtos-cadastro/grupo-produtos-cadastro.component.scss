@@ -1,16 +1,16 @@
 .grupo-produtos-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 
     .link-back{
       display: flex;
       align-items: center;
       margin-bottom: 5px;
-      color: #000;
+      color: #333;
     }
     .link-back img{
       width: 12px;
@@ -19,7 +19,7 @@
     h1 {
       text-align: center;
       color: #333;
-      font-size: clamp(1.5em, 2.5vw, 2em);
+      font-size: 2rem;
     }
 
     .form-group {
@@ -28,26 +28,29 @@
       label {
         display: block;
         margin-bottom: 5px;
-        color: #555;
-        font-size: clamp(0.8em, 2vw, 1em);
+        color: #333;
+        font-size: .875rem;
       }
 
-      input, span {
+
+      input{
+        padding: 10px;
         width: 100%;
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: clamp(0.8em, 2vw, 1em);
-        background-color: #f9f9f9;
+        font-size: .875rem;
+        background-color: #F2F4F8;
         color: #555;
       }
 
-      input{
-        padding: 10px 0;
-      }
-
       span {
-        background-color: #e9ecef;
         padding: 10px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: .875rem;
+        background-color: #F2F4F8;
+        color: #555;
       }
     }
 
@@ -64,7 +67,6 @@
         border-radius: 4px;
         cursor: pointer;
         color: white;
-        flex: 1 1 calc(50% - 10px);
 
         &:hover {
           opacity: 0.9;
@@ -72,20 +74,31 @@
       }
 
       .novo-button {
-        background-color: #28a745;
+
+        background-color: #4caf50;
+        &:hover {
+          background-color: #3e8f40;
+        }
       }
 
       .gravar-button {
-        background-color: #007bff;
+        background-color: #008cba;
+
+        &:hover {
+          background-color: #007bb5;
+        }
       }
 
       .deletar-button {
-        background-color: #dc3545;
+        background-color: #ff9800;
+
+        &:hover {
+          background-color: #fb8c00;
+        }
       }
 
       .consultar-button {
         background-color: #ffc107;
-        color: #333;
       }
     }
 
@@ -95,6 +108,7 @@
       border-radius: 4px;
       text-align: center;
       font-size: 1.2em;
+
     }
 
     .success {
@@ -111,8 +125,12 @@
   }
 
 @media (max-width: 600px) {
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
 
   .grupo-produtos-container{
-    max-width: 320px;
+    max-width: 380px;
   }
 }
