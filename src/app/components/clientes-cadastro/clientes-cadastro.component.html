@@ -9,7 +9,7 @@
         <strong>ID:</strong> {{ idDisplay }}
       </div>
       <div class="form-group tipo-pessoa-group">
-        <label for="tipoPessoa"><strong>Tipo de Pessoa:</strong></label>
+        <strong>Tipo de Pessoa:</strong>
         <div *ngIf="isNew" class="input-inline">
           <select id="tipoPessoa" [(ngModel)]="cliente.tipoPessoa" name="tipoPessoa">
             <option value="fisica">Pessoa Física</option>
