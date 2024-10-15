@@ -6,15 +6,21 @@
   border-radius: 8px;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 
-    .link-back{
-      display: flex;
-      align-items: center;
-      margin-bottom: 5px;
-      color: #333;
-    }
-    .link-back img{
+  .button-back{
+    display: flex;
+    align-items: center;
+    color: #333;
+    background-color: #E3E3E3;
+    padding: 5px;
+    border-radius: 50%;
+    border: none;
+    margin-bottom: 5px;
+    cursor: pointer;
+
+    img{
       width: 12px;
     }
+  }
 
     h1 {
       text-align: center;
