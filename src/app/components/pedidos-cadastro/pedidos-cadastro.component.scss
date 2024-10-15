@@ -1,58 +1,54 @@
 .pedido-detail-container {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   position: relative;
 
-  .link-back {
+  .button-back{
     display: flex;
     align-items: center;
+    color: #333;
+    background-color: #E3E3E3;
+    padding: 5px;
+    border-radius: 50%;
+    border: none;
     margin-bottom: 5px;
-    color: #000;
+    cursor: pointer;
 
-    img {
+    img{
       width: 12px;
-      margin-right: 5px;
-    }
-
-    &:hover {
-      color: #007bff;
     }
   }
 
   h1 {
     text-align: center;
     color: #333;
-    font-size: clamp(1.5em, 2.5vw, 2em);
+    font-size: 2rem;
     margin-bottom: 20px;
   }
 
   .tab-selector {
     display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+    justify-content: space-around;
+    margin-bottom: 25px;
 
     button {
-      padding: 10px 20px;
+      background-color: #e0e0e0;
       border: none;
-      background-color: #ccc;
+      padding: 10px 20px;
+      font-size: .875rem;
       cursor: pointer;
-      margin-right: 10px;
       border-radius: 4px;
-      font-size: clamp(0.8em, 2vw, 1em);
-      transition: background-color 0.3s ease;
+      transition: transform 0.3s ease-in-out;
 
-      &:hover {
-        background-color: #0056b3;
-        color: white;
-      }
 
       &.active {
         background-color: #007bff;
         color: white;
+        transform: scale(1.1);
       }
     }
   }
@@ -61,9 +57,8 @@
   .titulo-secao {
     display: block;
     margin-bottom: 10px;
-    font-size: clamp(0.9em, 2vw, 1em); /* Igual ao label */
-    color: #555;
-    font-weight: bold;
+    font-size: .875rem; /* Igual ao label */
+    color: #333;
   }
 
   .form-group {
@@ -73,8 +68,8 @@
     label {
       display: block;
       margin-bottom: 5px;
-      color: #555;
-      font-size: clamp(0.9em, 2vw, 1em);
+      color: #333;
+      font-size: .875rem;
     }
 
     input, select, span {
@@ -83,8 +78,8 @@
       border: 1px solid #ccc;
       border-radius: 4px;
       display: block;
-      font-size: clamp(0.8em, 2vw, 1em);
-      background-color: #f9f9f9;
+      font-size: .875rem;
+      background-color: #F2F4F8;
       color: #555;
     }
 
@@ -100,7 +95,7 @@
       overflow-y: auto;
       border: 1px solid #ccc;
       border-radius: 4px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
       background-color: white;
       z-index: 2000;
       width: 100%;
@@ -146,12 +141,14 @@
     }
 
     button {
-      padding: 6px 10px;
+      background-color: #4caf50;
+      color: white;
       border: none;
-      border-radius: 4px;
+      padding: 10px 20px;
+      border-radius: 5px;
       cursor: pointer;
-      font-size: 0.9em;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition: background-color 0.3s;
+      font-size: .875rem;
 
       &.edit-button {
         background-color: #007bff;
@@ -163,11 +160,10 @@
       }
 
       &.delete-button {
-        background-color: #dc3545;
-        color: white;
+        background-color: #f44336;
 
         &:hover {
-          background-color: #c82333;
+          background-color: #d32f2f;
         }
       }
     }
@@ -181,34 +177,46 @@
     margin-top: 10px;
 
     button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      text-align: center;
       color: white;
-      flex: 1 1 calc(25% - 10px);
-      transition: opacity 0.2s ease;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: .875rem;
 
-      &:hover {
-        opacity: 0.9;
-      }
 
       &.novo-button {
-        background-color: #28a745;
+
+        background-color: #4caf50;
+        &:hover {
+          background-color: #3e8f40;
+        }
       }
 
+
       &.gravar-button {
-        background-color: #007bff;
+        background-color: #008cba;
+
+        &:hover {
+          background-color: #007bb5;
+        }
       }
 
       &.deletar-button {
-        background-color: #dc3545;
+        background-color: #f44336;
+
+        &:hover {
+          background-color: #d32f2f;
+        }
       }
 
       &.consultar-button {
-        background-color: #ffc107;
-        color: #333;
+        background-color: #ff9800;
+
+        &:hover {
+          background-color: #fb8c00;
+        }
       }
     }
   }
