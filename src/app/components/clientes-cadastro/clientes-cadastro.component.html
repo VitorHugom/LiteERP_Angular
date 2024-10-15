@@ -1,8 +1,7 @@
 <div class="cliente-detail-container">
-  <a class="link-back" [routerLink]="['/clientes-busca']">
+  <button class="button-back" [routerLink]="['/clientes-busca']">
     <img src="images/icone-back.png" alt="">
-    voltar
-  </a>
+  </button>
 
     <div class="info-header">
       <div class="info-item">
@@ -59,13 +58,13 @@
       <div *ngIf="cliente.tipoPessoa != 'juridica'" class="tab-content">
         <div class="form-group">
           <label for="nome">Nome</label>
-          <input type="text" id="nome" [(ngModel)]="cliente.razaoSocial" name="nome" />
+          <input type="text" id="nome" [(ngModel)]="cliente.razaoSocial" name="nome" placeholder="Digite o nome"/>
         </div>
       </div>
 
       <div class="form-group">
         <label for="vendedor">Vendedor</label>
-        <input type="text" id="vendedor" [(ngModel)]="vendedorInput" (input)="onSearchVendedores($event)" name="vendedor" />
+        <input type="text" id="vendedor" [(ngModel)]="vendedorInput" (input)="onSearchVendedores($event)" name="vendedor" placeholder="Digite o vendedor"/>
         <ul *ngIf="vendedores.length > 0 && showVendedoresList" class="autocomplete-list">
           <li *ngFor="let vendedor of vendedores" (click)="onSelectVendedor(vendedor)">
             {{ vendedor.nome }} ({{ vendedor.email }})
@@ -130,19 +129,19 @@
 
       <div class="form-group">
         <label for="endereco">Endereço</label>
-        <input type="text" id="endereco" [(ngModel)]="cliente.endereco" name="endereco" />
+        <input type="text" id="endereco" [(ngModel)]="cliente.endereco" name="endereco" placeholder="Digite o endereço"/>
       </div>
       <div class="form-group">
         <label for="complemento">Complemento</label>
-        <input type="text" id="complemento" [(ngModel)]="cliente.complemento" name="complemento" />
+        <input type="text" id="complemento" [(ngModel)]="cliente.complemento" name="complemento" placeholder="Digite o complemento"/>
       </div>
       <div class="form-group">
         <label for="numero">Numero</label>
-        <input type="text" id="numero" [(ngModel)]="cliente.numero" name="numero" />
+        <input type="text" id="numero" [(ngModel)]="cliente.numero" name="numero" placeholder="Digite o numero"/>
       </div>
       <div class="form-group">
         <label for="cidade">Cidade</label>
-        <input type="text" id="cidade" [(ngModel)]="cidadeInput" (input)="onSearchCidades($event)" name="cidade" />
+        <input type="text" id="cidade" [(ngModel)]="cidadeInput" (input)="onSearchCidades($event)" name="cidade" placeholder="Digite a cidade"/>
         <ul *ngIf="cidades.length > 0 && showCidadesList" class="autocomplete-list">
           <li *ngFor="let cidade of cidades" (click)="onSelectCidade(cidade)">
             {{ cidade.nome }} ({{ cidade.estado }})
@@ -152,7 +151,7 @@
 
       <div class="form-group">
         <label for="bairro">Bairro</label>
-        <input type="text" id="bairro" [(ngModel)]="cliente.bairro" name="bairro" />
+        <input type="text" id="bairro" [(ngModel)]="cliente.bairro" name="bairro" placeholder="Digite o bairro"/>
       </div>
 
       <div class="form-group">
@@ -186,7 +185,13 @@
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" [(ngModel)]="cliente.email" name="email" />
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="cliente.email"
+          name="email"
+          placeholder="Digite o email"
+        />
       </div>
     </div>
 
