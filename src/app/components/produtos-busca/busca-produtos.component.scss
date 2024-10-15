@@ -134,5 +134,8 @@
 
   .button-container {
     flex-direction: column;
+    .nav-button, .novo-button {
+      width: 100%;
+    }
   }
 }
