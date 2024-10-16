@@ -107,24 +107,21 @@
     }
 
     .novo-button {
-      // background-color: #28a745;
-      background-color: #008cba;
-
-      &:hover {
-        background-color: #007bb5;
-      }
-    }
-
-    .gravar-button {
-      // background-color: #007bff;
       background-color: #4caf50;
+
       &:hover {
         background-color: #3e8f40;
       }
     }
 
+    .gravar-button {
+      background-color: #008cba;
+      &:hover {
+        background-color: #007bb5;
+      }
+    }
+
     .deletar-button {
-      // background-color: #dc3545;
       background-color: #f44336;
 
       &:hover {
@@ -133,8 +130,6 @@
     }
 
     .consultar-button {
-      // background-color: #ffc107;
-      // color: #333;
       background-color: #ff9800;
 
       &:hover {
@@ -146,7 +141,7 @@
   .feedback-box {
     margin-top: 25px;
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 4px;
     text-align: center;
     font-weight: bold;
   }

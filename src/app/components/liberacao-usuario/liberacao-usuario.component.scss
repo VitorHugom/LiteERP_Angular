@@ -5,64 +5,62 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  
+
     h1 {
       text-align: center;
       color: #333;
-      font-size: clamp(1.5em, 2.5vw, 2em);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
     }
-  
+
     .form-group {
       margin-bottom: 15px;
-  
+
       label {
         display: block;
         margin-bottom: 5px;
-        color: #555;
-        font-size: clamp(0.8em, 2vw, 1em);
+        color: #333;
+        font-size: .875rem;
       }
-  
       input {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        background-color: #f9f9f9;
-        font-size: clamp(0.8em, 2vw, 1em);
+        background-color: #F2F4F8;
+        font-size: .875rem;
         color: #555;
       }
     }
-  
+
     .button-group {
       display: flex;
       justify-content: space-between;
-  
+
       .liberar-button {
         padding: 10px 20px;
         border: none;
         border-radius: 4px;
-        background-color: #28a745;
+        background-color: #4caf50;
         color: white;
         cursor: pointer;
         text-align: center;
-  
+
         &:hover {
-          background-color: #218838;
+          background-color: #3e8f40;
         }
       }
       .back-button {
         padding: 10px 20px;
         border: none;
         border-radius: 4px;
-        background-color: #ec8004;
+        background-color: #007bff;
         color: white;
         cursor: pointer;
         text-align: center;
-  
+
         &:hover {
-          background-color: #ce800a;
+          background-color: #0056b3;
         }
       }
     }
   }
-  
