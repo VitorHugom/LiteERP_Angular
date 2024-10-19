@@ -8,3 +8,22 @@
   align-items: center;
 }
 
+.logout-btn {
+  background-color: #e74c3c; // Cor do botão
+  color: white; // Cor do texto
+  border: none; // Remove borda
+  padding: 10px 20px; // Tamanho do padding
+  border-radius: 5px; // Bordas arredondadas
+  cursor: pointer; // Cursor de ponteiro
+  font-size: 12px; // Tamanho do texto
+  font-weight: bold; // Texto em negrito
+  transition: background-color 0.3s ease; // Transição suave
+
+  &:hover {
+    background-color: #c0392b; // Cor ao passar o mouse
+  }
+
+  &:active {
+    background-color: #a93226; // Cor ao clicar
+  }
+}
