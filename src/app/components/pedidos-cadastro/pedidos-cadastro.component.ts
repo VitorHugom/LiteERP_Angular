@@ -281,6 +281,8 @@ export class PedidosCadastroComponent implements OnInit {
         next: (response) => {
           // Atribuir o pedido retornado
           this.pedido = response;
+
+          this.matchTipoCobranca();
   
           // Garantir que o array de itens existe, mesmo que esteja vazio
           this.pedido.itens = itensTemporarios.length > 0 ? itensTemporarios : [];
