@@ -121,7 +121,7 @@ export class NovoPedidoVendas implements OnInit {
   }
 
   onVoltarParaHome(): void {
-    this.router.navigate(['/venda']);  // Rota para a página inicial de pedidos
+    this.router.navigate(['/vendas']);  // Rota para a página inicial de pedidos
   }
 
   getTotalPedido(): number {

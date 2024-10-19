@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { FormsModule } from '@angular/forms';
 import { SignupService } from '../../services/signup.service';
 import { CommonModule } from '@angular/common';
@@ -16,8 +17,8 @@ interface Categoria {
     standalone: true,
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.scss'],
-    imports: [FormsModule, CommonModule, RouterModule],
-    providers: [SignupService]
+    imports: [FormsModule, CommonModule, RouterModule, NgxMaskDirective],
+    providers: [SignupService, provideNgxMask()]
 })
 export class SignupComponent {
     signupData = {
@@ -34,6 +35,10 @@ export class SignupComponent {
         { id: 2, nome: 'Gerencial' },
         { id: 3, nome: 'Caixa' }
     ];
+
+    get celularMask(): string {
+        return '(00) 00000-0000'; // Máscara para celular com 9 dígitos
+    }
 
     isModalOpen: boolean = false;
     message: string = '';  // Propriedade para armazenar a mensagem de feedback

@@ -1,0 +1,28 @@
+<div class="pedidos-aberto-container">
+    <h1>Pedidos em Aberto</h1>
+  
+    <!-- Lista de Pedidos em Aberto -->
+    <div *ngIf="pedidosEmAberto.length > 0; else noPedidos" class="pedidos-list">
+      <div *ngFor="let pedido of pedidosEmAberto" class="pedido-item" (click)="abrirModal(pedido)">
+        <div class="pedido-info">
+          <p><strong>ID:</strong> {{ pedido.id }}</p>
+          <p><strong>Cliente:</strong> {{ pedido.cliente.razaoSocial }}</p>
+          <p><strong>Data de Emissão:</strong> {{ pedido.dataEmissao | date:'short' }}</p>
+          <p><strong>Valor Total:</strong> {{ pedido.valorTotal | currency:'BRL' }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Botão para voltar para Home -->
+    <div class="button-group">
+      <button (click)="voltarParaHome()" class="voltar-home-button">Voltar para Home</button>
+    </div>
+  
+    <!-- Mensagem de nenhum pedido -->
+    <ng-template #noPedidos>
+      <div class="no-pedidos-message">
+        <p>Não há pedidos em aberto no momento.</p>
+      </div>
+    </ng-template>
+  </div>
+  

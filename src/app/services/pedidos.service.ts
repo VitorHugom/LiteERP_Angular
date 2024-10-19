@@ -46,4 +46,12 @@ export class PedidosService {
   deleteItemPedido(idItensPedido: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/itens/${idItensPedido}`);
   }
+
+  getPedidosEmAberto(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/em-aberto`);
+  }
+
+  atualizarStatusPedido(id: number, status: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}/status`, { status });
+  }
 }

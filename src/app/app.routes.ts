@@ -18,6 +18,7 @@ import { VendedoresBuscaComponent } from './components/vendedores-busca/vendedor
 import { PedidosBuscaComponent } from './components/pedidos-busca/pedidos-busca.component';
 import { PedidosCadastroComponent } from './components/pedidos-cadastro/pedidos-cadastro.component';
 import { NovoPedidoVendas } from './components/novo-pedido-vendas/novo-pedido-vendas.component';
+import { PedidosAbertoComponent } from './components/pedidos-aberto/pedidos-aberto.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -30,7 +31,7 @@ export const routes: Routes = [
 
   { path: 'caixa', component: CaixaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
 
-  { path: 'venda', component: VendaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_VENDAS'] }},
+  { path: 'vendas', component: VendaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_VENDAS'] }},
 
   { path: 'liberacao/:id', component: LiberacaoUsuarioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
@@ -44,6 +45,8 @@ export const routes: Routes = [
   { path: 'pedidos-busca', component: PedidosBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL', 'ROLE_VENDAS'] }},
   { path: 'pedidos-cadastro/:id', component: PedidosCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL', 'ROLE_VENDAS'] }},
   { path: 'novo-pedido-vendas', component: NovoPedidoVendas, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_VENDAS'] }},
+
+  { path: 'pedidos-aberto', component: PedidosAbertoComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
 
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
