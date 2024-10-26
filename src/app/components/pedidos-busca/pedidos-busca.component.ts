@@ -57,7 +57,7 @@ export class PedidosBuscaComponent implements OnInit {
     if (role === 'ROLE_GERENCIAL'){
       this.router.navigate(['/gerencial']);
     }else if (role === 'ROLE_VENDAS'){
-      this.router.navigate(['/venda']);
+      this.router.navigate(['/vendas']);
     }
   }
 
