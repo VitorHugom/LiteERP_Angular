@@ -4,7 +4,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { GerencialComponent } from './pages/gerencial/gerencial.component';
 import { CaixaComponent } from './pages/caixa/caixa.component';
-import { VendaComponent } from './pages/venda/venda.component';
+import { VendaComponent } from './pages/vendas/vendas.component';
 
 import { BuscaLiberacaoComponent } from './components/busca-liberacao/busca-liberacao.component';
 import { LiberacaoUsuarioComponent } from './components/liberacao-usuario/liberacao-usuario.component';
