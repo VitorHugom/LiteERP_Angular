@@ -20,6 +20,10 @@ export class ClientesService {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
+  getClienteByIdBusca(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/busca/${id}`);
+  }
+
   createCliente(cliente: any): Observable<any> {
     return this.http.post(this.baseUrl, cliente);
   }
@@ -40,7 +44,6 @@ export class ClientesService {
     return this.http.get(`http://localhost:8080/cidades/codigoIbge/${codigoIbge}`);
   }
 
-
   searchClientes(nome: string, page: number = 0, size: number = 10): Observable<any> {
     let params = new HttpParams()
       .set('nome', nome)
@@ -48,5 +51,15 @@ export class ClientesService {
       .set('size', size.toString());
 
     return this.http.get<any>(`${this.baseUrl}/search`, { params });
+  }
+
+  getClientesByRazaoSocialBusca(razaoSocial: string, page: number = 0): Observable<any> {
+    const params = new HttpParams().set('page', page.toString()).set('razaoSocial', razaoSocial);
+    return this.http.get(`${this.baseUrl}/busca-por-razao-social`, { params });
+  }
+
+  getClientesBusca(page: number = 0): Observable<any> {
+    const params = new HttpParams().set('page', page.toString());
+    return this.http.get(`${this.baseUrl}/busca`, { params });
   }
 }

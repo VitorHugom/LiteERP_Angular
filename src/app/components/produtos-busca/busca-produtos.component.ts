@@ -15,9 +15,13 @@ import { Router } from '@angular/router';
 })
 export class ProdutosBuscaComponent implements OnInit {
   produtos: any[] = [];
-  filteredProdutos: any[] = [];
   searchQuery: string = '';
   searchBy: string = 'descricao';
+  page: number = 0;
+  size: number = 10;
+  totalPages: number = 0;
+  lastSearchQuery: string = '';
+  lastSearchBy: string = '';
 
   constructor(private produtosService: ProdutosService, private router: Router) {}
 
@@ -26,10 +30,10 @@ export class ProdutosBuscaComponent implements OnInit {
   }
 
   loadProdutos(): void {
-    this.produtosService.getProdutos().subscribe({
+    this.produtosService.getProdutosBusca(this.page).subscribe({
       next: (data) => {
-        this.produtos = data;
-        this.filteredProdutos = data;
+        this.produtos = data.content;
+        this.totalPages = data.totalPages;
       },
       error: (err) => {
         console.error('Erro ao carregar produtos:', err);
@@ -38,11 +42,49 @@ export class ProdutosBuscaComponent implements OnInit {
   }
 
   searchProdutos(): void {
-    const query = this.searchQuery.toLowerCase();
+    this.page = 0;
+    this.lastSearchQuery = this.searchQuery;
+    this.lastSearchBy = this.searchBy;
+
+    if (!this.searchQuery) {
+      this.loadProdutos();
+      return;
+    }
+
     if (this.searchBy === 'id') {
-      this.filteredProdutos = this.produtos.filter(produto => produto.id.toString().includes(query));
+      this.produtosService.getSimpleProdutosById(this.searchQuery).subscribe({
+        next: (data) => {
+          this.produtos = data ? [data] : [];
+          this.totalPages = 1;
+        },
+        error: (err) => {
+          console.error('Erro ao buscar produto por ID:', err);
+          this.produtos = [];
+        }
+      });
     } else if (this.searchBy === 'descricao') {
-      this.filteredProdutos = this.produtos.filter(produto => produto.descricao.toLowerCase().includes(query));
+      this.produtosService.buscarProdutosPorNome(this.searchQuery, this.page).subscribe({
+        next: (data) => {
+          this.produtos = data.content;
+          this.totalPages = data.totalPages;
+        },
+        error: (err) => {
+          console.error('Erro ao buscar produtos por descrição:', err);
+          this.produtos = [];
+        }
+      });
+    }
+  }
+
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.page = page;
+
+      if (this.lastSearchQuery) {
+        this.searchProdutos();
+      } else {
+        this.loadProdutos();
+      }
     }
   }
 

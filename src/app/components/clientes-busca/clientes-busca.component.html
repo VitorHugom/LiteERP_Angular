@@ -1,30 +1,28 @@
-<div class="busca-clientes-container">
+<div class="clientes-busca-container">
   <h1>Buscar Clientes</h1>
 
   <div class="search-container">
     <input type="text" [(ngModel)]="searchQuery" (keydown.enter)="searchClientes()" placeholder="Buscar clientes..." class="search-input">
     <select [(ngModel)]="searchBy" class="search-select">
-      <option value="nome">Nome</option>
+      <option value="razaoSocial">Razão Social</option>
       <option value="id">ID</option>
-      <option value="cpfCnpj">CPF/CNPJ</option>
     </select>
     <button (click)="searchClientes()" class="search-button">Buscar</button>
   </div>
 
-  <!-- Tabela de resultados -->
-  <table *ngIf="filteredClientes.length > 0; else noClients" class="client-table">
+  <table *ngIf="clientes.length > 0; else noClients" class="client-table">
     <thead>
       <tr>
         <th>ID</th>
-        <th>Nome/Razão Social</th>
+        <th>Razão Social</th>
         <th>Vendedor</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let cliente of filteredClientes" (click)="viewCliente(cliente.id)" class="client-item">
-        <td>{{ cliente.id }}</td>
-        <td>{{ cliente.nomeFantasia || cliente.razaoSocial || cliente.nome }}</td>
-        <td>{{ cliente.vendedor.nome }}</td>
+      <tr *ngFor="let cliente of clientes" (click)="viewCliente(cliente.id)" class="client-item">
+        <td data-label="ID">{{ cliente.id }}</td>
+        <td data-label="Razão Social">{{ cliente.razaoSocial }}</td>
+        <td data-label="Vendedor">{{ cliente.nomeVendedor }}</td>
       </tr>
     </tbody>
   </table>
@@ -32,6 +30,12 @@
   <ng-template #noClients>
     <p>Nenhum cliente encontrado.</p>
   </ng-template>
+
+  <div class="pagination">
+    <button (click)="goToPage(page - 1)" [disabled]="page === 0">Anterior</button>
+    <span>Página {{ page + 1 }} de {{ totalPages }}</span>
+    <button (click)="goToPage(page + 1)" [disabled]="page >= totalPages - 1">Próximo</button>
+  </div>
 
   <div class="button-container">
     <button (click)="navigateToHome()" class="nav-button">Voltar para Home</button>

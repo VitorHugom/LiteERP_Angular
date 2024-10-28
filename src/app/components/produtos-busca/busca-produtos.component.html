@@ -1,7 +1,6 @@
-<div class="busca-produtos-container">
+<div class="produtos-busca-container">
   <h1>Buscar Produtos</h1>
-
-  <!-- Barra de busca -->
+  
   <div class="search-container">
     <input type="text" [(ngModel)]="searchQuery" (keydown.enter)="searchProdutos()" placeholder="Buscar produtos..." class="search-input">
     <select [(ngModel)]="searchBy" class="search-select">
@@ -11,30 +10,34 @@
     <button (click)="searchProdutos()" class="search-button">Buscar</button>
   </div>
 
-  <!-- Tabela de produtos -->
-  <table *ngIf="filteredProdutos.length > 0; else noProducts" class="product-table">
+  <!-- Tabela de resultados -->
+  <table *ngIf="produtos.length > 0; else noProducts" class="product-table">
     <thead>
       <tr>
         <th>ID</th>
         <th>Descrição</th>
-        <th>Preço de Venda</th>
+        <th>Preço</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let produto of filteredProdutos" (click)="viewProduto(produto.id)" class="product-item">
-        <td>{{ produto.id }}</td>
-        <td>{{ produto.descricao }}</td>
-        <td>{{ produto.precoVenda | currency: 'BRL' }}</td>
+      <tr *ngFor="let produto of produtos" (click)="viewProduto(produto.id)" class="product-item">
+        <td data-label="ID">{{ produto.id }}</td>
+        <td data-label="Descrição">{{ produto.descricao }}</td>
+        <td data-label="Preço">{{ produto.precoVenda | currency }}</td>
       </tr>
     </tbody>
   </table>
 
-  <!-- Mensagem de 'Nenhum produto encontrado' -->
   <ng-template #noProducts>
     <p>Nenhum produto encontrado.</p>
   </ng-template>
 
-  <!-- Botões de ação -->
+  <div class="pagination">
+    <button (click)="goToPage(page - 1)" [disabled]="page === 0">Anterior</button>
+    <span>Página {{ page + 1 }} de {{ totalPages }}</span>
+    <button (click)="goToPage(page + 1)" [disabled]="page >= totalPages - 1">Próximo</button>
+  </div>
+
   <div class="button-container">
     <button (click)="navigateToHome()" class="nav-button">Voltar para Home</button>
     <button (click)="createNovoProduto()" class="nav-button novo-button">Novo</button>

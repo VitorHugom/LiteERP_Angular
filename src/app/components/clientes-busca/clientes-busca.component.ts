@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ClientesService } from '../../services/clientes.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clientes-busca',
@@ -15,9 +14,12 @@ import { Router } from '@angular/router';
 })
 export class ClientesBuscaComponent implements OnInit {
   clientes: any[] = [];
-  filteredClientes: any[] = [];
   searchQuery: string = '';
-  searchBy: string = 'nome';
+  searchBy: string = 'razaoSocial';
+  page: number = 0;
+  totalPages: number = 0;
+  lastSearchQuery: string = '';
+  lastSearchBy: string = '';
 
   constructor(private clientesService: ClientesService, private router: Router) {}
 
@@ -26,10 +28,10 @@ export class ClientesBuscaComponent implements OnInit {
   }
 
   loadClientes(): void {
-    this.clientesService.getClientes().subscribe({
+    this.clientesService.getClientesBusca(this.page).subscribe({
       next: (data) => {
-        this.clientes = data;
-        this.filteredClientes = data;
+        this.clientes = data.content;
+        this.totalPages = data.totalPages;
       },
       error: (err) => {
         console.error('Erro ao carregar clientes:', err);
@@ -38,19 +40,51 @@ export class ClientesBuscaComponent implements OnInit {
   }
 
   searchClientes(): void {
-    const query = this.searchQuery.toLowerCase();
+    this.page = 0;
+    this.lastSearchQuery = this.searchQuery;
+    this.lastSearchBy = this.searchBy;
+
+    if (!this.searchQuery) {
+      this.loadClientes();
+      return;
+    }
+
     if (this.searchBy === 'id') {
-      this.filteredClientes = this.clientes.filter(cliente => cliente.id.toString().includes(query));
-    } else if (this.searchBy === 'nome') {
-      this.filteredClientes = this.clientes.filter(cliente =>
-        (cliente.nomeFantasia?.toLowerCase().includes(query) ||
-         cliente.razaoSocial?.toLowerCase().includes(query) ||
-         cliente.nome?.toLowerCase().includes(query))
-      );
-    } else if (this.searchBy === 'cpfCnpj') {
-      this.filteredClientes = this.clientes.filter(cliente =>
-        (cliente.cpf?.includes(query) || cliente.cnpj?.includes(query))
-      );
+      this.clientesService.getClienteByIdBusca(this.searchQuery).subscribe({
+        next: (data) => {
+          this.clientes = data ? [data] : [];
+          this.totalPages = 1;
+        },
+        error: (err) => {
+          console.error('Erro ao buscar cliente por ID:', err);
+          this.clientes = [];
+        }
+      });
+    } else if (this.searchBy === 'razaoSocial') {
+      this.clientesService.getClientesByRazaoSocialBusca(this.searchQuery, this.page).subscribe({
+        next: (data) => {
+          this.clientes = data.content;
+          this.totalPages = data.totalPages;
+        },
+        error: (err) => {
+          console.error('Erro ao buscar clientes por Razão Social:', err);
+          this.clientes = [];
+        }
+      });
+    }
+  }
+
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.page = page;
+
+      if (this.lastSearchQuery) {
+        this.searchQuery = this.lastSearchQuery;
+        this.searchBy = this.lastSearchBy;
+        this.searchClientes();
+      } else {
+        this.loadClientes();
+      }
     }
   }
 
@@ -63,8 +97,8 @@ export class ClientesBuscaComponent implements OnInit {
     if (role === 'ROLE_GERENCIAL'){
       this.router.navigate(['/gerencial']);
     }else if (role === 'ROLE_VENDAS'){
-      this.router.navigate(['/venda']);
-    }
+      this.router.navigate(['/vendas']);
+    }  
   }
 
   createNovoCliente(): void {

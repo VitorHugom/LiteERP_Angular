@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -17,6 +17,11 @@ export class ProdutosService {
   getProdutoById(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
+
+  getSimpleProdutosById(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/busca/${id}`);
+  }
+
   createProduto(produto: any): Observable<any> {
     return this.http.post(this.baseUrl, produto);
   }
@@ -31,5 +36,15 @@ export class ProdutosService {
 
   searchProdutos(nome: string, page: number, size: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/search?nome=${nome}&page=${page}&size=${size}`);
+  }
+
+  buscarProdutosPorNome(descricao: string, page: number = 0): Observable<any> {
+    const params = new HttpParams().set('page', page.toString()).set('descricao', descricao);
+    return this.http.get(`${this.baseUrl}/busca-por-descricao`, { params });
+  }
+
+  getProdutosBusca(page: number = 0): Observable<any> {
+    const params = new HttpParams().set('page', page.toString());
+    return this.http.get(`${this.baseUrl}/busca`, { params });
   }
 }

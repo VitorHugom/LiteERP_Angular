@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -16,6 +16,10 @@ export class PedidosService {
 
   getPedidoById(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
+  }
+
+  getSimplePedidoById(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/busca/${id}`);
   }
 
   createPedido(pedido: any): Observable<any> {
@@ -53,5 +57,21 @@ export class PedidosService {
 
   atualizarStatusPedido(id: number, status: string): Observable<any> {
     return this.http.put(`${this.baseUrl}/${id}/status`, { status });
+  }
+
+  // Novo método para consumir o endpoint de busca com paginação e ordenação
+  getPedidosBusca(page: number = 0, size: number = 10): Observable<any> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get(`${this.baseUrl}/busca`, { params });
+  }
+
+  buscarPedidosPorRazaoSocial(razaoSocial: string, page: number = 0, size: number = 10): Observable<any> {
+    const params = new HttpParams()
+      .set('razaoSocial', razaoSocial)
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get(`${this.baseUrl}/busca-por-razao-social`, { params });
   }
 }

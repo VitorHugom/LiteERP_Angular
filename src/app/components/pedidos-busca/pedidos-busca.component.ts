@@ -15,9 +15,15 @@ import { Router } from '@angular/router';
 })
 export class PedidosBuscaComponent implements OnInit {
   pedidos: any[] = [];
-  filteredPedidos: any[] = [];
   searchQuery: string = '';
   searchBy: string = 'id';
+  page: number = 0;
+  size: number = 10;
+  totalPages: number = 0;
+
+  // Variáveis para armazenar a última consulta realizada
+  lastSearchQuery: string = '';
+  lastSearchBy: string = '';
 
   constructor(private pedidosService: PedidosService, private router: Router) {}
 
@@ -26,10 +32,10 @@ export class PedidosBuscaComponent implements OnInit {
   }
 
   loadPedidos(): void {
-    this.pedidosService.getPedidos().subscribe({
+    this.pedidosService.getPedidosBusca(this.page, this.size).subscribe({
       next: (data) => {
-        this.pedidos = data;
-        this.filteredPedidos = data;
+        this.pedidos = data.content; // Array de pedidos
+        this.totalPages = data.totalPages; // Total de páginas
       },
       error: (err) => {
         console.error('Erro ao carregar pedidos:', err);
@@ -38,13 +44,51 @@ export class PedidosBuscaComponent implements OnInit {
   }
 
   searchPedidos(): void {
-    const query = this.searchQuery.toLowerCase();
+    this.page = 0; // Reinicia a paginação ao buscar
+
+    // Armazena a consulta atual
+    this.lastSearchQuery = this.searchQuery;
+    this.lastSearchBy = this.searchBy;
+
+    if (!this.searchQuery) {
+      this.loadPedidos();
+      return;
+    }
+  
     if (this.searchBy === 'id') {
-      this.filteredPedidos = this.pedidos.filter(pedido => pedido.id.toString().includes(query));
+      this.pedidosService.getSimplePedidoById(this.searchQuery).subscribe({
+        next: (data) => {
+          this.pedidos = data ? [data] : []; // Converte a resposta para um array, ou vazio se não encontrado
+          this.totalPages = 1; // Define uma página já que é um único resultado
+        },
+        error: (err) => {
+          console.error('Erro ao buscar pedido por ID:', err);
+          this.pedidos = [];
+        }
+      });
     } else if (this.searchBy === 'cliente') {
-      this.filteredPedidos = this.pedidos.filter(pedido => pedido.cliente.razaoSocial.toLowerCase().includes(query));
-    } else if (this.searchBy === 'vendedor') {
-      this.filteredPedidos = this.pedidos.filter(pedido => pedido.vendedor?.nome.toLowerCase().includes(query));
+      this.pedidosService.buscarPedidosPorRazaoSocial(this.searchQuery, this.page, this.size).subscribe({
+        next: (data) => {
+          this.pedidos = data.content;
+          this.totalPages = data.totalPages;
+        },
+        error: (err) => {
+          console.error('Erro ao buscar pedidos por razão social:', err);
+          this.pedidos = [];
+        }
+      });
+    }
+  }
+  
+
+  navigateToHome(): void {
+    const role = sessionStorage.getItem('user-role');
+    if (role === 'ROLE_GERENCIAL') {
+      this.router.navigate(['/gerencial']);
+    } else if (role === 'ROLE_VENDAS') {
+      this.router.navigate(['/vendas']);
+    } else if (role === 'ROLE_CAIXA') {
+      this.router.navigate(['/caixa']);
     }
   }
 
@@ -52,21 +96,48 @@ export class PedidosBuscaComponent implements OnInit {
     this.router.navigate(['/pedidos-cadastro', id]);
   }
 
-  navigateToHome(): void {
-    const role = sessionStorage.getItem('user-role');
-    if (role === 'ROLE_GERENCIAL'){
-      this.router.navigate(['/gerencial']);
-    }else if (role === 'ROLE_VENDAS'){
-      this.router.navigate(['/venda']);
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.page = page;
+      
+      // Verifica se há uma última consulta realizada
+      if (this.lastSearchQuery) {
+        if (this.lastSearchBy === 'id') {
+          this.pedidosService.getSimplePedidoById(this.lastSearchQuery).subscribe({
+            next: (data) => {
+              this.pedidos = data ? [data] : []; // Converte a resposta para um array, ou vazio se não encontrado
+              this.totalPages = 1; // Define uma página já que é um único resultado
+            },
+            error: (err) => {
+              console.error('Erro ao buscar pedido por ID:', err);
+              this.pedidos = [];
+            }
+          });
+        } else if (this.lastSearchBy === 'cliente') {
+          this.pedidosService.buscarPedidosPorRazaoSocial(this.lastSearchQuery, this.page, this.size).subscribe({
+            next: (data) => {
+              this.pedidos = data.content;
+              this.totalPages = data.totalPages;
+            },
+            error: (err) => {
+              console.error('Erro ao buscar pedidos por razão social:', err);
+              this.pedidos = [];
+            }
+          });
+        }
+      } else {
+        // Se não houver uma consulta anterior, carrega todos os pedidos
+        this.loadPedidos();
+      }
     }
   }
 
   createNovoPedido(): void {
     const role = sessionStorage.getItem('user-role');
-    if (role === 'ROLE_GERENCIAL'){
-      this.router.navigate(['/pedidos-cadastro/novo']);
-    }else if (role === 'ROLE_VENDAS'){
+    if (role === 'ROLE_VENDAS') {
       this.router.navigate(['/novo-pedido-vendas']);
+    } else {
+      this.router.navigate(['/pedidos-cadastro/novo']);
     }
   }
 }

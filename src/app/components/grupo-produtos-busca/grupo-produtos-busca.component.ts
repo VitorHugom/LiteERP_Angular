@@ -18,6 +18,12 @@ export class GrupoProdutosBuscaComponent implements OnInit {
   filteredGrupos: any[] = [];
   searchQuery: string = '';
   searchBy: string = 'nome';
+  page: number = 0;
+  size: number = 10;
+  totalPages: number = 0;
+  lastSearchQuery: string = '';
+  lastSearchBy: string = '';
+
 
   constructor(private grupoProdutosService: GrupoProdutosService, private router: Router) {}
 
@@ -26,29 +32,64 @@ export class GrupoProdutosBuscaComponent implements OnInit {
   }
 
   loadGrupos(): void {
-    this.grupoProdutosService.getGruposProdutos().subscribe({
+    this.grupoProdutosService.getProdutosBusca(this.page).subscribe({
       next: (data) => {
-        this.grupos = data;
-        this.filteredGrupos = data;
+        this.grupos = data.content;
+        this.filteredGrupos = this.grupos;
+        this.totalPages = data.totalPages;
       },
-      error: (err) => {
-        console.error('Erro ao carregar grupos:', err);
-      }
+      error: (err) => console.error('Erro ao carregar grupos:', err)
     });
   }
 
-  searchGruposProdutos(): void {
-    const query = this.searchQuery.toLowerCase();
-    if (this.searchBy === 'id') {
-      this.filteredGrupos = this.grupos.filter(grupo => grupo.id.toString().includes(query));
-    } else if (this.searchBy === 'nome') {
-      this.filteredGrupos = this.grupos.filter(grupo => grupo.nome.toLowerCase().includes(query));
+  searchGrupos(keepPage: boolean = false): void {
+    if (!keepPage) this.page = 0;
+    this.lastSearchQuery = this.searchQuery;
+    this.lastSearchBy = this.searchBy;
+  
+    if (this.searchQuery === '') {
+      this.loadGrupos();
+      return;
     }
-  }
+  
+    if (this.searchBy === 'id') {
+      const id = Number(this.searchQuery);
+      if (!isNaN(id)) {
+        this.grupoProdutosService.getGrupoProdutoById(id).subscribe({
+          next: (data) => this.filteredGrupos = [data],
+          error: (err) => { console.error('Erro ao buscar por ID:', err); this.filteredGrupos = []; }
+        });
+      } else {
+        this.filteredGrupos = [];
+      }
+    } else {
+      this.grupoProdutosService.buscarGrupoProdutosPorDescricao(this.searchQuery, this.page).subscribe({
+        next: (data) => {
+          this.filteredGrupos = data.content;
+          this.totalPages = data.totalPages;
+        },
+        error: (err) => { console.error('Erro ao buscar por nome:', err); this.filteredGrupos = []; }
+      });
+    }
+  }  
 
   viewGrupo(id: string): void {
     this.router.navigate(['/grupo-produtos', id]);
   }
+
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.page = page;
+      if (this.lastSearchQuery) {
+        this.searchQuery = this.lastSearchQuery;
+        this.searchBy = this.lastSearchBy;
+        this.searchGrupos(true);
+      } else {
+        this.loadGrupos();
+      }
+    }
+  }
+  
 
   navigateToHome(): void {
     this.router.navigate(['/gerencial']);
