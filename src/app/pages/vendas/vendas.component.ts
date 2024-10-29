@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-venda',
   standalone: true,
   imports: [],
-  templateUrl: './venda.component.html',
-  styleUrl: './venda.component.scss'
+  templateUrl: './vendas.component.html',
+  styleUrl: './vendas.component.scss'
 })
 export class VendaComponent {
 
