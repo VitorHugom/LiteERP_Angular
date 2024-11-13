@@ -90,12 +90,10 @@
           <td>{{ item.quantidade }}</td>
           <td>{{ item.produto.precoVenda | currency:'BRL' }}</td>
           <td>{{ (item.quantidade * item.produto.precoVenda) | currency:'BRL' }}</td>
-          <td>
-            <div class="action-buttons">
+          <td class="action-buttons">
               <!-- Passando o índice 'i' do item ao invés do item em si -->
               <button class="edit-button" (click)="onEditItem(i)">Editar</button>
               <button class="delete-button" (click)="onDeleteItem(i)">Excluir</button>
-            </div>
           </td>
         </tr>
       </tbody>

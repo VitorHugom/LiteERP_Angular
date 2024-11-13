@@ -14,7 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
   selector: 'app-cadastro-pedido',
   standalone: true,
   templateUrl: './pedidos-cadastro.component.html',
-  styleUrls: ['./pedidos-cadastro.component.scss'],
+  styleUrls: ['./pedidos-cadastro.component.scss','./pedidos-cadastro.responsive.component.scss'],
   imports: [CommonModule, FormsModule, RouterLink, AddItemModalComponent]
 })
 export class PedidosCadastroComponent implements OnInit {
@@ -77,7 +77,7 @@ export class PedidosCadastroComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTiposCobranca(); // Carrega os tipos de cobrança
-    
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id && id !== 'novo') {
       this.isNew = false;
@@ -87,10 +87,10 @@ export class PedidosCadastroComponent implements OnInit {
           this.pedido.itens = this.pedido.itens || []; // Garante que a propriedade itens exista
           this.clienteInput = this.pedido.cliente?.razaoSocial || this.pedido.cliente?.nomeFantasia;
           this.vendedorInput = this.pedido.vendedor?.nome;
-  
+
           // Verifica e associa o tipo de cobrança correto ao objeto
           this.matchTipoCobranca();
-  
+
           // Carrega os itens do pedido
           this.loadItensDoPedido(this.pedido.id);
         },
@@ -100,8 +100,8 @@ export class PedidosCadastroComponent implements OnInit {
       });
     }
   }
-  
-  
+
+
   loadItensDoPedido(idPedido: string): void {
     this.pedidosService.getItensPedido(idPedido).subscribe({
       next: (itens) => {
@@ -127,8 +127,8 @@ export class PedidosCadastroComponent implements OnInit {
       });
     });
   }
-  
-  
+
+
 
   matchTipoCobranca(): void {
     if (this.pedido && this.pedido.tipoCobranca && this.tiposCobranca.length) {
@@ -257,12 +257,12 @@ export class PedidosCadastroComponent implements OnInit {
       this.exibirMensagem('Preencha todos os campos obrigatórios.', false);
       return;
     }
-  
+
     // Definir a data de emissão para pedidos novos
     if (this.isNew) {
       this.pedido.dataEmissao = new Date().toISOString();
     }
-  
+
     const pedidoPayload = {
       idCliente: this.pedido.cliente.id,
       idVendedor: this.pedido.vendedor.id,
@@ -271,10 +271,10 @@ export class PedidosCadastroComponent implements OnInit {
       status: this.pedido.status,
       idTipoCobranca: this.pedido.tipoCobranca.id
     };
-  
+
     // Armazenar os itens em uma variável temporária para preservá-los
     const itensTemporarios = this.pedido.itens || [];
-  
+
     // Se for um novo pedido, criar
     if (this.isNew) {
       this.pedidosService.createPedido(pedidoPayload).subscribe({
@@ -283,10 +283,10 @@ export class PedidosCadastroComponent implements OnInit {
           this.pedido = response;
 
           this.matchTipoCobranca();
-  
+
           // Garantir que o array de itens existe, mesmo que esteja vazio
           this.pedido.itens = itensTemporarios.length > 0 ? itensTemporarios : [];
-  
+
           // Salvar os itens e excluir os marcados
           this.salvarItensEExcluirMarcados(response.id);
           this.exibirMensagem('Pedido cadastrado com sucesso!', true);
@@ -304,7 +304,7 @@ export class PedidosCadastroComponent implements OnInit {
         next: () => {
           // Garantir que o array de itens existe, mesmo que esteja vazio
           this.pedido.itens = itensTemporarios.length > 0 ? itensTemporarios : [];
-  
+
           // Salvar os itens e excluir os marcados
           this.salvarItensEExcluirMarcados(this.pedido.id);
           this.exibirMensagem('Pedido atualizado com sucesso!', true);
@@ -315,11 +315,11 @@ export class PedidosCadastroComponent implements OnInit {
         }
       });
     }
-  }  
-  
+  }
+
   saveItensDoPedido(idPedido: number): void {
     const idsItensExistentes = this.pedido.itens.map((item: { id: number }) => item.id);
-  
+
     this.pedido.itens.forEach((item: any) => {
       const itemPayload = {
         idPedido: idPedido,
@@ -327,7 +327,7 @@ export class PedidosCadastroComponent implements OnInit {
         preco: item.produto.precoVenda,
         quantidade: item.quantidade
       };
-    
+
       // Verifique se o item é novo (id não existe)
       if (!item.id) {
         // Adiciona novo item
@@ -350,7 +350,7 @@ export class PedidosCadastroComponent implements OnInit {
           }
         });
       }
-    });    
+    });
   }
 
   onDelete(): void {
@@ -416,7 +416,7 @@ export class PedidosCadastroComponent implements OnInit {
   searchProdutosLazy(): void {
     this.loadingProdutos = true;
     const pageSize = 10;  // Definir o tamanho da página
-  
+
     this.produtosService.searchProdutos(this.produtoInput, this.currentPageProdutos, pageSize).subscribe({
       next: (response) => {
         if (this.currentPageProdutos === 0) {
@@ -433,7 +433,7 @@ export class PedidosCadastroComponent implements OnInit {
       }
     });
   }
-  
+
 
   onSelectProduto(produto: any): void {
     this.openAddItemModal(produto);
@@ -445,7 +445,7 @@ export class PedidosCadastroComponent implements OnInit {
       width: '400px',
       data: { produto }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (!this.pedido.itens) {
@@ -456,7 +456,7 @@ export class PedidosCadastroComponent implements OnInit {
       }
     });
   }
-  
+
 
   onScrollProdutos(): void {
     if (!this.loadingProdutos) {
@@ -470,7 +470,7 @@ export class PedidosCadastroComponent implements OnInit {
       width: '400px',
       data: { produto: item.produto, quantidade: item.quantidade }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Atualiza o item correto com base no índice
@@ -482,16 +482,16 @@ export class PedidosCadastroComponent implements OnInit {
       }
     });
   }
-  
+
   onDeleteItem(index: number): void {
     const confirmacao = confirm('Tem certeza que deseja excluir este item?');
     if (confirmacao) {
       const item = this.pedido.itens[index];
-      
+
       if (item.id) {
         this.itensParaExcluir.push(item); // Adiciona o item à lista de exclusão
       }
-      
+
       // Remove o item da lista de itens
       this.pedido.itens.splice(index, 1);
       console.log('Item excluído:', item);
@@ -506,7 +506,7 @@ export class PedidosCadastroComponent implements OnInit {
       this.exibirMensagem('Erro ao salvar itens: ID do pedido não encontrado.', false);
       return;
     }
-  
+
     // Excluir itens marcados para exclusão
     if (this.itensParaExcluir.length > 0) {
       this.itensParaExcluir.forEach((item: any) => {
