@@ -11,13 +11,14 @@
 h1 {
 text-align: center;
 color: #333;
-font-size: clamp(1.5em, 2.5vw, 2em);
+font-size: 1.5rem;
 margin-bottom: 20px;
 }
 
 .form-group {
 margin-bottom: 15px;
 position: relative;
+font-size: .875rem;
 }
 
 input, select {
@@ -28,6 +29,12 @@ border-radius: 4px;
 font-size: 1em;
 background-color: #f9f9f9;
 color: #555;
+}
+
+input{
+  ::placeholder{
+    font-size: .875rem;
+  }
 }
 
 .autocomplete-list {
@@ -96,11 +103,11 @@ flex: 1 1 calc(33% - 10px);
 }
 
 .consultar-button {
-    background-color: #1f9203;
-    color: #ffffff;
-    &:hover {
-        background-color: #029902;
-    }
+  background-color: #28a745;
+
+  &:hover {
+    background-color: #218838;
+  }
 }
 
 .feedback-box {
@@ -124,9 +131,9 @@ border: 1px solid #f5c6cb;
 }
 
 .voltar-home-button {
-    background-color: #c48704;
-    color: white;
-    &:hover {
-        background-color: #b16707;
-    }
-}  
+  background-color: #007bff;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
