@@ -79,7 +79,7 @@
 
   &::placeholder{
     color:#8D8D8D;
-    font-size: 1rem;
+    font-size: .875rem;
   }
 }
 
@@ -157,7 +157,6 @@
 @media (max-width: 600px) {
 
   .signup-container{
-    padding: 15px;
     max-width: 350px;
   }
 
@@ -165,10 +164,6 @@
   .form-group {
     margin-bottom: 12px;
 
-    input {
-      padding: 8px 0;
-      font-size: 0.875rem;
-    }
   }
 
   .signup-button {
