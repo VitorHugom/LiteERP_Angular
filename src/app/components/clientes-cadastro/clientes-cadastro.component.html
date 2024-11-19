@@ -88,7 +88,7 @@
       </div>
 
       <!-- Campo para RG -->
-      <div class="form-group">
+      <div *ngIf="cliente.tipoPessoa != 'juridica'" class="form-group">
         <label for="rg">RG</label>
         <input
           type="text"
@@ -101,7 +101,7 @@
       </div>
 
       <!-- Campo para Data de Nascimento -->
-      <div class="form-group">
+      <div *ngIf="cliente.tipoPessoa != 'juridica'" class="form-group">
         <label for="dataNascimento">Data de Nascimento</label>
         <input type="date" id="dataNascimento" [(ngModel)]="cliente.dataNascimento" name="dataNascimento" />
       </div>

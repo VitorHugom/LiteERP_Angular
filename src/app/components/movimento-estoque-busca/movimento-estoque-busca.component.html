@@ -1,0 +1,55 @@
+<div class="busca-movimentos-container">
+  <h1>Buscar Movimentos de Estoque</h1>
+
+  <div class="search-container">
+    <label for="dataInicio" class="search-label">Data Início:</label>
+    <input type="date" [(ngModel)]="dataInicio" id="dataInicio" class="search-input">
+
+    <label for="dataFim" class="search-label">Data Fim:</label>
+    <input type="date" [(ngModel)]="dataFim" id="dataFim" class="search-input">
+
+    <button (click)="searchMovimentos()" class="search-button">Buscar</button>
+  </div>
+
+  <!-- Tabela de resultados -->
+  <table *ngIf="movimentos.length > 0; else noMovimentos" class="movimento-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Data Movimento</th>
+        <!-- Exibe a coluna Pedido se houver movimentos com idPedido preenchido -->
+        <th *ngIf="exibirColunaPedido">Pedido</th>
+        <!-- Exibe a coluna Recebimento se houver movimentos com idRecebimentoMercadoria preenchido -->
+        <th *ngIf="exibirColunaRecebimento">Recebimento</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let movimento of movimentos" class="movimento-item">
+        <td data-label="ID">{{ movimento.id }}</td>
+        <td data-label="Produto">{{ movimento.produto }}</td>
+        <td data-label="Quantidade">{{ movimento.qtd }}</td>
+        <td data-label="Data">{{ movimento.dataMovimentacao | date:'dd/MM/yyyy' }}</td>
+        <!-- Exibe o ID do Pedido se existir -->
+        <td *ngIf="exibirColunaPedido" data-label="Pedido">{{ movimento.idPedido }}</td>
+        <!-- Exibe o ID do Recebimento de Mercadoria se existir -->
+        <td *ngIf="exibirColunaRecebimento" data-label="Recebimento">{{ movimento.idRecebimentoMercadoria }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noMovimentos>
+    <p>Nenhum movimento encontrado.</p>
+  </ng-template>
+
+  <div class="pagination">
+    <button (click)="goToPage(page - 1)" [disabled]="page === 0">Anterior</button>
+    <span>Página {{ page + 1 }} de {{ totalPages }}</span>
+    <button (click)="goToPage(page + 1)" [disabled]="page >= totalPages - 1">Próximo</button>
+  </div>
+
+  <div class="button-container">
+    <button (click)="navigateToHome()" class="nav-button">Voltar para Home</button>
+  </div>
+</div>

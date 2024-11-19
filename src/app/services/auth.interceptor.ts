@@ -10,6 +10,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   const authToken = sessionStorage.getItem('auth-token');
+  const expiration = sessionStorage.getItem('token-expiration');
+  
+  if (expiration && new Date().getTime() >= +expiration) {
+    // Token expirado - exiba modal e redirecione para login
+    alert('Sessão expirada. Faça login novamente.');
+    sessionStorage.clear();  // Limpe o token e outras informações
+    window.location.href = '/login';  // Redirecione para a tela de login
+    return next(req);
+  }
 
   if (authToken) {
     const clonedRequest = req.clone({

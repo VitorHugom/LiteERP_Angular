@@ -115,11 +115,16 @@ export class FinalizarPedidoModalComponent implements OnInit {
                 const pedidoPayload = {
                     idCliente: this.data.cliente.id,  // ID do cliente selecionado
                     idVendedor: vendedor.id,  // ID do vendedor encontrado
-                    dataEmissao: new Date().toISOString(), // Data atual
+                    dataEmissao: '', // Data atual
                     valorTotal: this.total,  // Usar o total passado no modal
                     status: 'aguardando',
                     idTipoCobranca: this.tipoCobranca.id // Tipo de cobrança selecionado
                 };
+
+                // Definir a data de emissão para pedidos novos
+                const now = new Date();
+                now.setHours(now.getHours() - now.getTimezoneOffset() / 60); // Ajusta para GMT-3
+                pedidoPayload.dataEmissao = now.toISOString();
 
                 // Criar o pedido primeiro
                 this.pedidosService.createPedido(pedidoPayload).subscribe({

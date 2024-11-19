@@ -19,6 +19,8 @@ import { PedidosBuscaComponent } from './components/pedidos-busca/pedidos-busca.
 import { PedidosCadastroComponent } from './components/pedidos-cadastro/pedidos-cadastro.component';
 import { NovoPedidoVendas } from './components/novo-pedido-vendas/novo-pedido-vendas.component';
 import { PedidosAbertoComponent } from './components/pedidos-aberto/pedidos-aberto.component';
+import { FornecedoresBuscaComponent } from './components/fornecedores-busca/fornecedores-busca.component';
+import { FornecedoresCadastroComponent } from './components/fornecedores-cadastro/fornecedores-cadastro.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,6 +30,10 @@ export const routes: Routes = [
   { path: 'gerencial', component: GerencialComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
   { path: 'busca-liberacao', component: BuscaLiberacaoComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
+  { path: 'fornecedores-busca', component: FornecedoresBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'fornecedor/:id', component: FornecedoresCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
 
   { path: 'caixa', component: CaixaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
 

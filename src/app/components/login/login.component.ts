@@ -50,6 +50,9 @@ export class LoginComponent {
           const role = decodedToken?.role;
           const userId = decodedToken?.userId;
 
+          const expirationDate = decodedToken.exp * 1000; // exp está em segundos, então converta para ms
+          sessionStorage.setItem('token-expiration', expirationDate.toString());
+
           sessionStorage.setItem('userId', userId);
 
           if (role) {

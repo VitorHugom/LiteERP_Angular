@@ -79,7 +79,15 @@ export class SidebarComponent {
       icone: 'images/icone-arrow.png',
       label: 'Compras',
       subItems: [
-        { label: 'Mercadorias', routerLink: '/recebimento-mercadorias' }
+        { label: 'Recebimento de Mercadorias', routerLink: '/recebimento-mercadorias-busca' }
+      ]
+    },
+    {
+      image:'images/icone-estoque.png',
+      icone: 'images/icone-arrow.png',
+      label: 'Estoque',
+      subItems: [
+        { label: 'Movimento de Estoque', routerLink: '/movimento-estoque-busca' }
       ]
     },
     {
