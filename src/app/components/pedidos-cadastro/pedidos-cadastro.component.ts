@@ -25,7 +25,7 @@ export class PedidosCadastroComponent implements OnInit {
     vendedor: null,
     dataEmissao: '',
     valorTotal: null,
-    status: 'aguardando',
+    status: 'em_aberto',
     tipoCobranca: null,
     itens: []
   };
@@ -381,7 +381,7 @@ export class PedidosCadastroComponent implements OnInit {
       vendedor: null,
       dataEmissao: '',
       valorTotal: null,
-      status: 'aguardando',
+      status: 'em_aberto',
       tipoCobranca: null,
       itens: []
     };

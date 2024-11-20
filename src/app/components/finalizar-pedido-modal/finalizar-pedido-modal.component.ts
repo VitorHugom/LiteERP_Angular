@@ -91,7 +91,7 @@ export class FinalizarPedidoModalComponent implements OnInit {
     this.data.cliente = cliente;  // Armazena o cliente selecionado no data.cliente
     this.clienteInput = cliente.razaoSocial || cliente.nomeFantasia;
     this.showClientesList = false;
-  }  
+  }
 
   onFinalizar(): void {
     // Verificação de campos obrigatórios
@@ -117,7 +117,7 @@ export class FinalizarPedidoModalComponent implements OnInit {
                     idVendedor: vendedor.id,  // ID do vendedor encontrado
                     dataEmissao: '', // Data atual
                     valorTotal: this.total,  // Usar o total passado no modal
-                    status: 'aguardando',
+                    status: 'em_aberto',
                     idTipoCobranca: this.tipoCobranca.id // Tipo de cobrança selecionado
                 };
 
