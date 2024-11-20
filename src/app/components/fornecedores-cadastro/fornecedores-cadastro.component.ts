@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { FornecedoresService } from '../../services/fornecedores.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CidadesService } from '../../services/cidades.service';
@@ -12,7 +12,7 @@ import { VendedoresService } from '../../services/vendedores.service';
   standalone: true,
   templateUrl: './fornecedores-cadastro.component.html',
   styleUrls: ['./fornecedores-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule, NgxMaskDirective],
+  imports: [CommonModule, FormsModule, NgxMaskDirective,RouterLink],
   providers: [provideNgxMask()]
 })
 export class FornecedoresCadastroComponent implements OnInit {
@@ -72,7 +72,7 @@ export class FornecedoresCadastroComponent implements OnInit {
   showAlert = false; // Exibir mensagem de sucesso ou erro
 
   constructor(
-    private cidadesService: CidadesService, 
+    private cidadesService: CidadesService,
     private fornecedoresService: FornecedoresService,
     private vendedoresService: VendedoresService,
     private route: ActivatedRoute,
@@ -136,8 +136,8 @@ export class FornecedoresCadastroComponent implements OnInit {
     // Verifica se o fornecedor é pessoa física e aplica a máscara de CPF
     if (this.fornecedor.tipoPessoa === 'fisica') {
       return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-    } 
-    
+    }
+
     // Caso contrário, aplica a máscara de CNPJ
     return value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
   }
@@ -159,7 +159,7 @@ export class FornecedoresCadastroComponent implements OnInit {
       this.exibirMensagem('Preencha todos os campos obrigatórios.', false);
       return;
     }
-  
+
     this.isLoading = true;
     if (this.isNew) {
 
@@ -176,7 +176,7 @@ export class FornecedoresCadastroComponent implements OnInit {
       } else {
         this.fornecedor.cnpj = this.fornecedor.cpfCnpj;
         this.fornecedor.cpf = '';
-      } 
+      }
 
 
       this.fornecedoresService.createFornecedor(this.fornecedor).subscribe({
@@ -206,7 +206,7 @@ export class FornecedoresCadastroComponent implements OnInit {
         }
       });
     }
-  }  
+  }
 
   onDelete(): void {
     if (this.fornecedor.id) {
@@ -306,8 +306,8 @@ export class FornecedoresCadastroComponent implements OnInit {
 
   onSearchCidades(event: Event): void {
     const inputValue = (event.target as HTMLInputElement).value;
-  
-    if (inputValue.length >= 2) { 
+
+    if (inputValue.length >= 2) {
       this.cidadeInput = inputValue;
       this.currentPage = 0;  // Reinicia a página para uma nova busca
       this.searchCidadesLazy();  // Executa a busca com a nova entrada
@@ -316,15 +316,15 @@ export class FornecedoresCadastroComponent implements OnInit {
       this.showCidadesList = false;  // Oculta a lista
     }
   }
-  
+
 
   searchCidadesLazy(): void {
     this.loadingCidades = true;  // Ativa o indicador de carregamento
-  
+
     this.cidadesService.searchCidades(this.cidadeInput, this.currentPage, this.pageSize).subscribe({
       next: (response) => {
         console.log("Resposta do serviço de cidades:", response);
-  
+
         // Verifica se a resposta é uma lista de cidades
         if (Array.isArray(response)) {
           if (this.currentPage === 0) {
@@ -348,9 +348,9 @@ export class FornecedoresCadastroComponent implements OnInit {
       }
     });
   }
-  
-  
-  
+
+
+
   onSelectCidade(cidade: any): void {
     this.fornecedor.cidade = cidade;  // Associa a cidade selecionada ao fornecedor
     this.cidadeInput = cidade.nome;  // Atualiza o input de cidade com o nome selecionado
@@ -366,18 +366,18 @@ export class FornecedoresCadastroComponent implements OnInit {
 
   onSearchVendedores(event: Event): void {
     const inputValue = (event.target as HTMLInputElement).value;
-    if (inputValue.length >= 2) { 
+    if (inputValue.length >= 2) {
       this.vendedorInput = inputValue;
-      this.currentPage = 0;  
-      this.searchVendedoresLazy();  
+      this.currentPage = 0;
+      this.searchVendedoresLazy();
     } else {
-      this.vendedores = [];  
-      this.showVendedoresList = false;  
+      this.vendedores = [];
+      this.showVendedoresList = false;
     }
   }
 
   searchVendedoresLazy(): void {
-    this.loadingVendedores = true; 
+    this.loadingVendedores = true;
 
     this.vendedoresService.searchVendedores(this.vendedorInput, this.currentPage, this.pageSize).subscribe({
       next: (response) => {
@@ -401,8 +401,8 @@ export class FornecedoresCadastroComponent implements OnInit {
   }
 
   onSelectVendedor(vendedor: any): void {
-    this.fornecedor.vendedor = vendedor;  
-    this.vendedorInput = vendedor.nome;  
+    this.fornecedor.vendedor = vendedor;
+    this.vendedorInput = vendedor.nome;
     this.showVendedoresList = false;
   }
 
@@ -415,7 +415,7 @@ export class FornecedoresCadastroComponent implements OnInit {
 
   setEstadoInscricaoEstadual(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    
+
     // Convertendo para booleano
     this.fornecedor.estadoInscricaoEstadual = selectedValue === 'true';
   }
