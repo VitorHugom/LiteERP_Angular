@@ -1,35 +1,38 @@
-<h2 mat-dialog-title>
-  Detalhes do Pedido<br>
-  <span class="cliente-nome">Cliente: {{ selectedPedido.cliente.razaoSocial }}</span>
-</h2>
-<div class="modal-content">
-  <div class="pedido-info">
-    <p><strong>Forma de Pagamento:</strong> {{ selectedPedido.tipoCobranca.descricao }}</p>
-    <p><strong>Valor Total:</strong> {{ selectedPedido.valorTotal | currency:'BRL' }}</p>
+<div class="container-modal">
+
+  <h2 mat-dialog-title>
+    Detalhes do Pedido<br>
+    <span class="cliente-nome">Cliente: {{ selectedPedido.cliente.razaoSocial }}</span>
+  </h2>
+  <div class="modal-content">
+    <div class="pedido-info">
+      <p><strong>Forma de Pagamento:</strong> {{ selectedPedido.tipoCobranca.descricao }}</p>
+      <p><strong>Valor Total:</strong> {{ selectedPedido.valorTotal | currency:'BRL' }}</p>
+    </div>
+
+    <h3>Itens do Pedido</h3>
+    <table class="itens-table">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Quantidade</th>
+          <th>Valor Unitário</th>
+          <th>Valor Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of selectedPedido.itens">
+          <td>{{ item.produto?.descricao }}</td>
+          <td>{{ item.quantidade }}</td>
+          <td>{{ item.preco | currency:'BRL' }}</td>
+          <td>{{ (item.quantidade * item.preco) | currency:'BRL' }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <h3>Itens do Pedido</h3>
-  <table class="itens-table">
-    <thead>
-      <tr>
-        <th>Produto</th>
-        <th>Quantidade</th>
-        <th>Valor Unitário</th>
-        <th>Valor Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of selectedPedido.itens">
-        <td>{{ item.produto?.descricao }}</td>
-        <td>{{ item.quantidade }}</td>
-        <td>{{ item.preco | currency:'BRL' }}</td>
-        <td>{{ (item.quantidade * item.preco) | currency:'BRL' }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="modal-actions">
-  <button mat-button class="btn-voltar" (click)="onClose()">Fechar</button>
-  <button mat-button class="btn-baixar" (click)="baixarPedido()">Baixar Pedido</button>
+  <div class="modal-actions">
+    <button mat-button class="btn-voltar" (click)="onClose()">Fechar</button>
+    <button mat-button class="btn-baixar" (click)="baixarPedido()">Baixar Pedido</button>
+  </div>
 </div>
