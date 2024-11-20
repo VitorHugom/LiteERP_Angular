@@ -30,32 +30,30 @@
   h1 {
     text-align: center;
     color: #333;
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 2vw, 2.2rem);
   }
 
   .tab-selector {
     display: flex;
     justify-content: center;
+    flex-direction: row;
     gap: 15px;
     margin-bottom: 20px;
 
     button {
-      padding: 12px 30px;
+      padding: 10px 20px;
       border: none;
-      border-radius: 8px;
-      background-color: #ddd;
-      font-size: 1rem;
+      background-color: #e0e0e0;
       cursor: pointer;
-      transition: all 0.3s ease;
+      border-radius: 4px;
+      font-size: .875rem;
+      transition: transform 0.3s ease-in-out;
 
-      &:hover {
-        background-color: #007bff;
-        color: #fff;
-      }
 
       &.active {
         background-color: #007bff;
-        color: #fff;
+        color: white;
+        transform: scale(1.1);
       }
     }
   }
@@ -75,6 +73,7 @@
       label {
         color: #555;
         font-weight: bold;
+        font-size: .875rem;
       }
 
       input,
@@ -84,7 +83,7 @@
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: #fff;
-        font-size: 1rem;
+        font-size: .875rem;
 
         &:focus {
           border-color: #007bff;
@@ -186,38 +185,45 @@
 
   .button-group {
     display: flex;
-    justify-content: space-around;
-    gap: 10px;
+    justify-content: space-between;
+    margin-top: 10px;
 
     button {
-      flex: 1;
-      padding: 12px;
+      padding: 10px 20px;
       border: none;
-      border-radius: 8px;
-      color: #fff;
-      font-weight: bold;
+      border-radius: 5px;
       cursor: pointer;
-      transition: all 0.3s ease;
-
+      text-align: center;
+      color: white;
+      transition: background-color 0.3s ease;
       &.novo-button {
-        background-color: #28a745;
+        background-color: #4caf50;
+
+        &:hover {
+          background-color: #3e8f40;
+        }
       }
 
       &.gravar-button {
-        background-color: #007bff;
+        background-color: #008cba;
+        &:hover {
+          background-color: #007bb5;
+        }
       }
-
       &.deletar-button {
-        background-color: #dc3545;
+        background-color: #f44336;
+
+        &:hover {
+          background-color: #d32f2f;
+        }
       }
 
       &.consultar-button {
-        background-color: #ffc107;
-        color: #333;
-      }
+        background-color: #ff9800;
 
-      &:hover {
-        opacity: 0.9;
+        &:hover {
+          background-color: #fb8c00;
+        }
       }
     }
   }
@@ -270,5 +276,10 @@
     .button-group {
       flex-direction: column;
     }
+  }
+
+  .button-group{
+    flex-direction: column;
+    gap: 10px;
   }
 }
