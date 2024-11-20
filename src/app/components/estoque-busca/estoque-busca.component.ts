@@ -44,7 +44,7 @@ export class EstoqueBuscaComponent implements OnInit {
   }
 
   navigateToHome(): void {
-    this.router.navigate(['/gerencial-home']);
+    this.router.navigate(['/gerencial']);
   }
 
   goToPage(page: number): void {

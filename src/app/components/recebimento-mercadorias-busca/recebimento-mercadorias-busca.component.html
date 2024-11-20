@@ -1,0 +1,46 @@
+<div class="busca-recebimentos-mercadoria-container">
+    <h1>Buscar Recebimentos Mercadoria</h1>
+    
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchQuery" (keydown.enter)="searchRecebimentosMercadoria()" placeholder="Buscar recebimentosMercadoria..." class="search-input">
+      <select [(ngModel)]="searchBy" class="search-select">
+        <option value="id">ID</option>
+        <option value="cliente">Fornecedor</option>
+      </select>
+      <button (click)="searchRecebimentosMercadoria()" class="search-button">Buscar</button>
+    </div>
+  
+    <!-- Tabela de resultados -->
+    <table *ngIf="recebimentosMercadoria.length > 0; else noRecebimentosMercadoria" class="recebimento-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fornecedor</th>
+          <th>Data Recebimento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let recebimento of recebimentosMercadoria" (click)="viewRecebimento(recebimento.idRecebimento)" class="recebimento-item">
+          <td data-label="ID">{{ recebimento.idRecebimento }}</td>
+          <td data-label="Fornecedor">{{ recebimento.fornecedor }}</td>
+          <td data-label="Data Recebimento">{{ recebimento.dataRecebimento | date:'dd/MM/yyyy' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <ng-template #noRecebimentosMercadoria>
+      <p>Nenhum recebimento encontrado.</p>
+    </ng-template>
+  
+    <div class="pagination">
+      <button (click)="goToPage(page - 1)" [disabled]="page === 0">Anterior</button>
+      <span>Página {{ page + 1 }} de {{ totalPages }}</span>
+      <button (click)="goToPage(page + 1)" [disabled]="page >= totalPages - 1">Próximo</button>
+    </div>
+  
+    <div class="button-container">
+      <button (click)="navigateToHome()" class="nav-button">Voltar para Home</button>
+      <button (click)="createNovoRecebimento()" class="nav-button novo-button">Novo</button>
+    </div>
+  </div>
+  

@@ -38,7 +38,7 @@ export class SidebarComponent {
             { label: 'Relatórios', routerLink: '/relatorio-clientes' }
           ]
         },
-        { label: 'Fornecedores', routerLink: '/fornecedores' },
+        { label: 'Fornecedores', routerLink: '/fornecedores-busca' },
         {
           label: 'Produtos',
           icone: 'images/icone-arrow.png',
@@ -87,7 +87,8 @@ export class SidebarComponent {
       icone: 'images/icone-arrow.png',
       label: 'Estoque',
       subItems: [
-        { label: 'Movimento de Estoque', routerLink: '/movimento-estoque-busca' }
+        { label: 'Movimento de Estoque', routerLink: '/movimento-estoque-busca' },
+        { label: 'Estoque', routerLink: '/estoque-busca' }
       ]
     },
     {

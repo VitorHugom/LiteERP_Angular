@@ -93,15 +93,10 @@ export class FornecedoresBuscaComponent implements OnInit {
   }
 
   navigateToHome(): void {
-    const role = sessionStorage.getItem('user-role');
-    if (role === 'ROLE_GERENCIAL'){
-      this.router.navigate(['/gerencial-home']);
-    } else if (role === 'ROLE_VENDAS'){
-      this.router.navigate(['/vendas-home']);
-    }  
+    this.router.navigate(['/gerencial']);  
   }
 
   createNovoFornecedor(): void {
-    this.router.navigate(['/fornecedores/novo']);
+    this.router.navigate(['/fornecedor/novo']);
   }
 }

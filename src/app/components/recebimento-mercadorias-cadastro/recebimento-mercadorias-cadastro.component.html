@@ -1,0 +1,102 @@
+<div class="recebimento-detail-container">
+  <!-- Link de Voltar -->
+  <a class="link-back" (click)="onConsultar()">
+    <img src="images/icone-back.png" alt="Voltar" /> Voltar
+  </a>
+
+  <!-- Título -->
+  <h1>Cadastro de Recebimento de Mercadorias</h1>
+
+  <!-- Seletor de Abas -->
+  <div class="tab-selector">
+    <button [class.active]="activeTab === 'geral'" (click)="setActiveTab('geral')">Dados Gerais</button>
+    <button [class.active]="activeTab === 'itens'" (click)="setActiveTab('itens')">Itens do Recebimento</button>
+  </div>
+
+  <!-- Conteúdo da Aba Dados Gerais -->
+  <div *ngIf="activeTab === 'geral'" class="tab-content">
+    <div class="form-group">
+      <label>ID:</label>
+      <span>{{ isNew ? 'Será gerado automaticamente' : recebimento.id }}</span>
+    </div>
+
+    <div class="form-group">
+      <label for="fornecedor">Fornecedor</label>
+      <input type="text" id="fornecedor" [(ngModel)]="fornecedorInput" (input)="onSearchFornecedores($event)" placeholder="Digite o nome do fornecedor..." />
+      <ul *ngIf="fornecedores.length && showFornecedoresList" class="autocomplete-list">
+        <li *ngFor="let fornecedor of fornecedores" (click)="onSelectFornecedor(fornecedor)">
+          {{ fornecedor.razaoSocial || fornecedor.nomeFantasia }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label>Data de Recebimento</label>
+      <input type="date" [(ngModel)]="recebimento.dataRecebimento" />
+    </div>
+
+    <div class="form-group">
+      <label>Tipo de Cobrança</label>
+      <select [(ngModel)]="recebimento.tipoCobranca">
+        <option *ngFor="let tipo of tiposCobranca" [ngValue]="tipo">{{ tipo.descricao }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Conteúdo da Aba Itens do Recebimento -->
+  <div *ngIf="activeTab === 'itens'" class="tab-content">
+    <div class="form-group">
+      <label for="produto">Buscar Produto</label>
+      <input type="text" id="produto" [(ngModel)]="produtoInput" (input)="onSearchProdutos($event)" placeholder="Digite o nome do produto..." />
+      <ul *ngIf="produtos.length && showProdutosList" class="autocomplete-list">
+        <li *ngFor="let produto of produtos" (click)="onSelectProduto(produto)">
+          {{ produto.descricao }} - {{ produto.precoCompra | currency:'BRL' }}
+        </li>
+      </ul>
+    </div>
+
+    <table *ngIf="recebimento.itensRecebimento.length" class="itens-table">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Quantidade</th>
+          <th>Custo Unitário</th>
+          <th>Valor Total</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of recebimento.itensRecebimento; let i = index">
+          <td>{{ item.produto.descricao }}</td>
+          <td>{{ item.quantidade }}</td>
+          <td>{{ item.valorUnitario | currency:'BRL' }}</td>
+          <td>{{ (item.quantidade * item.valorUnitario) | currency:'BRL' }}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="edit-button" (click)="onEditItem(i)">Editar</button>
+              <button class="delete-button" (click)="onDeleteItem(i)">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Seção de Total -->
+  <div class="total-section">
+    <label>Total do Recebimento:</label>
+    <span>{{ valorTotal | currency:'BRL' }}</span>
+  </div>
+
+  <!-- Botões de Ação -->
+  <div class="button-group">
+    <button class="novo-button" (click)="onNew()">Novo</button>
+    <button class="gravar-button" (click)="onSave()">Gravar</button>
+    <button *ngIf="!isNew" class="deletar-button" (click)="onDelete()">Deletar</button>
+    <button class="consultar-button" (click)="onConsultar()">Consultar</button>
+  </div>
+
+  <div *ngIf="message" [ngClass]="{'success-message': isSuccess, 'error-message': !isSuccess}" class="message-box">
+    {{ message }}
+  </div>
+</div>

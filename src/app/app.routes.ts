@@ -21,6 +21,10 @@ import { NovoPedidoVendas } from './components/novo-pedido-vendas/novo-pedido-ve
 import { PedidosAbertoComponent } from './components/pedidos-aberto/pedidos-aberto.component';
 import { FornecedoresBuscaComponent } from './components/fornecedores-busca/fornecedores-busca.component';
 import { FornecedoresCadastroComponent } from './components/fornecedores-cadastro/fornecedores-cadastro.component';
+import { RecebimentoMercadoriasBuscaComponent } from './components/recebimento-mercadorias-busca/recebimento-mercadorias-busca.component';
+import { RecebimentoMercadoriasCadastroComponent } from './components/recebimento-mercadorias-cadastro/recebimento-mercadorias-cadastro.component';
+import { MovimentoEstoqueBuscaComponent } from './components/movimento-estoque-busca/movimento-estoque-busca.component';
+import { EstoqueBuscaComponent } from './components/estoque-busca/estoque-busca.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -34,6 +38,11 @@ export const routes: Routes = [
   { path: 'fornecedores-busca', component: FornecedoresBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
   { path: 'fornecedor/:id', component: FornecedoresCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
+  { path: 'recebimento-mercadorias-busca', component: RecebimentoMercadoriasBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'recebimento-mercadorias-cadastro/:id', component: RecebimentoMercadoriasCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'movimento-estoque-busca', component: MovimentoEstoqueBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
+  { path: 'estoque-busca', component: EstoqueBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
   { path: 'caixa', component: CaixaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
 

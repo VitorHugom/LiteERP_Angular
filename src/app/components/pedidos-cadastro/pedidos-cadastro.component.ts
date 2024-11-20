@@ -4,7 +4,7 @@ import { ClientesService } from '../../services/clientes.service';
 import { VendedoresService } from '../../services/vendedores.service';
 import { TiposCobrancaService } from '../../services/tipos-cobranca.service';
 import { ProdutosService } from '../../services/produtos.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AddItemModalComponent } from '../add-item-modal/add-item-modal.component';
@@ -15,7 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
   standalone: true,
   templateUrl: './pedidos-cadastro.component.html',
   styleUrls: ['./pedidos-cadastro.component.scss','./pedidos-cadastro.responsive.component.scss'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, RouterLink]
 })
 export class PedidosCadastroComponent implements OnInit {
   isNew = true;
