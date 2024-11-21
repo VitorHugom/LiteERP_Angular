@@ -1,139 +1,221 @@
 .pedido-detail-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
     position: relative;
-}
 
-h1 {
-text-align: center;
-color: #333;
-font-size: 1.5rem;
-margin-bottom: 20px;
-}
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+      background-color: #f9f9f9;
+      color: #555;
 
-.form-group {
-margin-bottom: 15px;
-position: relative;
-font-size: .875rem;
-}
-
-input, select {
-width: 100%;
-padding: 10px;
-border: 1px solid #ccc;
-border-radius: 4px;
-font-size: 1em;
-background-color: #f9f9f9;
-color: #555;
-}
-
-input{
-  ::placeholder{
-    font-size: .875rem;
+      &::placeholder {
+        font-size: 0.875rem;
+      }
+    }
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+      gap: 8px;
+    
+      button {
+        flex: 1 1 auto;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    
+        &:active {
+          transform: translateY(0);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+      }
+    
+      .edit-button {
+        background-color: #007bff;
+        color: #fff;
+    
+        &:hover {
+          background-color: #0056b3;
+        }
+    
+        &:focus {
+          outline: 2px solid #0056b3;
+        }
+      }
+    
+      .delete-button {
+        background-color: #ff0000;
+        color: #fff;
+    
+        &:hover {
+          background-color: #cc0000;
+        }
+    
+        &:focus {
+          outline: 2px solid #cc0000;
+        }
+      }
+    }    
   }
-}
 
-.autocomplete-list {
-list-style-type: none;
-padding: 0;
-margin: 5px 0;
-max-height: 200px;
-overflow-y: auto;
-border: 1px solid #ccc;
-border-radius: 4px;
-background-color: white;
-position: absolute;
-top: 100%;
-width: 100%;
-z-index: 100;
-}
+  .autocomplete-list {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    z-index: 100;
 
-.autocomplete-list li {
-padding: 10px;
-cursor: pointer;
-border-bottom: 1px solid #eee;
-}
+    li {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
 
-.itens-table {
-width: 100%;
-border-collapse: collapse;
-margin-top: 10px;
-}
-
-.itens-table th, .itens-table td {
-padding: 10px;
-border: 1px solid #ddd;
-}
-
-.itens-table th {
-background-color: #f2f2f2;
-}
-
-.action-buttons button {
-padding: 5px 10px;
-border-radius: 4px;
-margin-right: 5px;
-cursor: pointer;
-}
-
-.edit-button {
-background-color: #007bff;
-color: white;
-}
-
-.button-group {
-display: flex;
-justify-content: space-between;
-flex-wrap: wrap;
-gap: 10px;
-margin-top: 20px;
-}
-
-button {
-padding: 10px 20px;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-color: white;
-flex: 1 1 calc(33% - 10px);
-}
-
-.consultar-button {
-  background-color: #28a745;
-
-  &:hover {
-    background-color: #218838;
+      &:hover {
+        background-color: #f2f2f2;
+      }
+    }
   }
-}
 
-.feedback-box {
-margin-top: 20px;
-padding: 10px;
-border-radius: 4px;
-text-align: center;
-font-size: 1.2em;
-}
+  .itens-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 
-.success {
-background-color: #d4edda;
-color: #155724;
-border: 1px solid #c3e6cb;
-}
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
 
-.error {
-background-color: #f8d7da;
-color: #721c24;
-border: 1px solid #f5c6cb;
-}
+    th {
+      background-color: #f2f2f2;
+    }
 
-.voltar-home-button {
-  background-color: #007bff;
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
 
-  &:hover {
-    background-color: #0056b3;
+  .itens-cards {
+    display: none;
+
+    @media (max-width: 768px) {
+      display: block;
+
+      .item-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        .card-content p {
+          margin: 5px 0;
+          font-size: 0.9rem;
+        }
+
+        .action-buttons {
+          display: flex;
+          justify-content: space-between; /* Mantém os botões organizados em telas pequenas */
+          gap: 4px; /* Reduz o espaçamento em telas menores */
+
+          button {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+          }
+        }
+      }
+    }
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+
+    button {
+      flex: 1 1 calc(50% - 10px);
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .consultar-button {
+      background-color: #28a745;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
+
+    .voltar-home-button {
+      background-color: #007bff;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+
+  .feedback-box {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1.2em;
+
+    &.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    &.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
   }
 }
