@@ -1,7 +1,7 @@
 
 .container__content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsivo com colunas de no mínimo 300px */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsivo com colunas de no mínimo 300px */
   grid-gap: 20px; /* Espaço entre os cards */
 }
 .content__card {
