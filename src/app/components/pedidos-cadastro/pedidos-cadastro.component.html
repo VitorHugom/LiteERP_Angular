@@ -86,18 +86,17 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of pedido.itens; let i = index">
-          <td>{{ item.produto.descricao }}</td>
-          <td>{{ item.quantidade }}</td>
-          <td>{{ item.produto.precoVenda | currency:'BRL' }}</td>
-          <td>{{ (item.quantidade * item.produto.precoVenda) | currency:'BRL' }}</td>
-          <td class="action-buttons">
-              <!-- Passando o índice 'i' do item ao invés do item em si -->
-              <button class="edit-button" (click)="onEditItem(i)">Editar</button>
-              <button class="delete-button" (click)="onDeleteItem(i)">Excluir</button>
+          <td data-label="Produto">{{ item.produto.descricao }}</td>
+          <td data-label="Quantidade">{{ item.quantidade }}</td>
+          <td data-label="Valor Unitário">{{ item.produto.precoVenda | currency:'BRL' }}</td>
+          <td data-label="Valor Total">{{ (item.quantidade * item.produto.precoVenda) | currency:'BRL' }}</td>
+          <td class="action-buttons" data-label="Ações">
+            <button class="edit-button" (click)="onEditItem(i)">Editar</button>
+            <button class="delete-button" (click)="onDeleteItem(i)">Excluir</button>
           </td>
         </tr>
       </tbody>
-    </table>
+    </table>    
   </div>
 
   <!-- Total do Pedido -->

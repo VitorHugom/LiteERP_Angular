@@ -240,5 +240,30 @@
     color: #721c24;
     border: 1px solid #f5c6cb;
   }
+  @media (max-width: 768px) {
+    .itens-table thead {
+      display: none;
+    }
+
+    .itens-table tbody tr {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
+
+    .itens-table td {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+    }
+
+    .itens-table td::before {
+      content: attr(data-label); /* Adiciona um rótulo usando o atributo data-label */
+      font-weight: bold;
+      width: 50%;
+      text-align: left;
+    }
+  }
 }
 
