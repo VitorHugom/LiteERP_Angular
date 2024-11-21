@@ -1,14 +1,10 @@
 <div class="cliente-detail-container">
-  <button class="button-back" [routerLink]="['/clientes-busca']">
-    <img src="images/icone-back.png" alt="">
-  </button>
-
     <div class="info-header">
       <div class="info-item">
         <strong>ID:</strong> {{ idDisplay }}
       </div>
       <div class="form-group tipo-pessoa-group">
-        <strong>Tipo de Pessoa:</strong>
+        <label for="tipoPessoa"><strong>Tipo de Pessoa:</strong></label>
         <div *ngIf="isNew" class="input-inline">
           <select id="tipoPessoa" [(ngModel)]="cliente.tipoPessoa" name="tipoPessoa">
             <option value="fisica">Pessoa Física</option>
@@ -19,10 +15,12 @@
           <span>{{ cliente.tipoPessoa === 'fisica' ? 'Pessoa Física' : 'Pessoa Jurídica' }}</span>
         </div>
       </div>
-      <div class="info-item cpf-cnpj-group">
+
+      <!-- Campo de CPF ou CNPJ, exibido somente após a seleção do tipo de pessoa -->
+      <div *ngIf="cliente.tipoPessoa" class="info-item cpf-cnpj-group">
         <label><strong>{{ cliente.tipoPessoa === 'fisica' ? 'CPF:' : 'CNPJ:' }}</strong></label>
         <div *ngIf="isNew" class="input-inline">
-          <input
+          <input 
             type="text"
             [(ngModel)]="cliente.cpfCnpj"
             [attr.placeholder]="cliente.tipoPessoa === 'fisica' ? 'Digite o CPF' : 'Digite o CNPJ'"
@@ -31,7 +29,7 @@
           />
         </div>
         <div *ngIf="!isNew" class="input-inline">
-          <span>{{ formatCpfCnpj(cliente.tipoPessoa === 'fisica' ? cliente.cpf : cliente.cnpj, cliente.tipoPessoa) }}</span>
+          <span>{{ formatCpfCnpj(cliente.tipoPessoa === 'fisica' ? cliente.cpf : cliente.cnpj) }}</span>
         </div>
       </div>
     </div>
