@@ -41,6 +41,14 @@
         <option *ngFor="let tipo of tiposCobranca" [ngValue]="tipo">{{ tipo.descricao }}</option>
       </select>
     </div>
+
+    <div class="form-group">
+      <label>Forma de Pagamento</label>
+      <select [(ngModel)]="recebimento.formaPagamento">
+        <option *ngFor="let forma of formasPagamento" [ngValue]="forma">{{ forma.descricao }}</option>
+      </select>
+    </div>
+    
   </div>
 
   <!-- Conteúdo da Aba Itens do Recebimento -->

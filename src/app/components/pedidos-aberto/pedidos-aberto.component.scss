@@ -1,74 +1,105 @@
 .pedidos-aberto-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    position: relative;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #333333;
 
   h1 {
     text-align: center;
-    color: #333;
-    font-size: clamp(1.8rem, 2.5vw, 2.2rem);
-    margin-bottom: 25px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0056b3;
   }
 
-  .pedidos-list {
-    display: flex;
+  .client-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f9f9f9;
+    border-radius: 12px;
+    overflow: hidden;
+
+    th,
+    td {
+      padding: 1rem;
+      text-align: left;
+      font-size: 0.9rem;
+      color: #555555;
+    }
+
+    thead {
+      background-color: #e3f2fd;
+      color: #0056b3;
+    }
+
+    tbody tr {
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #f1f1f1;
+      }
+    }
+  }
+
+  .pedido-card {
+    display: none;
     flex-direction: column;
-    gap: 15px;
-  }
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
 
-  .pedido-item {
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease;
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
 
-    &:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      span:first-child {
+        font-weight: bold;
+        color: #0056b3;
+      }
     }
   }
 
-  .pedido-info {
-    flex: 1;
-    p {
-      margin: 5px 0;
-      color: #555;
+  @media (max-width: 768px) {
+    .client-table {
+      display: none;
+    }
+
+    .pedido-card {
+      display: flex;
     }
   }
 
-  .no-pedidos-message {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: #777;
-  }
-
-  .button-group {
+  .button-container {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-  }
 
-  .voltar-home-button {
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-
-    background-color: #007bff;
-
-    &:hover {
+    .nav-button {
       background-color: #0056b3;
+      color: #ffffff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #003c82;
+      }
     }
   }
+
+  .no-pedidos {
+    text-align: center;
+    font-size: 1rem;
+    color: #777777;
+  }
+}

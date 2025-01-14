@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GrupoProdutosService {
-  private baseUrl = 'http://localhost:8080/grupo_produtos'; // Endpoint para grupos de produtos
+  private baseUrl = environment.apiUrl + '/grupo_produtos'; // Endpoint para grupos de produtos
 
   constructor(private http: HttpClient) {}
 

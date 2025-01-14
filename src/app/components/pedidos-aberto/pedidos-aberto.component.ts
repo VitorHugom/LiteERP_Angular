@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PedidosService } from '../../services/pedidos.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,12 +14,18 @@ import { BaixarPedidosModalComponent } from '../baixar-pedidos-modal/baixar-pedi
 })
 export class PedidosAbertoComponent implements OnInit {
   pedidosEmAberto: any[] = [];
+  isLargeScreen = window.innerWidth >= 768; // Tela grande por padrão
 
   constructor(
     private pedidosService: PedidosService,
     private dialog: MatDialog,
     private router: Router
   ) {}
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.isLargeScreen = (event.target as Window).innerWidth >= 768;
+  }
 
   ngOnInit(): void {
     this.carregarPedidosEmAberto();
@@ -39,12 +45,11 @@ export class PedidosAbertoComponent implements OnInit {
   abrirModal(pedido: any): void {
     const dialogRef = this.dialog.open(BaixarPedidosModalComponent, {
       width: '700px',
-      data: { pedido } // Passando o pedido para o modal
+      data: { pedido }, // Passando o pedido para o modal
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // Atualiza a lista de pedidos em aberto após baixar um pedido
         this.carregarPedidosEmAberto();
       }
     });

@@ -1,28 +1,52 @@
 <div class="pedidos-aberto-container">
-    <h1>Pedidos em Aberto</h1>
-  
-    <!-- Lista de Pedidos em Aberto -->
-    <div *ngIf="pedidosEmAberto.length > 0; else noPedidos" class="pedidos-list">
-      <div *ngFor="let pedido of pedidosEmAberto" class="pedido-item" (click)="abrirModal(pedido)">
-        <div class="pedido-info">
-          <p><strong>ID:</strong> {{ pedido.id }}</p>
-          <p><strong>Cliente:</strong> {{ pedido.cliente.razaoSocial }}</p>
-          <p><strong>Data de Emissão:</strong> {{ pedido.dataEmissao | date:'short' }}</p>
-          <p><strong>Valor Total:</strong> {{ pedido.valorTotal | currency:'BRL' }}</p>
+  <h1>Pedidos em Aberto</h1>
+
+  <table *ngIf="isLargeScreen && pedidosEmAberto.length > 0; else mobileView" class="client-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Data de Emissão</th>
+        <th>Valor Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pedido of pedidosEmAberto" (click)="abrirModal(pedido)" class="pedido-item">
+        <td>{{ pedido.id }}</td>
+        <td>{{ pedido.cliente.razaoSocial }}</td>
+        <td>{{ pedido.dataEmissao | date: 'short' }}</td>
+        <td>{{ pedido.valorTotal | currency: 'BRL' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #mobileView>
+    <div *ngIf="pedidosEmAberto.length > 0; else noPedidos">
+      <div *ngFor="let pedido of pedidosEmAberto" (click)="abrirModal(pedido)" class="pedido-card">
+        <div class="card-row">
+          <span>ID:</span>
+          <span>{{ pedido.id }}</span>
+        </div>
+        <div class="card-row">
+          <span>Cliente:</span>
+          <span>{{ pedido.cliente.razaoSocial }}</span>
+        </div>
+        <div class="card-row">
+          <span>Data de Emissão:</span>
+          <span>{{ pedido.dataEmissao | date: 'short' }}</span>
+        </div>
+        <div class="card-row">
+          <span>Valor Total:</span>
+          <span>{{ pedido.valorTotal | currency: 'BRL' }}</span>
         </div>
       </div>
     </div>
-  
-    <!-- Botão para voltar para Home -->
-    <div class="button-group">
-      <button (click)="voltarParaHome()" class="voltar-home-button">Voltar para Home</button>
-    </div>
-  
-    <!-- Mensagem de nenhum pedido -->
     <ng-template #noPedidos>
-      <div class="no-pedidos-message">
-        <p>Não há pedidos em aberto no momento.</p>
-      </div>
+      <p class="no-pedidos">Não há pedidos em aberto no momento.</p>
     </ng-template>
+  </ng-template>
+
+  <div class="button-container">
+    <button (click)="voltarParaHome()" class="nav-button">Voltar para Home</button>
   </div>
-  
+</div>

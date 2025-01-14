@@ -1,13 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CidadesService {
 
-  private baseUrl = 'http://localhost:8080/cidades'; // URL do seu backend
+  private baseUrl = environment.apiUrl + '/cidades'; // URL do seu backend
 
   constructor(private http: HttpClient) { }
 

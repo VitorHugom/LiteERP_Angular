@@ -54,6 +54,13 @@ export class SidebarComponent {
               ]
             }
           ]
+        },
+        {
+          label: 'Básico',
+          icone: 'images/icone-arrow.png',
+          subItems: [
+            { label: 'Formas de Pagamento', routerLink: '/forma-pagamento-busca'}
+          ]
         }
       ]
     },
@@ -68,10 +75,9 @@ export class SidebarComponent {
     {
       image:'images/icone-faturamento.png',
       icone: 'images/icone-arrow.png',
-      label: 'Faturamento',
+      label: 'Financeiro',
       subItems: [
-        { label: 'Emissão de NFe', routerLink: '/emissao-nfe' },
-        { label: 'Envio de NFe', routerLink: '/envio-nfe' }
+        { label: 'Contas a Pagar', routerLink: '/contas-pagar-busca' }
       ]
     },
     {

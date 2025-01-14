@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientesService {
-  private baseUrl = 'http://localhost:8080/clientes';
+  private baseUrl = environment.apiUrl + '/clientes';
 
   private viacepUrl = 'https://viacep.com.br/ws';
 
@@ -41,7 +42,7 @@ export class ClientesService {
   }
   
   getCidadeByCodigoIbge(codigoIbge: string): Observable<any> {
-    return this.http.get(`http://localhost:8080/cidades/codigoIbge/${codigoIbge}`);
+    return this.http.get(environment.apiUrl + `/cidades/codigoIbge/${codigoIbge}`);
   }
 
   searchClientes(nome: string, page: number = 0, size: number = 10): Observable<any> {

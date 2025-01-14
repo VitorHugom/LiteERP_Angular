@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RecebimentoMercadoriasService } from '../../services/recebimento-mercadorias.service';
 import { FornecedoresService } from '../../services/fornecedores.service';
 import { TiposCobrancaService } from '../../services/tipos-cobranca.service';
+import { FormaPagamentoService } from '../../services/forma-pagamento.service';
 import { ProdutosService } from '../../services/produtos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -30,6 +31,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
 
   fornecedores: any[] = [];
   tiposCobranca: any[] = [];
+  formasPagamento: any[] = [];
   produtos: any[] = [];
   valorTotal: number = 0;
 
@@ -48,6 +50,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
     private recebimentoService: RecebimentoMercadoriasService,
     private fornecedoresService: FornecedoresService,
     private tiposCobrancaService: TiposCobrancaService,
+    private formaPagamentoService: FormaPagamentoService,
     private produtosService: ProdutosService,
     private route: ActivatedRoute,
     private router: Router,
@@ -67,6 +70,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
           this.recebimento = data;
           this.fornecedorInput = this.recebimento.fornecedor.razaoSocial;
           this.loadTiposCobranca();
+          this.loadFormasPagamento();
           this.calculaValorTotal();
         },
         error: (err) => console.error('Erro ao carregar recebimento:', err)
@@ -75,6 +79,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
       // Define a data atual para novos recebimentos
       this.recebimento.dataRecebimento = new Date().toISOString().split('T')[0];
       this.loadTiposCobranca();
+      this.loadFormasPagamento();
     }
   }
 
@@ -85,6 +90,21 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
     this.recebimento.tipoCobranca = tipoEncontrado || null;
   }
 
+  loadFormasPagamento(): void {
+    this.formaPagamentoService.getFormasPagamento().subscribe({
+      next: (data) => {
+        this.formasPagamento = data;
+        this.matchFormaPagamento();
+      },
+      error: (err) => console.error('Erro ao carregar formas de pagamento:', err)
+    });
+  }
+
+  matchFormaPagamento(): void {
+    const formaEncontrada = this.formasPagamento.find(forma => forma.id === this.recebimento.formaPagamento?.id);
+    this.recebimento.formaPagamento = formaEncontrada || null;
+  }
+  
   loadTiposCobranca(): void {
     this.tiposCobrancaService.getTiposCobranca().subscribe({
       next: (data) => {
@@ -206,6 +226,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
       idFornecedor: this.recebimento.fornecedor.id,
       dataRecebimento: this.recebimento.dataRecebimento,
       idTipoCobranca: this.recebimento.tipoCobranca.id,
+      idFormaPagamento: this.recebimento.formaPagamento.id,
       itens: this.recebimento.itensRecebimento.map((item: any) => ({
         idProduto: item.produto.id,
         quantidade: item.quantidade,

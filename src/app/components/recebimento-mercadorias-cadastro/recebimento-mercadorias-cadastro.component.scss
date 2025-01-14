@@ -30,30 +30,32 @@
   h1 {
     text-align: center;
     color: #333;
-    font-size: clamp(1.8rem, 2vw, 2.2rem);
+    font-size: 2rem;
   }
 
   .tab-selector {
     display: flex;
     justify-content: center;
-    flex-direction: row;
     gap: 15px;
     margin-bottom: 20px;
 
     button {
-      padding: 10px 20px;
+      padding: 12px 30px;
       border: none;
-      background-color: #e0e0e0;
+      border-radius: 8px;
+      background-color: #ddd;
+      font-size: 1rem;
       cursor: pointer;
-      border-radius: 4px;
-      font-size: .875rem;
-      transition: transform 0.3s ease-in-out;
+      transition: all 0.3s ease;
 
+      &:hover {
+        background-color: #007bff;
+        color: #fff;
+      }
 
       &.active {
         background-color: #007bff;
-        color: white;
-        transform: scale(1.1);
+        color: #fff;
       }
     }
   }
@@ -73,7 +75,6 @@
       label {
         color: #555;
         font-weight: bold;
-        font-size: .875rem;
       }
 
       input,
@@ -83,7 +84,7 @@
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: #fff;
-        font-size: .875rem;
+        font-size: 1rem;
 
         &:focus {
           border-color: #007bff;
@@ -185,45 +186,38 @@
 
   .button-group {
     display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+    justify-content: space-around;
+    gap: 10px;
 
     button {
-      padding: 10px 20px;
+      flex: 1;
+      padding: 12px;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
       cursor: pointer;
-      text-align: center;
-      color: white;
-      transition: background-color 0.3s ease;
-      &.novo-button {
-        background-color: #4caf50;
+      transition: all 0.3s ease;
 
-        &:hover {
-          background-color: #3e8f40;
-        }
+      &.novo-button {
+        background-color: #28a745;
       }
 
       &.gravar-button {
-        background-color: #008cba;
-        &:hover {
-          background-color: #007bb5;
-        }
+        background-color: #007bff;
       }
-      &.deletar-button {
-        background-color: #f44336;
 
-        &:hover {
-          background-color: #d32f2f;
-        }
+      &.deletar-button {
+        background-color: #dc3545;
       }
 
       &.consultar-button {
-        background-color: #ff9800;
+        background-color: #ffc107;
+        color: #333;
+      }
 
-        &:hover {
-          background-color: #fb8c00;
-        }
+      &:hover {
+        opacity: 0.9;
       }
     }
   }
@@ -276,10 +270,5 @@
     .button-group {
       flex-direction: column;
     }
-  }
-
-  .button-group{
-    flex-direction: column;
-    gap: 10px;
   }
 }

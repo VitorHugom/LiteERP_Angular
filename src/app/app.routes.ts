@@ -25,6 +25,10 @@ import { RecebimentoMercadoriasBuscaComponent } from './components/recebimento-m
 import { RecebimentoMercadoriasCadastroComponent } from './components/recebimento-mercadorias-cadastro/recebimento-mercadorias-cadastro.component';
 import { MovimentoEstoqueBuscaComponent } from './components/movimento-estoque-busca/movimento-estoque-busca.component';
 import { EstoqueBuscaComponent } from './components/estoque-busca/estoque-busca.component';
+import { FormaPagamentoBuscaComponent } from './components/forma-pagamento-busca/forma-pagamento-busca.component';
+import { FormaPagamentoCadastroComponent } from './components/forma-pagamento-cadastro/forma-pagamento-cadastro.component';
+import { ContasPagarBuscaComponent } from './components/contas-pagar-busca/contas-pagar-busca.component';
+import { ContasPagarCadastroComponent } from './components/contas-pagar-cadastro/contas-pagar-cadastro.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -62,6 +66,12 @@ export const routes: Routes = [
   { path: 'novo-pedido-vendas', component: NovoPedidoVendas, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_VENDAS'] }},
 
   { path: 'pedidos-aberto', component: PedidosAbertoComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
+
+  { path: 'forma-pagamento-busca', component: FormaPagamentoBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'forma-pagamento/:id', component: FormaPagamentoCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
+  { path: 'contas-pagar-busca', component: ContasPagarBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+  { path: 'contas-pagar/:id', component: ContasPagarCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
