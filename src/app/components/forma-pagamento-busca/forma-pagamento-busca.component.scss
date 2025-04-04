@@ -1,65 +1,74 @@
 .busca-formas-pagamento-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-  
+
+  p{
+    font-size: .875rem;
+  }
+
   h1 {
     text-align: center;
     color: #333;
     font-size: clamp(1.5em, 2.5vw, 2em);
   }
-  
+
   .search-container {
+    width: 100%;
     display: flex;
+    gap: 10px;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    flex-wrap: nowrap;
+
+    .search-input, .search-select, .search-button {
+      padding: 10px 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: .875rem;
+
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .search-select {
+      flex: 0 1;
+    }
+
+    .search-button {
+      flex: 0 1;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
   }
-  
-  .search-input,
-  .search-select,
-  .search-button {
-    padding: 10px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: clamp(0.8em, 2vw, 1em);
-  }
-  
-  .search-input {
-    flex: 1;
-    min-width: 100px;
-  }
-  
-  .search-select {
-    flex: 0 1 150px;
-    min-width: 80px;
-  }
-  
-  .search-button {
-    flex: 0 1 100px;
-    min-width: 60px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .search-button:hover {
-    background-color: #0056b3;
-  }
-  
+
+
+
   .button-container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
-    margin-top: 20px;
   }
-  
+
   .nav-button {
     padding: 10px 20px;
     border: none;
@@ -69,53 +78,53 @@
     font-size: clamp(0.8em, 2vw, 1em);
     background-color: #007bff;
   }
-  
+
   .nav-button:hover {
     background-color: #0056b3;
   }
-  
+
   .novo-button {
     background-color: #28a745;
   }
-  
+
   .novo-button:hover {
     background-color: #218838;
   }
-  
+
   .forma-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
   }
-  
+
   .forma-table th,
   .forma-table td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
   }
-  
+
   .forma-table th {
     background-color: #f2f2f2;
     color: #333;
     font-weight: bold;
   }
-  
+
   .forma-table tr:hover {
     background-color: #f1f1f1;
   }
-  
+
   .forma-item {
     cursor: pointer;
   }
-  
+
   .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
   }
-  
+
   .pagination button {
     padding: 8px 16px;
     margin: 0 5px;
@@ -125,9 +134,27 @@
     border-radius: 4px;
     cursor: pointer;
   }
-  
+
   .pagination button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
   }
-  
+
+  @media (max-width: 600px) {
+    .search-container {
+      flex-direction: column;
+
+      .search-input, .search-select, .search-button {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+
+    .button-container {
+      flex-direction: column;
+
+      .nav-button, .novo-button {
+        width: 100%;
+      }
+    }
+  }
