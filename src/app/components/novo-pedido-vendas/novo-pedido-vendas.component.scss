@@ -16,6 +16,16 @@
     font-size: 1.5rem;
     margin-bottom: 20px;
   }
+  .input-camera-wrapper{
+    position: relative;
+
+    button{
+      border: none;
+      position: absolute;
+      right: 0;
+      margin-right: 10px;
+    }
+  }
 
   .form-group {
     margin-bottom: 15px;
@@ -38,7 +48,7 @@
       display: flex;
       flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
       gap: 8px;
-    
+
       button {
         flex: 1 1 auto;
         padding: 8px 16px;
@@ -48,44 +58,44 @@
         font-weight: bold;
         cursor: pointer;
         transition: all 0.3s ease;
-    
+
         &:hover {
           transform: translateY(-2px);
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-    
+
         &:active {
           transform: translateY(0);
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
       }
-    
+
       .edit-button {
         background-color: #007bff;
         color: #fff;
-    
+
         &:hover {
           background-color: #0056b3;
         }
-    
+
         &:focus {
           outline: 2px solid #0056b3;
         }
       }
-    
+
       .delete-button {
         background-color: #ff0000;
         color: #fff;
-    
+
         &:hover {
           background-color: #cc0000;
         }
-    
+
         &:focus {
           outline: 2px solid #cc0000;
         }
       }
-    }    
+    }
   }
 
   .autocomplete-list {
