@@ -3,15 +3,22 @@
 
   <!-- Busca Produto -->
   <div class="form-group">
+
     <label for="produto">Buscar Produto</label>
-    <input 
-      type="text" 
-      id="produto" 
-      [(ngModel)]="produtoInput" 
-      (input)="onSearchProdutos($event)" 
-      name="produto" 
-      placeholder="Digite o nome do produto..." 
-    />
+    <div class="input-camera-wrapper">
+      <input
+        type="text"
+        id="produto"
+        [(ngModel)]="produtoInput"
+        (input)="onSearchProdutos($event)"
+        name="produto"
+        placeholder="Digite o nome do produto..."
+      />
+      <button mat-icon-button matSuffix (click)="startScanner()">
+        <mat-icon>photo_camera</mat-icon>
+      </button>
+
+    </div>
     <!-- Lista de Produtos Autocomplete -->
     <ul *ngIf="produtos.length > 0 && showProdutosList" class="autocomplete-list">
       <li *ngFor="let produto of produtos" (click)="onSelectProduto(produto)">
