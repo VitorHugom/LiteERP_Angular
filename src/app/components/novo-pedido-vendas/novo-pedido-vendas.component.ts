@@ -58,22 +58,26 @@ export class NovoPedidoVendas implements OnInit {
     this.loadingProdutos = true;
     const pageSize = 10;
 
-    this.produtosService.searchProdutos(this.produtoInput, this.currentPageProdutos, pageSize).subscribe({
-      next: (produtos) => {
-        if (this.currentPageProdutos === 0) {
-          this.produtos = produtos;
-        } else {
-          this.produtos = [...this.produtos, ...produtos];
+    this.produtosService.searchProdutos(this.produtoInput, this.currentPageProdutos, pageSize)
+      .subscribe({
+        next: (page) => {
+          // Supondo que 'page' seja o objeto paginado, e os produtos estejam em page.content
+          const produtosRetornados = page.content;
+          if (this.currentPageProdutos === 0) {
+            this.produtos = produtosRetornados;
+          } else {
+            this.produtos = [...this.produtos, ...produtosRetornados];
+          }
+          this.showProdutosList = true;
+          this.loadingProdutos = false;
+        },
+        error: (err) => {
+          console.error('Erro ao buscar produtos:', err);
+          this.loadingProdutos = false;
         }
-        this.showProdutosList = true;
-        this.loadingProdutos = false;
-      },
-      error: (err) => {
-        console.error('Erro ao buscar produtos:', err);
-        this.loadingProdutos = false;
-      }
-    });
+      });
   }
+
 
   // Selecionar produto e abrir modal
   onSelectProduto(produto: any): void {
