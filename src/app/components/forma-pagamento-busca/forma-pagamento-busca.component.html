@@ -1,6 +1,6 @@
 <div class="busca-formas-pagamento-container">
     <h1>Buscar Formas de Pagamento</h1>
-  
+
     <div class="search-container">
       <input type="text" [(ngModel)]="searchQuery" (keydown.enter)="searchFormas()" placeholder="Buscar formas de pagamento..." class="search-input">
       <select [(ngModel)]="searchBy" class="search-select">
@@ -9,7 +9,7 @@
       </select>
       <button (click)="searchFormas()" class="search-button">Buscar</button>
     </div>
-  
+
     <table *ngIf="filteredFormas.length > 0; else noFormas" class="forma-table">
       <thead>
         <tr>
@@ -24,20 +24,19 @@
         </tr>
       </tbody>
     </table>
-  
+
     <ng-template #noFormas>
       <p>Nenhuma forma de pagamento encontrada.</p>
     </ng-template>
-  
+
     <div class="pagination">
       <button (click)="goToPage(page - 1)" [disabled]="page === 0">Anterior</button>
       <span>Página {{ page + 1 }} de {{ totalPages }}</span>
       <button (click)="goToPage(page + 1)" [disabled]="page >= totalPages - 1">Próximo</button>
     </div>
-  
+
     <div class="button-container">
       <button (click)="navigateToHome()" class="nav-button">Voltar para Home</button>
-      <button (click)="createNovaForma()" class="nav-button novo-button">Nova</button>
+      <button (click)="createNovaForma()" class="nav-button novo-button">Novo</button>
     </div>
   </div>
-  

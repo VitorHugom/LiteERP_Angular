@@ -7,13 +7,16 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FinalizarPedidoModalComponent } from '../finalizar-pedido-modal/finalizar-pedido-modal.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
 
 @Component({
   selector: 'app-itens-pedido',
   templateUrl: './novo-pedido-vendas.component.html',
   styleUrls: ['./novo-pedido-vendas.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule,MatIconModule,MatButtonModule]
 })
 export class NovoPedidoVendas implements OnInit {
   pedido: any = {
@@ -35,6 +38,8 @@ export class NovoPedidoVendas implements OnInit {
     private produtosService: ProdutosService,
     private router: Router
   ) {}
+
+  startScanner(){}
 
   ngOnInit(): void {
     this.pedido.itens = [];
