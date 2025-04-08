@@ -39,6 +39,10 @@ export class ProdutosService {
     return this.http.get(`${this.baseUrl}/search?nome=${nome}&page=${page}&size=${size}`);
   }
 
+  searchProdutosByDescCodEan(nome: string, page: number, size: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/search?nome=${nome}&page=${page}&size=${size}`);
+  }
+
   buscarProdutosPorNome(descricao: string, page: number = 0): Observable<any> {
     const params = new HttpParams().set('page', page.toString()).set('descricao', descricao);
     return this.http.get(`${this.baseUrl}/busca-por-descricao`, { params });

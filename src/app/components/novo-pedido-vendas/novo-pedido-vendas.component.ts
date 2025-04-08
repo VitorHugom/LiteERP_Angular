@@ -63,7 +63,7 @@ export class NovoPedidoVendas implements OnInit {
     this.loadingProdutos = true;
     const pageSize = 10;
 
-    this.produtosService.searchProdutos(this.produtoInput, this.currentPageProdutos, pageSize)
+    this.produtosService.searchProdutosByDescCodEan(this.produtoInput, this.currentPageProdutos, pageSize)
       .subscribe({
         next: (page) => {
           // Supondo que 'page' seja o objeto paginado, e os produtos estejam em page.content
