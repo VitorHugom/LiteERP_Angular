@@ -1,0 +1,15 @@
+.button-back{
+  display: flex;
+  align-items: center;
+  color: #333;
+  background-color: #E3E3E3;
+  padding: 5px;
+  border-radius: 50%;
+  border: none;
+  margin-bottom: 5px;
+  cursor: pointer;
+
+  img{
+    width: 12px;
+  }
+}
