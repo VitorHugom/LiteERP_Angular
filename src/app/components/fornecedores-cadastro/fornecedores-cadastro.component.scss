@@ -236,20 +236,21 @@
         cursor: pointer;
         transition: background-color 0.3s;
 
-        &:hover {
-          background-color: #45a049;
-        }
 
         &.novo-button {
+
+          background-color: #4caf50;
+          &:hover {
+            background-color: #3e8f40;
+          }
+        }
+
+        &.gravar-button {
           background-color: #008cba;
 
           &:hover {
             background-color: #007bb5;
           }
-        }
-
-        &.gravar-button {
-          background-color: #4caf50;
         }
 
         &.deletar-button {
