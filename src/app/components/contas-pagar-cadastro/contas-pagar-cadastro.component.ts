@@ -6,13 +6,14 @@ import { TiposCobrancaService } from '../../services/tipos-cobranca.service';
 import { FormaPagamentoService } from '../../services/forma-pagamento.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-cadastro-contas-pagar',
   standalone: true,
   templateUrl: './contas-pagar-cadastro.component.html',
   styleUrls: ['./contas-pagar-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent]
 })
 export class ContasPagarCadastroComponent implements OnInit {
   isNew = true;
@@ -39,6 +40,8 @@ export class ContasPagarCadastroComponent implements OnInit {
   currentPageFornecedores = 0;
   pageSize = 5;
   loadingFornecedores = false;
+
+  urlContasPagarBusca = '/contas-pagar-busca'
 
   constructor(
     private contasPagarService: ContasPagarService,
@@ -187,5 +190,5 @@ export class ContasPagarCadastroComponent implements OnInit {
       this.contasPagar.status = 'aberta';
     }
   }
-  
+
 }

@@ -3,13 +3,14 @@ import { GrupoProdutosService } from '../../services/grupo-produtos.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-grupo-produtos-cadastro',
   standalone: true,
   templateUrl: './grupo-produtos-cadastro.component.html',
   styleUrls: ['./grupo-produtos-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule, RouterLink]
+  imports: [CommonModule, FormsModule, NavigateToSearchButtonComponent]
 })
 export class GrupoProdutosCadastroComponent implements OnInit {
   isNew = true;
@@ -17,6 +18,8 @@ export class GrupoProdutosCadastroComponent implements OnInit {
     id: null,
     nome: ''
   };
+
+  urlGrupoProdutosBusca = '/grupo-produtos-busca'
 
   message: string | null = null; // Mensagem de feedback
   isSuccess: boolean = true; // Status da operação

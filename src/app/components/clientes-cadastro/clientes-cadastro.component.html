@@ -1,4 +1,5 @@
 <div class="cliente-detail-container">
+  <app-navigate-to-search-button [routerLink]="urlClienteBusca"/>
     <div class="info-header">
       <div class="info-item">
         <strong>ID:</strong> {{ idDisplay }}
@@ -20,7 +21,7 @@
       <div *ngIf="cliente.tipoPessoa" class="info-item cpf-cnpj-group">
         <label><strong>{{ cliente.tipoPessoa === 'fisica' ? 'CPF:' : 'CNPJ:' }}</strong></label>
         <div *ngIf="isNew" class="input-inline">
-          <input 
+          <input
             type="text"
             [(ngModel)]="cliente.cpfCnpj"
             [attr.placeholder]="cliente.tipoPessoa === 'fisica' ? 'Digite o CPF' : 'Digite o CNPJ'"

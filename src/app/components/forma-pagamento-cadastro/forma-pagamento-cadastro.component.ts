@@ -3,13 +3,15 @@ import { FormaPagamentoService } from '../../services/forma-pagamento.service';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
+
 
 @Component({
   selector: 'app-forma-pagamento-cadastro',
   standalone: true,
   templateUrl: './forma-pagamento-cadastro.component.html',
   styleUrls: ['./forma-pagamento-cadastro.component.scss'],
-  imports: [RouterModule, CommonModule, FormsModule]
+  imports: [RouterModule, CommonModule, FormsModule,NavigateToSearchButtonComponent]
 })
 export class FormaPagamentoCadastroComponent implements OnInit {
   isNew = true;
@@ -21,6 +23,8 @@ export class FormaPagamentoCadastroComponent implements OnInit {
   diasFormaPagamento: number | null = null;
   message: string | null = null;
   isSuccess = true;
+
+  urlFormasPagamento = '/forma-pagamento-busca'
 
   constructor(
     private formaPagamentoService: FormaPagamentoService,
@@ -44,11 +48,11 @@ export class FormaPagamentoCadastroComponent implements OnInit {
       this.exibirMensagem('Descrição é obrigatória.', false);
       return;
     }
-  
+
     const saveObservable = this.isNew
       ? this.formaPagamentoService.createFormaPagamento(this.formaPagamento)
       : this.formaPagamentoService.updateFormaPagamento(this.formaPagamento.id, this.formaPagamento);
-  
+
     saveObservable.subscribe({
       next: (response) => {
         this.exibirMensagem('Forma de pagamento salva com sucesso!', true);
@@ -60,7 +64,7 @@ export class FormaPagamentoCadastroComponent implements OnInit {
       },
       error: () => this.exibirMensagem('Erro ao salvar forma de pagamento.', false)
     });
-  }  
+  }
 
   adicionardiasFormaPagamento(): void {
     if (this.diasFormaPagamento !== null && !this.formaPagamento.diasFormaPagamento.includes(this.diasFormaPagamento)) {

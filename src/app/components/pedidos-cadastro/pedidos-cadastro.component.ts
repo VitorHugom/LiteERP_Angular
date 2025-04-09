@@ -9,13 +9,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AddItemModalComponent } from '../add-item-modal/add-item-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-cadastro-pedido',
   standalone: true,
   templateUrl: './pedidos-cadastro.component.html',
   styleUrls: ['./pedidos-cadastro.component.scss','./pedidos-cadastro.responsive.component.scss'],
-  imports: [CommonModule, FormsModule, RouterLink]
+  imports: [CommonModule, FormsModule, NavigateToSearchButtonComponent]
 })
 export class PedidosCadastroComponent implements OnInit {
   isNew = true;
@@ -29,6 +30,8 @@ export class PedidosCadastroComponent implements OnInit {
     tipoCobranca: null,
     itens: []
   };
+
+  urlPedidosBusca = '/pedidos-busca'
 
   itensParaExcluir: any[] = [];
 

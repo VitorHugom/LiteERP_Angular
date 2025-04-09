@@ -1,8 +1,6 @@
 <div class="recebimento-detail-container">
   <!-- Link de Voltar -->
-  <a class="link-back" (click)="onConsultar()">
-    <img src="images/icone-back.png" alt="Voltar" /> Voltar
-  </a>
+  <app-navigate-to-search-button [routerLink]="urlRecibementoMercadoriaBusca"/>
 
   <!-- Título -->
   <h1>Cadastro de Recebimento de Mercadorias</h1>
@@ -48,7 +46,7 @@
         <option *ngFor="let forma of formasPagamento" [ngValue]="forma">{{ forma.descricao }}</option>
       </select>
     </div>
-    
+
   </div>
 
   <!-- Conteúdo da Aba Itens do Recebimento -->

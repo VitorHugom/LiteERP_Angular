@@ -1,7 +1,5 @@
 <div class="fornecedor-detail-container">
-  <button class="button-back" [routerLink]="['/fornecedores-busca']">
-    <img src="images/icone-back.png" alt="">
-  </button>
+  <app-navigate-to-search-button [routerLink]="urlFonecedoresBusca"/>
     <div class="info-header">
       <div class="info-item">
         <strong>ID:</strong> {{ idDisplay }}

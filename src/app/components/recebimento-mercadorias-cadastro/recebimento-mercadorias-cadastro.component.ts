@@ -9,13 +9,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddItemRecebimentoModalComponent } from '../add-item-recebimento-modal/add-item-recebimento-modal.component';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-cadastro-recebimento',
   standalone: true,
   templateUrl: './recebimento-mercadorias-cadastro.component.html',
   styleUrls: ['./recebimento-mercadorias-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent]
 })
 export class RecebimentoMercadoriasCadastroComponent implements OnInit {
   isNew = true;
@@ -26,6 +27,8 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
     tipoCobranca: null,
     itensRecebimento: []
   };
+
+  urlRecibementoMercadoriaBusca = '/recebimento-mercadorias-busca'
 
   activeTab: string = 'geral';
 
@@ -104,7 +107,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
     const formaEncontrada = this.formasPagamento.find(forma => forma.id === this.recebimento.formaPagamento?.id);
     this.recebimento.formaPagamento = formaEncontrada || null;
   }
-  
+
   loadTiposCobranca(): void {
     this.tiposCobrancaService.getTiposCobranca().subscribe({
       next: (data) => {
@@ -171,7 +174,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
   // Adicionar item ao recebimento via modal
   onSelectProduto(produto: any): void {
     // Limpar o campo de busca e esconder a lista de produtos
-    this.produtoInput = ''; 
+    this.produtoInput = '';
     this.showProdutosList = false;
 
 
@@ -179,7 +182,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
       width: '500px',
       data: { produto: { ...produto, precoCompra: produto.precoCompra } }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.recebimento.itensRecebimento.push({
@@ -190,7 +193,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
         this.calculaValorTotal();
       }
     });
-  }  
+  }
 
   // Editar item existente via modal
   onEditItem(index: number): void {
@@ -200,7 +203,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
     dialogConfig.data = { ...item };
 
     const dialogRef = this.dialog.open(AddItemRecebimentoModalComponent, dialogConfig);
-    
+
     dialogRef.afterClosed().subscribe(updatedItem => {
       if (updatedItem) {
         this.recebimento.itensRecebimento[index] = updatedItem;
@@ -302,7 +305,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
       const valorUnitario = item.produto?.valorUnitario || item.valorUnitario || 0;
       return acc + (item.quantidade * valorUnitario);
     }, 0);
-  }  
+  }
 
   atualizarValorTotal(): void {
     this.valorTotal = this.recebimento.itensRecebimento.reduce((total: number, item: { quantidade: number, produto: { valorUnitario: number } }) => {

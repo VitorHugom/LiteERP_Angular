@@ -1,17 +1,18 @@
 <div class="forma-pagamento-container">
+  <app-navigate-to-search-button [routerLink]="urlFormasPagamento"/>
     <h1>Cadastro de Formas de Pagamento</h1>
-  
+
     <!-- Formulário de Cadastro -->
     <div class="form-group">
       <label for="id">ID</label>
       <span>{{ isNew ? 'Será gerado automaticamente' : formaPagamento.id }}</span>
     </div>
-  
+
     <div class="form-group">
       <label for="descricao">Descrição</label>
       <input type="text" id="descricao" [(ngModel)]="formaPagamento.descricao" name="descricao">
     </div>
-  
+
     <div class="form-group">
       <label for="dias-vencimento">Dias para Vencimento</label>
       <div class="dias-container">
@@ -19,7 +20,7 @@
         <button type="button" (click)="adicionardiasFormaPagamento()">Adicionar</button>
       </div>
     </div>
-  
+
     <!-- Lista de Dias de Vencimento -->
     <div class="dias-list" *ngIf="formaPagamento.diasFormaPagamento.length > 0">
       <h3>Dias Adicionados</h3>
@@ -29,7 +30,7 @@
         </li>
       </ul>
     </div>
-  
+
     <!-- Botões de Ação -->
     <div class="button-group">
       <button (click)="onNew()" type="button" class="novo-button">Novo</button>
@@ -37,10 +38,9 @@
       <button (click)="onDelete()" *ngIf="!isNew" type="button" class="deletar-button">Deletar</button>
       <button (click)="onConsultar()" type="button" class="consultar-button">Consultar</button>
     </div>
-  
+
     <!-- Caixa de Feedback -->
     <div *ngIf="message" class="feedback-box" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
       {{ message }}
     </div>
   </div>
-  

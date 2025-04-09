@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ProdutosService } from '../../services/produtos.service';
 import { GrupoProdutosService } from '../../services/grupo-produtos.service';
-import { ActivatedRoute, Router,RouterLink } from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-cadastro-produto',
   standalone: true,
   templateUrl: './produtos-cadastro.component.html',
   styleUrls: ['./produtos-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule,RouterLink]
+  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent]
 })
 export class ProdutosCadastroComponent implements OnInit {
   isNew = true;
@@ -27,6 +28,8 @@ export class ProdutosCadastroComponent implements OnInit {
     precoVenda: null,
     peso: null
   };
+
+  urlProdutosBusca = '/busca-produtos'
 
   gruposProdutos: any[] = []; // Armazena todos os grupos de produtos
   activeTab = 'geral'; // Aba ativa, começa com "geral"

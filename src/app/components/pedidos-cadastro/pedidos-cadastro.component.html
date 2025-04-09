@@ -1,7 +1,5 @@
 <div class="pedido-detail-container">
-  <button class="button-back" [routerLink]="['/pedidos-busca']">
-    <img src="images/icone-back.png" alt="">
-  </button>
+  <app-navigate-to-search-button [routerLink]="urlPedidosBusca"/>
   <h1>Cadastro de Pedido de Venda</h1>
 
   <!-- Seletor de Abas -->
@@ -96,7 +94,7 @@
           </td>
         </tr>
       </tbody>
-    </table>    
+    </table>
   </div>
 
   <!-- Total do Pedido -->

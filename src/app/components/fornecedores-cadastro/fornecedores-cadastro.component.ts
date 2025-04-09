@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { FornecedoresService } from '../../services/fornecedores.service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CidadesService } from '../../services/cidades.service';
 import { VendedoresService } from '../../services/vendedores.service';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-cadastro-fornecedor',
   standalone: true,
   templateUrl: './fornecedores-cadastro.component.html',
   styleUrls: ['./fornecedores-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule, NgxMaskDirective,RouterLink],
+  imports: [CommonModule, FormsModule, NgxMaskDirective,NavigateToSearchButtonComponent],
   providers: [provideNgxMask()]
 })
 export class FornecedoresCadastroComponent implements OnInit {
@@ -50,6 +51,8 @@ export class FornecedoresCadastroComponent implements OnInit {
     dataCadastro: '',
     limiteCredito: 0
   };
+
+  urlFonecedoresBusca = '/fornecedores-busca'
 
   cidades: any[] = []; // Para armazenar as cidades que retornarem da busca
   cidadeInput: string = ''; // Input do campo de cidade

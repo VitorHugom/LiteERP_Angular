@@ -1,7 +1,5 @@
 <div class="recebimento-detail-container">
-  <a class="link-back" (click)="onConsultar()">
-    <img src="images/icone-back.png" alt="Voltar" /> Voltar
-  </a>
+  <app-navigate-to-search-button [routerLink]="urlContasPagarBusca"/>
 
   <h1>Cadastro de Contas a Pagar</h1>
 
@@ -90,7 +88,7 @@
           {{ contasPagar.status === 'aberta' ? 'Pagar' : 'Estornar' }}
         </button>
       </div>
-    </div>    
+    </div>
   </div>
 
   <div class="button-group">
