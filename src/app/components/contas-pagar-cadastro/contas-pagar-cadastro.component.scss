@@ -30,13 +30,14 @@
   h1 {
     text-align: center;
     color: #333;
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 2.5vw, 2.2rem);
   }
 
   .tab-content {
     background-color: #f7f7f7;
     border-radius: 8px;
     padding: 20px;
+    font-size: .875rem;
 
     .form-group {
       display: flex;
@@ -45,24 +46,31 @@
       margin-bottom: 20px;
 
       label {
-        color: #555;
+        color: #333;
         font-weight: bold;
       }
 
       input,
       select,
       span {
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #fff;
-        font-size: 1rem;
-
-        &:focus {
-          border-color: #007bff;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: .875rem;
           outline: none;
+          transition: border 0.3s;
+          background-color: #F2F4F8;
+          color: #555;
+
+          &:focus {
+            border-color: #007bff;
+            outline: none;
+          }
+          &::placeholder{
+            font-size: .875rem;
+          }
+
         }
-      }
     }
 
     .message-box {
@@ -99,17 +107,22 @@
       transition: all 0.3s ease;
 
       &.gravar-button {
-        background-color: #007bff;
+        background-color: #008cba;
+
+        &:hover {
+          background-color: #007bb5;
+        }
       }
 
       &.consultar-button {
-        background-color: #ffc107;
-        color: #333;
+        background-color: #ff9800;
+
+        &:hover {
+          background-color: #fb8c00;
+        }
       }
 
-      &:hover {
-        opacity: 0.9;
-      }
+
     }
   }
 
@@ -124,12 +137,12 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-  
+
     .status-container {
       display: flex;
       align-items: center;
       gap: 15px;
-  
+
       button {
         padding: 10px 15px;
         border: none;
@@ -138,21 +151,21 @@
         font-weight: bold;
         cursor: pointer;
         transition: all 0.3s ease;
-  
+
         &.pagar-button {
           background-color: #007bff;
         }
-  
+
         &.estornar-button {
           background-color: #f44336;
         }
-  
+
         &:hover {
           opacity: 0.9;
         }
       }
     }
-  }  
+  }
 }
 
 /* Estilos Responsivos */
