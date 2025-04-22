@@ -51,8 +51,8 @@ export class NovoPedidoVendas implements OnInit {
       data: {
         videoConstraints: {
           facingMode: 'environment',
-          width:  { ideal: 1280 },  // idealmente 1280x720 ou 1920x1080
-          height: { ideal: 720 }
+          width:  { ideal: 1920 },  // idealmente 1280x720 ou 1920x1080
+          height: { ideal: 1080 }
         }
       }
   });
