@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { FinalizarPedidoModalComponent } from '../finalizar-pedido-modal/finalizar-pedido-modal.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { CameraScannerComponent } from '../camera-scanner/camera-scanner.component';
 
 
 @Component({
@@ -39,7 +40,35 @@ export class NovoPedidoVendas implements OnInit {
     private router: Router
   ) {}
 
-  startScanner(){}
+  startScanner(): void {
+    const dialogRef = this.dialog.open(CameraScannerComponent, {
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'full-screen-dialog',
+      backdropClass: 'scanner-backdrop',
+      data: {
+        videoConstraints: {
+          facingMode: 'environment',
+          width:  { ideal: 1280 },  // idealmente 1280x720 ou 1920x1080
+          height: { ideal: 720 }
+        }
+      }
+  });
+
+  dialogRef.afterClosed().subscribe((barcode: string|undefined) => {
+    console.log("Código Barra: "+ barcode)
+    if (barcode) {
+      this.produtoInput = barcode;
+      this.produtos = [];
+      this.showProdutosList = false;
+      this.currentPageProdutos = 0;
+      this.searchProdutosLazy();
+    }    
+  });
+  }
+
 
   ngOnInit(): void {
     this.pedido.itens = [];

@@ -40,7 +40,7 @@ export class ProdutosService {
   }
 
   searchProdutosByDescCodEan(nome: string, page: number, size: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/search?nome=${nome}&page=${page}&size=${size}`);
+    return this.http.get(`${this.baseUrl}/busca-por-descricao-cod-ean?nome=${nome}&page=${page}&size=${size}`);
   }
 
   buscarProdutosPorNome(descricao: string, page: number = 0): Observable<any> {

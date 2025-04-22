@@ -1,0 +1,13 @@
+<!-- camera-scanner.component.html -->
+<div class="camera-scanner">
+    <button mat-icon-button class="close-button" (click)="onUserClose()" aria-label="Fechar">
+      <mat-icon>close</mat-icon>
+    </button>
+  
+    <video #video class="camera-view" playsinline autoplay></video>
+  
+    <button mat-icon-button class="scan-button" (click)="startScanner()" aria-label="Abrir câmera">
+      <mat-icon>photo_camera</mat-icon>
+    </button>
+  </div>
+  
