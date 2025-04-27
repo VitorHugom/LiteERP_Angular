@@ -8,13 +8,14 @@ import { CidadesService } from '../../services/cidades.service';
 import { VendedoresService } from '../../services/vendedores.service';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 import { ButtonComponent } from '../shared/button/button.component';
+import { FooterButtonComponent } from '../shared/footer-button/footer-button.component';
 
 @Component({
   selector: 'app-cadastro-cliente',
   standalone: true,
   templateUrl: './clientes-cadastro.component.html',
   styleUrls: ['./clientes-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule, NgxMaskDirective,NavigateToSearchButtonComponent, ButtonComponent],
+  imports: [CommonModule, FormsModule, NgxMaskDirective,NavigateToSearchButtonComponent, ButtonComponent,FooterButtonComponent],
   providers: [provideNgxMask()]
 })
 export class ClientesCadastroComponent implements OnInit {
@@ -56,6 +57,13 @@ export class ClientesCadastroComponent implements OnInit {
   };
 
   urlClienteBusca = '/clientes-busca'
+
+  buttons = [
+    { text: 'Novo', color: 'novo-button', type: 'button', event: 'novo' },
+    { text: 'Gravar', color: 'gravar-button', type: 'submit', event: 'gravar' },
+    { text: 'Deletar', color: 'deletar-button', type: 'button', event: 'deletar' },
+    { text: 'Consultar', color: 'consultar-button', type: 'button', event: 'consultar' },
+  ]
 
   cidades: any[] = []; // Para armazenar as cidades que retornarem da busca
   cidadeInput: string = ''; // Input do campo de cidade
@@ -107,6 +115,19 @@ export class ClientesCadastroComponent implements OnInit {
       this.onNew();
     }
   }
+
+    tratarEvento(evento: string) {
+      if (evento === 'novo') {
+        this.onNew();
+      } else if (evento === 'gravar') {
+        this.onSave();
+      } else if (evento === 'deletar') {
+        this.onDelete();
+      }else if (evento === 'consultar') {
+        this.onConsultar();
+
+      }
+    }
 
   // Função que define se o campo de CPF ou CNPJ é exibido com base na seleção de tipo de pessoa
   get isPessoaFisica(): boolean {
