@@ -7,13 +7,14 @@ import { FormsModule } from '@angular/forms';
 import { CidadesService } from '../../services/cidades.service';
 import { VendedoresService } from '../../services/vendedores.service';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
+import { ButtonComponent } from '../shared/button/button.component';
 
 @Component({
   selector: 'app-cadastro-cliente',
   standalone: true,
   templateUrl: './clientes-cadastro.component.html',
   styleUrls: ['./clientes-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule, NgxMaskDirective,NavigateToSearchButtonComponent],
+  imports: [CommonModule, FormsModule, NgxMaskDirective,NavigateToSearchButtonComponent, ButtonComponent],
   providers: [provideNgxMask()]
 })
 export class ClientesCadastroComponent implements OnInit {
