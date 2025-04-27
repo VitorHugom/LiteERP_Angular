@@ -1,0 +1,16 @@
+.footer-button_container{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+
+@media (max-width: 600px) {
+
+  .footer-button_container {
+    flex-direction: column;
+    gap: 10px;
+
+  }
+
+}
