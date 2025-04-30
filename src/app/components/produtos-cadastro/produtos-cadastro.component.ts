@@ -8,13 +8,14 @@ import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-bu
 import { CameraScannerComponent } from '../camera-scanner/camera-scanner.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-cadastro-produto',
   standalone: true,
   templateUrl: './produtos-cadastro.component.html',
   styleUrls: ['./produtos-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent, MatIconModule]
+  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent, MatIconModule, MatButtonModule]
 })
 export class ProdutosCadastroComponent implements OnInit {
   isNew = true;

@@ -6,6 +6,19 @@
   border-radius: 8px;
   box-shadow: 0 2 15px rgba(0, 0, 0, 0.1);
 
+  
+  .codEanCam{
+    position: relative;
+
+    button{
+      border: none;
+      position: absolute;
+      right: 0;
+      margin-right: 10px;
+      top: 0;
+    }
+  }
+
   .button-back{
     display: flex;
     align-items: center;
