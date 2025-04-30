@@ -1,0 +1,46 @@
+.button-container button{
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: .875rem;
+
+  &.novo-button {
+    background-color: #4caf50;
+    &:hover {
+      background-color: #3e8f40;
+    }
+  }
+
+  &.gravar-button {
+    background-color: #008cba;
+
+    &:hover {
+      background-color: #007bb5;
+    }
+  }
+
+  &.deletar-button {
+    background-color: #f44336;
+
+    &:hover {
+      background-color: #d32f2f;
+    }
+  }
+
+  &.consultar-button {
+    background-color: #ff9800;
+
+    &:hover {
+      background-color: #fb8c00;
+    }
+  }
+
+}
+@media (max-width: 600px) {
+  .button-container button {
+    width: 100%;
+  }
+}

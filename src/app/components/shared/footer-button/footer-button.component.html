@@ -1,0 +1,12 @@
+<div class="footer-button_container">
+  <ng-container *ngFor="let button of buttons" class="footer-button">
+    <app-button
+      *ngIf="button.event !== 'deletar' || (button.event === 'deletar' && !isNew)"
+      [text]="button.text"
+      [color]="button.color"
+      [type]="button.type"
+      (action)="onClick(button.event)"
+    />
+  </ng-container>
+
+</div>
