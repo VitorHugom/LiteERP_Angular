@@ -55,18 +55,18 @@ export class NovoPedidoVendas implements OnInit {
           height: { ideal: 1080 }
         }
       }
-  });
+    });
 
-  dialogRef.afterClosed().subscribe((barcode: string|undefined) => {
-    console.log("Código Barra: "+ barcode)
-    if (barcode) {
-      this.produtoInput = barcode;
-      this.produtos = [];
-      this.showProdutosList = false;
-      this.currentPageProdutos = 0;
-      this.searchProdutosLazy();
-    }    
-  });
+    dialogRef.afterClosed().subscribe((barcode: string|undefined) => {
+      console.log("Código Barra: "+ barcode)
+      if (barcode) {
+        this.produtoInput = barcode;
+        this.produtos = [];
+        this.showProdutosList = false;
+        this.currentPageProdutos = 0;
+        this.searchProdutosLazy();
+      }    
+    });
   }
 
 

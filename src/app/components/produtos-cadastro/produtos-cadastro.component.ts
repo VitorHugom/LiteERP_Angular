@@ -5,13 +5,17 @@ import { ActivatedRoute, Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
+import { CameraScannerComponent } from '../camera-scanner/camera-scanner.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-cadastro-produto',
   standalone: true,
   templateUrl: './produtos-cadastro.component.html',
   styleUrls: ['./produtos-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent]
+  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent, MatIconModule, MatButtonModule]
 })
 export class ProdutosCadastroComponent implements OnInit {
   isNew = true;
@@ -37,6 +41,7 @@ export class ProdutosCadastroComponent implements OnInit {
   isSuccess: boolean = true; // Status da operação
 
   constructor(
+    private dialog: MatDialog,
     private produtoService: ProdutosService,
     private grupoProdutosService: GrupoProdutosService,
     private route: ActivatedRoute,
@@ -169,4 +174,29 @@ export class ProdutosCadastroComponent implements OnInit {
       this.message = null;
     }, 3000); // Mensagem desaparece após 5 segundos
   }
+
+  startScanner(): void {
+      const dialogRef = this.dialog.open(CameraScannerComponent, {
+        width: '100vw',
+        height: '100vh',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        panelClass: 'full-screen-dialog',
+        backdropClass: 'scanner-backdrop',
+        data: {
+          videoConstraints: {
+            facingMode: 'environment',
+            width:  { ideal: 1920 },  // idealmente 1280x720 ou 1920x1080
+            height: { ideal: 1080 }
+          }
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe((barcode: string|undefined) => {
+        console.log("Código Barra: "+ barcode)
+        if (barcode) {
+          this.produto.codEan = barcode;
+        }
+      });
+    }
 }
