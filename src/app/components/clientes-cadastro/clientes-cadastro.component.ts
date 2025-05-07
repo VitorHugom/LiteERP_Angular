@@ -58,6 +58,7 @@ export class ClientesCadastroComponent implements OnInit {
 
   urlClienteBusca = '/clientes-busca'
 
+  // Informações dos botões
   buttons = [
     { text: 'Novo', color: 'novo-button', type: 'button', event: 'novo' },
     { text: 'Gravar', color: 'gravar-button', type: 'submit', event: 'gravar' },
@@ -116,18 +117,18 @@ export class ClientesCadastroComponent implements OnInit {
     }
   }
 
-    tratarEvento(evento: string) {
-      if (evento === 'novo') {
-        this.onNew();
-      } else if (evento === 'gravar') {
-        this.onSave();
-      } else if (evento === 'deletar') {
-        this.onDelete();
-      }else if (evento === 'consultar') {
-        this.onConsultar();
+  tratarEvento(evento: string) {
+    if (evento === 'novo') {
+      this.onNew();
+    } else if (evento === 'gravar') {
+      this.onSave();
+    } else if (evento === 'deletar') {
+      this.onDelete();
+    }else if (evento === 'consultar') {
+      this.onConsultar();
 
-      }
     }
+  }
 
   // Função que define se o campo de CPF ou CNPJ é exibido com base na seleção de tipo de pessoa
   get isPessoaFisica(): boolean {
@@ -261,7 +262,7 @@ export class ClientesCadastroComponent implements OnInit {
     const today = new Date();
     this.cliente = {
       id: null,
-      tipoPessoa: '',
+      tipoPessoa: 'fisica',
       cpf: '',
       cnpj: '',
       nomeFantasia: null,

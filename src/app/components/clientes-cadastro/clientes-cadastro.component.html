@@ -8,7 +8,7 @@
         <label for="tipoPessoa"><strong>Tipo de Pessoa:</strong></label>
         <div *ngIf="isNew" class="input-inline">
           <select id="tipoPessoa" [(ngModel)]="cliente.tipoPessoa" name="tipoPessoa">
-            <option value="fisica">Pessoa Física</option>
+            <option value="fisica" selected>Pessoa Física</option>
             <option value="juridica">Pessoa Jurídica</option>
           </select>
         </div>
@@ -193,16 +193,8 @@
         />
       </div>
     </div>
-
-      <!-- <app-button text ="Novo" color="novo-button" type="button" (action)="onNew()"></app-button>
-
-      <app-button text ="Gravar" color="gravar-button" type="submit" (action)="onSave()"></app-button>
-
-      <app-button *ngIf="!isNew" text="Deletar" color="deletar-button" (action)="onDelete()" type="deletar-button" ></app-button>
-
-      <app-button text ="Consultar" color="consultar-button" type="button" (action)="onConsultar()"></app-button> -->
+    <!-- Botões do footer -->
       <app-footer-button [buttons]="buttons" (action)="tratarEvento($event)" [isNew]="isNew"></app-footer-button>
-
     <div *ngIf="message" class="feedback-box" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
       {{ message }}
     </div>
