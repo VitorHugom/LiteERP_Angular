@@ -39,9 +39,9 @@ export class FornecedoresService {
   getEnderecoByCep(cep: string): Observable<any> {
     return this.http.get(`${this.viacepUrl}/${cep}/json`);
   }
-  
+
   getCidadeByCodigoIbge(codigoIbge: string): Observable<any> {
-    return this.http.get(`http://localhost:8080/cidades/codigoIbge/${codigoIbge}`);
+    return this.http.get(environment.apiUrl + `/cidades/codigoIbge/${codigoIbge}`);
   }
 
   searchFornecedores(nomeFantasia: string, page: number = 0, size: number = 10): Observable<any> {
