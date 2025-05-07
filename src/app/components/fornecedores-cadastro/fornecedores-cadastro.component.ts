@@ -7,13 +7,14 @@ import { FormsModule } from '@angular/forms';
 import { CidadesService } from '../../services/cidades.service';
 import { VendedoresService } from '../../services/vendedores.service';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
+import { FooterButtonComponent } from '../shared/footer-button/footer-button.component';
 
 @Component({
   selector: 'app-cadastro-fornecedor',
   standalone: true,
   templateUrl: './fornecedores-cadastro.component.html',
   styleUrls: ['./fornecedores-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule, NgxMaskDirective,NavigateToSearchButtonComponent],
+  imports: [CommonModule, FormsModule, NgxMaskDirective,NavigateToSearchButtonComponent,FooterButtonComponent],
   providers: [provideNgxMask()]
 })
 export class FornecedoresCadastroComponent implements OnInit {
@@ -74,6 +75,13 @@ export class FornecedoresCadastroComponent implements OnInit {
   errorMessage: string | null = null; // Para erros
   showAlert = false; // Exibir mensagem de sucesso ou erro
 
+  buttons = [
+    { text: 'Novo', color: 'novo-button', type: 'button', event: 'novo' },
+    { text: 'Gravar', color: 'gravar-button', type: 'submit', event: 'gravar' },
+    { text: 'Deletar', color: 'deletar-button', type: 'button', event: 'deletar' },
+    { text: 'Consultar', color: 'consultar-button', type: 'button', event: 'consultar' },
+  ]
+
   constructor(
     private cidadesService: CidadesService,
     private fornecedoresService: FornecedoresService,
@@ -102,6 +110,19 @@ export class FornecedoresCadastroComponent implements OnInit {
       });
     } else {
       this.onNew();
+    }
+  }
+
+  tratarEvento(evento: string) {
+    if (evento === 'novo') {
+      this.onNew();
+    } else if (evento === 'gravar') {
+      this.onSave();
+    } else if (evento === 'deletar') {
+      this.onDelete();
+    }else if (evento === 'consultar') {
+      this.onConsultar();
+
     }
   }
 
@@ -238,7 +259,7 @@ export class FornecedoresCadastroComponent implements OnInit {
     const today = new Date();
     this.fornecedor = {
       id: null,
-      tipoPessoa: '',
+      tipoPessoa: 'fisica',
       cpf: '',
       cnpj: '',
       nomeFantasia: null,

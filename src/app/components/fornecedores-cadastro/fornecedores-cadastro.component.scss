@@ -42,21 +42,6 @@
         position: relative; /* Necessário para alinhar a lista com o input */
       }
 
-    .button-back{
-      display: flex;
-      align-items: center;
-      color: #333;
-      background-color: #E3E3E3;
-      padding: 5px;
-      border-radius: 50%;
-      border: none;
-      margin-bottom: 5px;
-      cursor: pointer;
-
-      img{
-        width: 12px;
-      }
-    }
 
     .info-header {
       display: flex;
@@ -109,7 +94,6 @@
 
         select {
           background-color: white;
-          appearance: none;
           cursor: pointer;
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
@@ -221,56 +205,6 @@
       }
     }
 
-    .button-group {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 30px;
-
-      button {
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        font-size: 16px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-
-
-        &.novo-button {
-
-          background-color: #4caf50;
-          &:hover {
-            background-color: #3e8f40;
-          }
-        }
-
-        &.gravar-button {
-          background-color: #008cba;
-
-          &:hover {
-            background-color: #007bb5;
-          }
-        }
-
-        &.deletar-button {
-          background-color: #f44336;
-
-          &:hover {
-            background-color: #d32f2f;
-          }
-        }
-
-        &.consultar-button {
-          background-color: #ff9800;
-
-          &:hover {
-            background-color: #fb8c00;
-          }
-        }
-      }
-    }
-
     .feedback-box {
       margin-top: 25px;
       padding: 15px;
@@ -303,11 +237,6 @@
           text-align: center;
         }
       }
-    }
-
-    .button-group {
-      flex-direction: column;
-      gap: 10px;
     }
 
     .fornecedor-detail-container{

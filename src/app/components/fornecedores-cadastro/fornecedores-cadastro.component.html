@@ -159,12 +159,7 @@
       </div>
     </div>
 
-    <div class="button-group">
-      <button (click)="onNew()" type="button" class="button novo-button">Novo</button>
-      <button (click)="onSave()" type="submit" class="button gravar-button">Gravar</button>
-      <button *ngIf="!isNew" (click)="onDelete()" type="button" class="button deletar-button">Deletar</button>
-      <button (click)="onConsultar()" type="button" class="button consultar-button">Consultar</button>
-    </div>
+    <app-footer-button [buttons]="buttons" (action)="tratarEvento($event)" [isNew]="isNew"/>
 
     <div *ngIf="message" class="feedback-box" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
       {{ message }}
