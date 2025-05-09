@@ -9,13 +9,14 @@ import { CameraScannerComponent } from '../camera-scanner/camera-scanner.compone
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { FooterButtonComponent } from '../shared/footer-button/footer-button.component';
 
 @Component({
   selector: 'app-cadastro-produto',
   standalone: true,
   templateUrl: './produtos-cadastro.component.html',
   styleUrls: ['./produtos-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent, MatIconModule, MatButtonModule]
+  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent, MatIconModule, MatButtonModule,FooterButtonComponent]
 })
 export class ProdutosCadastroComponent implements OnInit {
   isNew = true;
@@ -32,6 +33,13 @@ export class ProdutosCadastroComponent implements OnInit {
     precoVenda: null,
     peso: null
   };
+
+  buttons = [
+  { text: 'Novo', color: 'novo-button', type: 'button', event: 'novo' },
+  { text: 'Gravar', color: 'gravar-button', type: 'submit', event: 'gravar' },
+  { text: 'Deletar', color: 'deletar-button', type: 'button', event: 'deletar' },
+  { text: 'Consultar', color: 'consultar-button', type: 'button', event: 'consultar' },
+  ]
 
   urlProdutosBusca = '/busca-produtos'
 
@@ -66,6 +74,20 @@ export class ProdutosCadastroComponent implements OnInit {
     } else {
       this.isNew = true; // Indica que é um novo produto
       this.loadGruposProdutos(); // Carregar grupos de produtos para novos produtos
+    }
+  }
+
+  // Método para tratar eventos dos botões
+  tratarEvento(evento: string) {
+    if (evento === 'novo') {
+      this.onNew();
+    } else if (evento === 'gravar') {
+      this.onSave();
+    } else if (evento === 'deletar') {
+      this.onDelete();
+    }else if (evento === 'consultar') {
+      this.onConsultar();
+
     }
   }
 
@@ -191,7 +213,7 @@ export class ProdutosCadastroComponent implements OnInit {
           }
         }
       });
-  
+
       dialogRef.afterClosed().subscribe((barcode: string|undefined) => {
         console.log("Código Barra: "+ barcode)
         if (barcode) {

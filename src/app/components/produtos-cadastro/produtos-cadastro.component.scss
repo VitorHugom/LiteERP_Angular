@@ -6,7 +6,7 @@
   border-radius: 8px;
   box-shadow: 0 2 15px rgba(0, 0, 0, 0.1);
 
-  
+
   .codEanCam{
     position: relative;
 
@@ -19,21 +19,7 @@
     }
   }
 
-  .button-back{
-    display: flex;
-    align-items: center;
-    color: #333;
-    background-color: #E3E3E3;
-    padding: 5px;
-    border-radius: 50%;
-    border: none;
-    margin-bottom: 5px;
-    cursor: pointer;
 
-    img{
-      width: 12px;
-    }
-  }
 
   h1 {
     text-align: center;
@@ -103,53 +89,7 @@
     }
   }
 
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
 
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      text-align: center;
-      color: white;
-      transition: background-color 0.3s;
-
-    }
-
-    .novo-button {
-      background-color: #4caf50;
-
-      &:hover {
-        background-color: #3e8f40;
-      }
-    }
-
-    .gravar-button {
-      background-color: #008cba;
-      &:hover {
-        background-color: #007bb5;
-      }
-    }
-
-    .deletar-button {
-      background-color: #f44336;
-
-      &:hover {
-        background-color: #d32f2f;
-      }
-    }
-
-    .consultar-button {
-      background-color: #ff9800;
-
-      &:hover {
-        background-color: #fb8c00;
-      }
-    }
-  }
 
   .feedback-box {
     margin-top: 25px;
@@ -178,10 +118,6 @@
 }
 
 @media (max-width: 600px) {
-  .button-group {
-    flex-direction: column;
-    gap: 10px;
-  }
 
   .produto-detail-container{
     max-width: 380px;

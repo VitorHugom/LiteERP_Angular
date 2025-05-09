@@ -9,23 +9,7 @@
   flex-direction: column;
   gap: 20px;
 
-  .link-back {
-    display: flex;
-    align-items: center;
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-    margin-bottom: 15px;
 
-    img {
-      width: 16px;
-      margin-right: 8px;
-    }
-
-    &:hover {
-      color: #0056b3;
-    }
-  }
 
   h1 {
     text-align: center;
@@ -184,43 +168,6 @@
     }
   }
 
-  .button-group {
-    display: flex;
-    justify-content: space-around;
-    gap: 10px;
-
-    button {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-
-      &.novo-button {
-        background-color: #28a745;
-      }
-
-      &.gravar-button {
-        background-color: #007bff;
-      }
-
-      &.deletar-button {
-        background-color: #dc3545;
-      }
-
-      &.consultar-button {
-        background-color: #ffc107;
-        color: #333;
-      }
-
-      &:hover {
-        opacity: 0.9;
-      }
-    }
-  }
 
   .message-box {
     padding: 10px;
@@ -267,8 +214,5 @@
       }
     }
 
-    .button-group {
-      flex-direction: column;
-    }
   }
 }

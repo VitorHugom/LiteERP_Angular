@@ -10,13 +10,14 @@ import { FormsModule } from '@angular/forms';
 import { AddItemModalComponent } from '../add-item-modal/add-item-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
+import { FooterButtonComponent } from '../shared/footer-button/footer-button.component';
 
 @Component({
   selector: 'app-cadastro-pedido',
   standalone: true,
   templateUrl: './pedidos-cadastro.component.html',
   styleUrls: ['./pedidos-cadastro.component.scss','./pedidos-cadastro.responsive.component.scss'],
-  imports: [CommonModule, FormsModule, NavigateToSearchButtonComponent]
+  imports: [CommonModule, FormsModule, NavigateToSearchButtonComponent,FooterButtonComponent]
 })
 export class PedidosCadastroComponent implements OnInit {
   isNew = true;
@@ -63,6 +64,13 @@ export class PedidosCadastroComponent implements OnInit {
   message: string | null = null;
   isSuccess: boolean = true;
 
+        buttons = [
+      { text: 'Novo', color: 'novo-button', type: 'button', event: 'novo' },
+      { text: 'Gravar', color: 'gravar-button', type: 'submit', event: 'gravar' },
+      { text: 'Deletar', color: 'deletar-button', type: 'button', event: 'deletar' },
+      { text: 'Consultar', color: 'consultar-button', type: 'button', event: 'consultar' },
+      ]
+
   constructor(
     private pedidosService: PedidosService,
     private clientesService: ClientesService,
@@ -104,6 +112,20 @@ export class PedidosCadastroComponent implements OnInit {
     }
   }
 
+  // Método para tratar eventos dos botões
+  tratarEvento(evento: string) {
+    if (evento === 'novo') {
+      this.onNew();
+    } else if (evento === 'gravar') {
+      this.onSave();
+    } else if (evento === 'deletar') {
+      this.onDelete();
+    }else if (evento === 'consultar') {
+      this.onConsultar();
+
+    }
+  }
+
 
   loadItensDoPedido(idPedido: string): void {
     this.pedidosService.getItensPedido(idPedido).subscribe({
@@ -139,6 +161,8 @@ export class PedidosCadastroComponent implements OnInit {
       this.pedido.tipoCobranca = tipoEncontrado ? tipoEncontrado : null;
     }
   }
+
+
 
   loadTiposCobranca(): void {
     this.tiposCobrancaService.getTiposCobranca().subscribe({

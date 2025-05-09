@@ -10,13 +10,13 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddItemRecebimentoModalComponent } from '../add-item-recebimento-modal/add-item-recebimento-modal.component';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
-
+import { FooterButtonComponent } from '../shared/footer-button/footer-button.component';
 @Component({
   selector: 'app-cadastro-recebimento',
   standalone: true,
   templateUrl: './recebimento-mercadorias-cadastro.component.html',
   styleUrls: ['./recebimento-mercadorias-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent]
+  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent,FooterButtonComponent]
 })
 export class RecebimentoMercadoriasCadastroComponent implements OnInit {
   isNew = true;
@@ -48,6 +48,13 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
   currentPageFornecedores = 0;
   pageSize = 5;
   loadingFornecedores = false;
+
+  buttons = [
+    { text: 'Novo', color: 'novo-button', type: 'button', event: 'novo' },
+    { text: 'Gravar', color: 'gravar-button', type: 'submit', event: 'gravar' },
+    { text: 'Deletar', color: 'deletar-button', type: 'button', event: 'deletar' },
+    { text: 'Consultar', color: 'consultar-button', type: 'button', event: 'consultar' },
+  ]
 
   constructor(
     private recebimentoService: RecebimentoMercadoriasService,
@@ -83,6 +90,20 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
       this.recebimento.dataRecebimento = new Date().toISOString().split('T')[0];
       this.loadTiposCobranca();
       this.loadFormasPagamento();
+    }
+  }
+
+  // Método para tratar eventos dos botões
+  tratarEvento(evento: string) {
+    if (evento === 'novo') {
+      this.onNew();
+    } else if (evento === 'gravar') {
+      this.onSave();
+    } else if (evento === 'deletar') {
+      this.onDelete();
+    }else if (evento === 'consultar') {
+      this.onConsultar();
+
     }
   }
 
