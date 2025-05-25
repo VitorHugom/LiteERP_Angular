@@ -3,7 +3,10 @@
 }
 
 .container{
-  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .container__title{
@@ -20,13 +23,13 @@
 
 }
 
-
 // SIGNUP CONTAINER
 
 .signup-container{
   max-width: 400px;
-  margin: 0 auto;
+  width: 100%;
   padding: 32px;
+  margin-bottom: 40px;
   border: 1px solid #DDD;
   border-radius: 5px;
   background-color: #FFF;
@@ -82,6 +85,13 @@
     font-size: .875rem;
   }
 }
+
+  .signup__form__itens__alert{
+    font-size: 0.75rem;
+    color: red;             /* Cor vermelha para destacar o erro */
+    margin-top: 4px;         /* Margem para separar do campo */
+    display: block;          /* Exibir o span como bloco */
+  }
 
 .form-buttons{
   display: flex;

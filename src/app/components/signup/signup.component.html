@@ -4,41 +4,82 @@
   </div>
 
   <div class="signup-container">
-      <h2 class="signup-container-title">Signup</h2>
-      <form class="form-container" (ngSubmit)="onSubmit()">
+      <h2 class="signup-container-title">Sign up</h2>
+      <form class="form-container" (ngSubmit)="onSubmit()" [formGroup]="signupForm">
           <!-- Campos do formulário -->
           <div class="form-group">
               <label for="username">Nome de Usuário</label>
-              <input type="text" id="username" [(ngModel)]="signupData.username" name="username" placeholder="Usuário" required>
+              <input type="text" id="username" formControlName="username" name="username" placeholder="Digite o nome de usuário">
+              @if (signupForm.controls.username.errors?.['required'] && signupForm.controls.username.touched) {
+                <span class="signup__form__itens__alert">Nome obrigatório</span>
+              } @else if (signupForm.controls.username.errors?.['minlength'] && signupForm.controls.username.touched) {
+                <span class="signup__form__itens__alert">
+                  Minimo 3 caracteres
+                </span>
+              }
           </div>
           <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" [(ngModel)]="signupData.email" name="email" placeholder="example@email.com" required>
+              <input type="email" id="email" formControlName="email" name="email" placeholder="Digite o email">
+              @if (signupForm.controls.email.errors?.['required'] && signupForm.controls.email.touched) {
+                <span class="signup__form__itens__alert">Email obrigatório</span>
+              } @else if (signupForm.controls.email.errors?.['email'] && signupForm.controls.email.touched) {
+                <span class="signup__form__itens__alert">
+                  Formato de email inválido
+                </span>
+              }
           </div>
           <div class="form-group">
               <label for="telefone">Telefone</label>
-              <input 
-                type="text" 
-                id="telefone" 
-                [(ngModel)]="signupData.telefone" 
+              <input
+                type="text"
+                id="telefone"
+                formControlName="telefone"
                 name="telefone"
                 [mask]="celularMask"
                 placeholder="Digite o celular"
-                required>
+                >
+                @if (signupForm.controls.telefone.errors?.['required'] && signupForm.controls.telefone.touched) {
+                  <span class="signup__form__itens__alert">Telefone obrigatório</span>
+                } @else if (signupForm.controls.telefone.errors?.['pattern'] && signupForm.controls.telefone.touched) {
+                  <span class="signup__form__itens__alert">
+                    Formato de telefone inválido
+                  </span>
+                }
           </div>
           <div class="form-group">
               <label for="password">Senha</label>
-              <input type="password" id="password" [(ngModel)]="signupData.password" name="password" placeholder="***************" required>
+              <input type="password" id="password" formControlName="password" name="password" placeholder="Digite a senha">
+              @if (signupForm.controls.password.errors?.['required'] && signupForm.controls.password.touched) {
+                <span class="signup__form__itens__alert">
+                  Senha obrigatória
+                </span>
+              } @else if (signupForm.controls.password.errors?.['minlength'] && signupForm.controls.password.touched) {
+                <span class="signup__form__itens__alert">
+                  Minimo 3 caracteres
+                </span>
+              }
           </div>
           <div class="form-group">
               <label for="confirmPassword">Confirmação de Senha</label>
-              <input type="password" id="confirmPassword" [(ngModel)]="signupData.confirmPassword" name="confirmPassword" placeholder="***************" required>
+              <input type="password" id="confirmPassword" formControlName="confirmPassword" name="confirmPassword" placeholder="Confirme a senha">
+              @if(signupForm.controls.confirmPassword.errors?.['required'] && signupForm.controls.confirmPassword.touched) {
+                <span class="signup__form__itens__alert">Confirmação obrigatória</span>
+
+              } @else if (signupForm.hasError('passwordsDoNotMatch') && signupForm.controls.confirmPassword.touched) {
+                <span class="signup__form__itens__alert">
+                  Senhas não coincidem
+                </span>
+              }
           </div>
           <div class="form-group">
               <label for="categoria">Categoria de Usuário</label>
-              <select id="categoria" [(ngModel)]="signupData.categoriaId" name="categoria" required>
+              <select id="categoria" formControlName="categoriaId" name="categoria" required>
                   <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">{{ categoria.nome }}</option>
               </select>
+              @if (signupForm.controls.categoriaId.errors?.['required'] && signupForm.controls.categoriaId.touched) {
+                <span class="signup__form__itens__alert">Categoria obrigatória</span>
+              }
           </div>
           <div class="form-buttons">
 
