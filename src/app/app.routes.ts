@@ -29,6 +29,7 @@ import { FormaPagamentoBuscaComponent } from './components/forma-pagamento-busca
 import { FormaPagamentoCadastroComponent } from './components/forma-pagamento-cadastro/forma-pagamento-cadastro.component';
 import { ContasPagarBuscaComponent } from './components/contas-pagar-busca/contas-pagar-busca.component';
 import { ContasPagarCadastroComponent } from './components/contas-pagar-cadastro/contas-pagar-cadastro.component';
+import { ContasReceberBuscaComponent } from './components/contas-receber-busca/contas-receber-busca.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -72,6 +73,8 @@ export const routes: Routes = [
 
   { path: 'contas-pagar-busca', component: ContasPagarBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
   { path: 'contas-pagar/:id', component: ContasPagarCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
+  { path: 'contas-receber-busca', component: ContasReceberBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

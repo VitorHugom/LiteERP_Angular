@@ -77,7 +77,8 @@ export class SidebarComponent {
       icone: 'images/icone-arrow.png',
       label: 'Financeiro',
       subItems: [
-        { label: 'Contas a Pagar', routerLink: '/contas-pagar-busca' }
+        { label: 'Contas a Pagar', routerLink: '/contas-pagar-busca' },
+        { label: 'Contas a Receber', routerLink: '/contas-receber-busca' }
       ]
     },
     {

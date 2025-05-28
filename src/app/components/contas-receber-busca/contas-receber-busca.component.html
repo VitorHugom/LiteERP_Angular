@@ -1,0 +1,58 @@
+<div class="busca-contas-receber-container">
+    <h1>Buscar Contas a Receber</h1>
+
+    <div class="search-container">
+      <input
+        type="text"
+        [(ngModel)]="razaoSocial"
+        placeholder="Buscar por Razão Social..."
+        class="search-input">
+      <input
+        type="date"
+        [(ngModel)]="dataInicio"
+        class="search-input">
+      <input
+        type="date"
+        [(ngModel)]="dataFim"
+        class="search-input">
+      <button (click)="searchContasReceber()" class="search-button">Buscar</button>
+    </div>
+    <div style="overflow-x:auto">
+
+      <table  le *ngIf="contasReceber.length > 0; else noContas" class="contas-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Razão Social</th>
+            <th>Tipo de Cobrança</th>
+            <th>Valor</th>
+            <th>Data de Vencimento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let conta of contasReceber" (click)="viewConta(conta.id)" class="conta-item">
+            <td data-label="ID">{{ conta.id }}</td>
+            <td data-label="Razão Social">{{ conta.fornecedor.razaoSocial }}</td>
+            <td data-label="Tipo de Cobrança">{{ conta.tipoCobranca.descricao }}</td>
+            <td data-label="Valor">{{ conta.valorParcela | currency: 'BRL' }}</td>
+            <td data-label="Data de Vencimento">{{ conta.dataVencimento | date: 'dd/MM/yyyy' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noContas>
+      <p>Nenhuma conta encontrada.</p>
+    </ng-template>
+
+    <div class="pagination">
+      <button (click)="goToPage(page - 1)" [disabled]="page === 0">Anterior</button>
+      <span>Página {{ page + 1 }} de {{ totalPages }}</span>
+      <button (click)="goToPage(page + 1)" [disabled]="page >= totalPages - 1">Próximo</button>
+    </div>
+
+    <div class="button-container">
+      <button (click)="navigateToHome()" class="nav-button">Voltar para Home</button>
+      <button (click)="createNovaConta()" class="nav-button novo-button">Nova Conta a Receber</button>
+    </div>
+  </div>
