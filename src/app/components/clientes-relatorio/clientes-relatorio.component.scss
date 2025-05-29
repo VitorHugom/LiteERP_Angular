@@ -46,13 +46,6 @@
     flex-direction: column;
     gap: 20px;
 
-    .search-vendedor{
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-
-    }
-
     .search-data{
       display: flex;
       width: 100%;
@@ -61,11 +54,57 @@
 
     }
 
-    .search-cidade{
+    .form-group {
+      position: relative;
       display: flex;
       flex-direction: column;
-      width: 100%;
 
+      label {
+        font-size: .875rem;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: .875rem;
+        outline: none;
+        background-color: #F2F4F8;
+        transition: border-color .3s;
+
+        &:focus {
+          border-color: #4caf50;
+        }
+      }
+
+      .autocomplete-list {
+        list-style: none;
+        margin: 4px 0 0;
+        padding: 0;
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+
+        li {
+          padding: 8px;
+          cursor: pointer;
+          transition: background .2s;
+
+          &:hover {
+            background-color: #f0f0f0;
+          }
+        }
+      }
     }
 
     .btn-submit{

@@ -1,31 +1,52 @@
 <div class="clientes-relatorio-container">
   <h1>Relatório de Clientes</h1>
 
-  <form [formGroup]="clientesRelatorioForm" class="clientes-relatorio-form">
+  <form [formGroup]="clientesRelatorioForm" class="clientes-relatorio-form"
+        (ngSubmit)="onSubmit()">
 
     <div class="search-data">
       <div>
         <label for="dataInicio">Data de Início:</label>
         <input type="date" id="dataInicio" formControlName="dataInicio">
       </div>
-
       <div>
         <label for="dataFim">Data de Fim:</label>
         <input type="date" id="dataFim" formControlName="dataFim">
       </div>
     </div>
 
-    <div class="search-vendedor">
-      <label for="vendedor">Vendedor</label>
-      <input type="text" name="vendedor" id="vendedor" placeholder="Buscar Vendedor" formControlName="vendedor">
+    <div class="search-vendedor form-group">
+      <label for="vendedor">Vendedor:</label>
+      <input type="text"
+             id="vendedor"
+             formControlName="vendedorNome"
+             (input)="onSearchVendedores()"
+             [value]="vendedorInput"
+             placeholder="Buscar vendedor">
+      <ul *ngIf="showVendedoresList" class="autocomplete-list">
+        <li *ngFor="let v of vendedores" (click)="onSelectVendedor(v)">
+          {{ v.nome }}
+        </li>
+      </ul>
     </div>
 
-    <div class="search-cidade">
-      <label for="cidade">Cidade</label>
-      <input type="text" name="cidade" id="cidade" placeholder="Buscar cidade" formControlName="cidade">
+    <div class="search-cidade form-group">
+      <label for="cidade">Cidade:</label>
+      <input type="text"
+             id="cidade"
+             formControlName="cidadeNome"
+             (input)="onSearchCidades()"
+             [value]="cidadeInput"
+             placeholder="Buscar cidade">
+      <ul *ngIf="showCidadesList" class="autocomplete-list">
+        <li *ngFor="let c of cidades" (click)="onSelectCidade(c)">
+          {{ c.nome }} ({{ c.estado }})
+        </li>
+      </ul>
     </div>
 
-    <button class="btn-submit" type="submit" >Gerar Relatório</button>
-
+    <button class="btn-submit" type="submit" [disabled]="clientesRelatorioForm.invalid">
+      Gerar Relatório
+    </button>
   </form>
 </div>

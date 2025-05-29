@@ -3,6 +3,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export interface ClientesFiltro {
+  dataNascimentoInicial: string; // "YYYY-MM-DD"
+  dataNascimentoFinal:   string;
+  vendedorId:            number;
+  cidadeId:              number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -62,5 +69,9 @@ export class ClientesService {
   getClientesBusca(page: number = 0): Observable<any> {
     const params = new HttpParams().set('page', page.toString());
     return this.http.get(`${this.baseUrl}/busca`, { params });
+  }
+
+  gerarRelatorio(filtro: ClientesFiltro): Observable<any[]> {
+    return this.http.post<any[]>(`${this.baseUrl}/relatorio`, filtro);
   }
 }
