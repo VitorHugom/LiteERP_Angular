@@ -13,7 +13,7 @@ import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-bu
   standalone: true,
   templateUrl: './contas-pagar-cadastro.component.html',
   styleUrls: ['./contas-pagar-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent]
+  imports: [CommonModule, FormsModule, NavigateToSearchButtonComponent]
 })
 export class ContasPagarCadastroComponent implements OnInit {
   isNew = true;
@@ -27,6 +27,7 @@ export class ContasPagarCadastroComponent implements OnInit {
     valorTotal: 0,
     valorParcela: 0,
     parcela: 1,
+    status: 'aberta'
   };
 
   fornecedorInput = '';
@@ -34,14 +35,12 @@ export class ContasPagarCadastroComponent implements OnInit {
   tiposCobranca: any[] = [];
   formasPagamento: any[] = [];
   message: string | null = null;
-  isSuccess: boolean = true;
-
+  isSuccess = true;
   showFornecedoresList = false;
   currentPageFornecedores = 0;
   pageSize = 5;
   loadingFornecedores = false;
-
-  urlContasPagarBusca = '/contas-pagar-busca'
+  urlContasPagarBusca = '/contas-pagar-busca';
 
   constructor(
     private contasPagarService: ContasPagarService,
@@ -60,46 +59,43 @@ export class ContasPagarCadastroComponent implements OnInit {
     } else {
       this.loadTiposCobranca();
       this.loadFormasPagamento();
-      this.contasPagar.status = 'aberta'
     }
   }
 
   carregarContaPagar(id: number): void {
     this.contasPagarService.getContaPagarById(id).subscribe({
-      next: (data) => {
+      next: data => {
         this.contasPagar = data;
         this.fornecedorInput = data.fornecedor?.razaoSocial || '';
         this.loadTiposCobranca();
         this.loadFormasPagamento();
       },
-      error: (err) => console.error('Erro ao carregar conta a pagar:', err),
+      error: err => console.error(err)
     });
   }
 
   loadTiposCobranca(): void {
     this.tiposCobrancaService.getTiposCobranca().subscribe({
-      next: (data) => {
+      next: data => {
         this.tiposCobranca = data;
-        console.log("Carregado")
         this.matchTipoCobranca();
       },
-      error: (err) => console.error('Erro ao carregar tipos de cobrança:', err)
+      error: err => console.error(err)
     });
   }
 
   matchTipoCobranca(): void {
-    console.log('matchTipoCobranca', this.tiposCobranca, ' - ', this.contasPagar.tipoCobranca)
     const tipoEncontrado = this.tiposCobranca.find(tipo => tipo.id === this.contasPagar.tipoCobranca?.id);
     this.contasPagar.tipoCobranca = tipoEncontrado || null;
   }
 
   loadFormasPagamento(): void {
     this.formaPagamentoService.getFormasPagamento().subscribe({
-      next: (data) => {
+      next: data => {
         this.formasPagamento = data;
         this.matchFormaPagamento();
       },
-      error: (err) => console.error('Erro ao carregar formas de pagamento:', err)
+      error: err => console.error(err)
     });
   }
 
@@ -108,11 +104,10 @@ export class ContasPagarCadastroComponent implements OnInit {
     this.contasPagar.formaPagamento = formaEncontrada || null;
   }
 
-  // Buscar fornecedores com pesquisa
   onSearchFornecedores(event: Event): void {
-    const inputValue = (event.target as HTMLInputElement).value;
-    if (inputValue.length >= 2) {
-      this.fornecedorInput = inputValue;
+    const value = (event.target as HTMLInputElement).value;
+    if (value.length >= 2) {
+      this.fornecedorInput = value;
       this.currentPageFornecedores = 0;
       this.searchFornecedoresLazy();
     } else {
@@ -124,13 +119,13 @@ export class ContasPagarCadastroComponent implements OnInit {
   searchFornecedoresLazy(): void {
     this.loadingFornecedores = true;
     this.fornecedoresService.searchFornecedores(this.fornecedorInput, this.currentPageFornecedores, this.pageSize).subscribe({
-      next: (response) => {
+      next: response => {
         this.fornecedores = response;
         this.showFornecedoresList = this.fornecedores.length > 0;
         this.loadingFornecedores = false;
       },
-      error: (err) => {
-        console.error('Erro ao buscar fornecedores:', err);
+      error: err => {
+        console.error(err);
         this.loadingFornecedores = false;
       }
     });
@@ -147,35 +142,33 @@ export class ContasPagarCadastroComponent implements OnInit {
       this.exibirMensagem('Preencha todos os campos obrigatórios.', false);
       return;
     }
-
-    const contaPagarPayload = {
+    const payload = {
       numeroDocumento: this.contasPagar.numeroDocumento,
       fornecedorId: this.contasPagar.fornecedor.id,
       dataVencimento: this.contasPagar.dataVencimento,
       tipoCobrancaId: this.contasPagar.tipoCobranca.id,
-      formaPagamentoId: this.contasPagar.formaPagamento.id,
+      formaPagamentoId: this.contasPagar.formaPagamento?.id,
       valorTotal: this.contasPagar.valorTotal,
       valorParcela: this.contasPagar.valorParcela,
       parcela: this.contasPagar.parcela,
       status: this.contasPagar.status,
     };
-
     if (this.isNew) {
-      this.contasPagarService.createContaPagar(contaPagarPayload).subscribe({
+      this.contasPagarService.createContaPagar(payload).subscribe({
         next: () => this.exibirMensagem('Conta a pagar cadastrada com sucesso!', true),
-        error: () => this.exibirMensagem('Erro ao cadastrar conta a pagar.', false),
+        error: () => this.exibirMensagem('Erro ao cadastrar conta a pagar.', false)
       });
     } else {
-      this.contasPagarService.updateContaPagar(this.contasPagar.id, contaPagarPayload).subscribe({
+      this.contasPagarService.updateContaPagar(this.contasPagar.id, payload).subscribe({
         next: () => this.exibirMensagem('Conta a pagar atualizada com sucesso!', true),
-        error: () => this.exibirMensagem('Erro ao atualizar conta a pagar.', false),
+        error: () => this.exibirMensagem('Erro ao atualizar conta a pagar.', false)
       });
     }
   }
 
-  exibirMensagem(mensagem: string, isSuccess: boolean): void {
-    this.message = mensagem;
-    this.isSuccess = isSuccess;
+  exibirMensagem(text: string, success: boolean): void {
+    this.message = text;
+    this.isSuccess = success;
     setTimeout(() => this.message = null, 3000);
   }
 
@@ -184,11 +177,6 @@ export class ContasPagarCadastroComponent implements OnInit {
   }
 
   alterarStatus(): void {
-    if (this.contasPagar.status === 'aberta') {
-      this.contasPagar.status = 'paga';
-    } else {
-      this.contasPagar.status = 'aberta';
-    }
+    this.contasPagar.status = this.contasPagar.status === 'aberta' ? 'paga' : 'aberta';
   }
-
 }

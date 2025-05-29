@@ -30,11 +30,11 @@ import { FormaPagamentoCadastroComponent } from './components/forma-pagamento-ca
 import { ContasPagarBuscaComponent } from './components/contas-pagar-busca/contas-pagar-busca.component';
 import { ContasPagarCadastroComponent } from './components/contas-pagar-cadastro/contas-pagar-cadastro.component';
 import { ContasReceberBuscaComponent } from './components/contas-receber-busca/contas-receber-busca.component';
-<<<<<<< HEAD
 import { ClientesRelatorioComponent } from './components/clientes-relatorio/clientes-relatorio.component';
-=======
 import { ContasReceberCadastroComponent } from './components/contas-receber-cadastro/contas-receber-cadastro.component';
->>>>>>> 57d6a84fa69d2a16a80e1161f6570909743d3f13
+=========
+import { ClientesRelatorioComponent } from './components/clientes-relatorio/clientes-relatorio.component';
+>>>>>>>>> Temporary merge branch 2
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },

@@ -1,5 +1,5 @@
 <div class="recebimento-detail-container">
-  <app-navigate-to-search-button [routerLink]="urlContasPagarBusca"/>
+  <app-navigate-to-search-button [routerLink]="urlContasPagarBusca"></app-navigate-to-search-button>
 
   <h1>Cadastro de Contas a Pagar</h1>
 
@@ -21,7 +21,13 @@
 
     <div class="form-group">
       <label for="fornecedor">Fornecedor</label>
-      <input type="text" id="fornecedor" [(ngModel)]="fornecedorInput" (input)="onSearchFornecedores($event)" placeholder="Digite o nome do fornecedor..." />
+      <input
+        type="text"
+        id="fornecedor"
+        [(ngModel)]="fornecedorInput"
+        (input)="onSearchFornecedores($event)"
+        placeholder="Digite o nome do fornecedor..."
+      />
       <ul *ngIf="fornecedores.length && showFornecedoresList" class="autocomplete-list">
         <li *ngFor="let fornecedor of fornecedores" (click)="onSelectFornecedor(fornecedor)">
           {{ fornecedor.razaoSocial || fornecedor.nomeFantasia }}
@@ -31,10 +37,7 @@
 
     <div class="form-group">
       <label>Data de Vencimento</label>
-      <input
-        type="date"
-        [(ngModel)]="contasPagar.dataVencimento"
-      />
+      <input type="date" [(ngModel)]="contasPagar.dataVencimento" />
     </div>
 
     <div class="form-group">
@@ -96,7 +99,7 @@
     <button class="consultar-button" (click)="onConsultar()">Consultar</button>
   </div>
 
-  <div *ngIf="message" [ngClass]="{'success-message': isSuccess, 'error-message': !isSuccess}" class="message-box">
+  <div *ngIf="message" class="feedback-box" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
     {{ message }}
   </div>
 </div>
