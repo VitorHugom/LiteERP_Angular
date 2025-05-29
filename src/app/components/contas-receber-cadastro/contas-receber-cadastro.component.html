@@ -1,0 +1,108 @@
+<div class="recebimento-detail-container">
+  <app-navigate-to-search-button [routerLink]="urlContasReceberBusca"></app-navigate-to-search-button>
+
+  <h1>Cadastro de Contas a Receber</h1>
+
+  <div class="tab-content">
+    <div class="form-group">
+      <label>ID:</label>
+      <span>{{ isNew ? 'Será gerado automaticamente' : contasReceber.id }}</span>
+    </div>
+
+    <div class="form-group">
+      <label for="numeroDocumento">Número do Documento</label>
+      <input
+        type="text"
+        id="numeroDocumento"
+        [(ngModel)]="contasReceber.numeroDocumento"
+        placeholder="Informe o número do documento"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="cliente">Cliente</label>
+      <input
+        type="text"
+        id="cliente"
+        [(ngModel)]="clienteInput"
+        (input)="onSearchClientes($event)"
+        placeholder="Digite o nome do cliente..."
+      />
+      <ul *ngIf="clientes.length && showClientesList" class="autocomplete-list">
+        <li *ngFor="let cliente of clientes" (click)="onSelectCliente(cliente)">
+          {{ cliente.razaoSocial || cliente.nomeFantasia }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label>Data de Vencimento</label>
+      <input
+        type="date"
+        [(ngModel)]="contasReceber.dataVencimento"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Tipo de Cobrança</label>
+      <select [(ngModel)]="contasReceber.tipoCobranca">
+        <option *ngFor="let tipo of tiposCobranca" [ngValue]="tipo">{{ tipo.descricao }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Forma de Pagamento</label>
+      <select [(ngModel)]="contasReceber.formaPagamento">
+        <option *ngFor="let forma of formasPagamento" [ngValue]="forma">{{ forma.descricao }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Valor Total</label>
+      <input
+        type="number"
+        [(ngModel)]="contasReceber.valorTotal"
+        placeholder="Informe o valor total"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Valor da Parcela</label>
+      <input
+        type="number"
+        [(ngModel)]="contasReceber.valorParcela"
+        placeholder="Informe o valor da parcela"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Parcela</label>
+      <input
+        type="number"
+        [(ngModel)]="contasReceber.parcela"
+        placeholder="Informe a parcela"
+      />
+    </div>
+
+    <div class="form-group status-group">
+      <label>Status</label>
+      <div class="status-container">
+        <span [ngClass]="{'status-aberta': contasReceber.status === 'aberta', 'status-paga': contasReceber.status === 'paga'}">
+          {{ contasReceber.status }}
+        </span>
+        <button (click)="alterarStatus()" [class]="contasReceber.status === 'aberta' ? 'receber-button' : 'estornar-button'">
+          {{ contasReceber.status === 'aberta' ? 'Receber' : 'Estornar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <button class="gravar-button" (click)="onSave()">Gravar</button>
+    <button class="consultar-button" (click)="onConsultar()">Consultar</button>
+  </div>
+
+  <div *ngIf="message" [ngClass]="{'success-message': isSuccess, 'error-message': !isSuccess}" class="message-box">
+    {{ message }}
+  </div>
+</div>
