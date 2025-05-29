@@ -1,3 +1,4 @@
+// contas-receber-busca.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,13 +12,13 @@ import { ContasReceberService } from '../../services/contas-receber.service';
   templateUrl: './contas-receber-busca.component.html',
   styleUrl: './contas-receber-busca.component.scss'
 })
-export class ContasReceberBuscaComponent {
-contasReceber: any[] = [];
-  razaoSocial: string = '';
-  dataInicio: string = '';
-  dataFim: string = '';
-  page: number = 0;
-  totalPages: number = 0;
+export class ContasReceberBuscaComponent implements OnInit {
+  contasReceber: any[] = [];
+  razaoSocial = '';
+  dataInicio = '';
+  dataFim = '';
+  page = 0;
+  totalPages = 0;
 
   constructor(
     private contasReceberService: ContasReceberService,
@@ -25,33 +26,35 @@ contasReceber: any[] = [];
   ) {}
 
   ngOnInit(): void {
-    this.loadReceberPagar();
+    this.loadContasReceber();
   }
 
-  loadReceberPagar(): void {
+  loadContasReceber(): void {
     this.contasReceberService.getContasReceber(this.page).subscribe({
-      next: (data) => {
+      next: data => {
         this.contasReceber = data.content;
         this.totalPages = data.totalPages;
       },
-      error: (err) => console.error('Erro ao carregar contas a receber:', err)
+      error: err => console.error('Erro ao carregar contas a receber:', err)
     });
   }
 
   searchContasReceber(): void {
-    this.contasReceberService.buscarContasReceberPorFiltro(this.razaoSocial, this.dataInicio, this.dataFim, this.page).subscribe({
-      next: (data) => {
-        this.contasReceber = data.content;
-        this.totalPages = data.totalPages;
-      },
-      error: (err) => {
-        console.error('Erro ao buscar contas a receber:', err);
-        this.contasReceber = [];
-      }
-    });
+    this.contasReceberService
+      .buscarContasReceberPorFiltro(this.razaoSocial, this.dataInicio, this.dataFim, this.page)
+      .subscribe({
+        next: data => {
+          this.contasReceber = data.content;
+          this.totalPages = data.totalPages;
+        },
+        error: err => {
+          console.error('Erro ao buscar contas a receber:', err);
+          this.contasReceber = [];
+        }
+      });
   }
 
-  viewConta(id: string): void {
+  viewConta(id: number): void {
     this.router.navigate(['/contas-receber', id]);
   }
 
