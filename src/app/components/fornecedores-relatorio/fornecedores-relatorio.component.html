@@ -1,0 +1,37 @@
+<div class="fornecedores-relatorio-container">
+  <h1>Relatório de Fornecedores</h1>
+
+  <form [formGroup]="fornecedoresRelatorioForm" class="fornecedores-relatorio-form"
+        (ngSubmit)="onSubmit()">
+
+    <div class="search-data">
+      <div>
+        <label for="dataInicio">Cadastro a partir da:</label>
+        <input type="date" id="dataInicio" formControlName="dataInicio">
+      </div>
+      <div>
+        <label for="dataFim">Atualização até:</label>
+        <input type="date" id="dataFim" formControlName="dataFim">
+      </div>
+    </div>
+
+    <div class="search-cidade form-group">
+      <label for="cidade">Cidade:</label>
+      <input type="text"
+             id="cidade"
+             formControlName="cidadeNome"
+             (input)="onSearchCidades()"
+             [value]="cidadeInput"
+             placeholder="Buscar cidade">
+      <ul *ngIf="showCidadesList" class="autocomplete-list">
+        <li *ngFor="let c of cidades" (click)="onSelectCidade(c)">
+          {{ c.nome }} ({{ c.estado }})
+        </li>
+      </ul>
+    </div>
+
+    <button class="btn-submit" type="submit" [disabled]="fornecedoresRelatorioForm.invalid">
+      Gerar Relatório
+    </button>
+  </form>
+</div>

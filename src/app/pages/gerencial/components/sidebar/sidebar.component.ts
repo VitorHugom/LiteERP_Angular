@@ -38,7 +38,14 @@ export class SidebarComponent {
             { label: 'Relatórios', routerLink: '/clientes-relatorio' }
           ]
         },
-        { label: 'Fornecedores', routerLink: '/fornecedores-busca' },
+        {
+          label: 'Fornecedores',
+          icone: 'images/icone-arrow.png',
+          subItems: [
+            { label: 'Cadastro', routerLink: '/fornecedores-busca' },
+            { label: 'Relatórios', routerLink: '/fornecedores-relatorio' }
+          ]
+        },
         {
           label: 'Produtos',
           icone: 'images/icone-arrow.png',
