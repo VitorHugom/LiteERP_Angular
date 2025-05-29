@@ -1,0 +1,64 @@
+<div class="produtos-relatorio-container">
+  <h1>Relatório de Produtos</h1>
+
+  <form [formGroup]="ProdutosRelatorioForm" class="produtos-relatorio-form"
+        (ngSubmit)="onSubmit()">
+
+    <div class="search-data">
+      <div>
+        <label for="dataCompraInicio">Compra a partir de:</label>
+        <input type="date" id="dataCompraInicio" formControlName="dataCompraInicio">
+      </div>
+      <div>
+        <label for="dataCompraFinal">Compra até:</label>
+        <input type="date" id="dataCompraFinal" formControlName="dataCompraFinal">
+      </div>
+    </div>
+
+    <div class="select-grupo-produto form-group">
+      <label for="grupoProduto">Grupo do produto:</label>
+      <select id="grupoProduto" formControlName="grupoProduto">
+        <option value=""></option>
+      </select>
+    </div>
+
+    <div class="search-data">
+      <div>
+        <label for="precoVendaInicio">Preço de venda a partir de:</label>
+        <input type="number" id="precoVendaInicio" formControlName="precoVendaInicio">
+      </div>
+      <div>
+        <label for="precoVendaFim">Preço de venda até:</label>
+        <input type="number" id="precoVendaFim" formControlName="precoVendaFim">
+      </div>
+    </div>
+
+    <div class="search-data">
+      <div>
+        <label for="precoCustoInicial">Preço de custo a partir de:</label>
+        <input type="number" id="precoCustoInicial" formControlName="precoCustoInicial">
+      </div>
+      <div>
+        <label for="precoCustoFinal">Preço de custo até:</label>
+        <input type="number" id="precoCustoFinal" formControlName="precoCustoFinal">
+      </div>
+    </div>
+
+    <div class="search-data">
+      <div>
+        <label for="pesoInicial">Peso a partir de:</label>
+        <input type="number" id="pesoInicial" formControlName="pesoInicial">
+      </div>
+      <div>
+        <label for="pesoFinal">Peso até:</label>
+        <input type="number" id="pesoFinal" formControlName="pesoFinal">
+      </div>
+    </div>
+
+
+
+    <button class="btn-submit" type="submit" [disabled]="ProdutosRelatorioForm.invalid">
+      Gerar Relatório
+    </button>
+  </form>
+</div>

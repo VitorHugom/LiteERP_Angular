@@ -54,11 +54,7 @@ export class SidebarComponent {
             { label: 'Grupo de Produtos', routerLink: '/grupo-produtos-busca' },
             {
               label: 'Relatórios',
-              subItems: [
-                { label: 'Relatório por Compra', routerLink: '/relatorio-compra' },
-                { label: 'Relatório por Venda', routerLink: '/relatorio-venda' },
-                { label: 'Relatório por Grupo de Produtos', routerLink: '/relatorio-grupo-produto' }
-              ]
+              routerLink: '/produtos-relatorio'
             }
           ]
         },

@@ -1,0 +1,155 @@
+.produtos-relatorio-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #333;
+
+  h1 {
+    text-align: center;
+    font-size: clamp(1.8rem, 2.5vw, 2.2rem);
+  }
+
+  label {
+    font-size: .875rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .875rem;
+    outline: none;
+    transition: border 0.3s;
+    background-color: #F2F4F8;
+    color: #555;
+
+    &:focus {
+      border-color: #4caf50;
+    }
+    &::placeholder{
+      font-size: .875rem;
+    }
+  }
+
+    select{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .875rem;
+    outline: none;
+    transition: border 0.3s;
+    background-color: #F2F4F8;
+    color: #555;
+
+    option {
+      padding: 10px;
+      background-color: #F2F4F8;
+      color: #555;
+    }
+  }
+
+  ::placeholder {
+    font-size: .875rem;
+  }
+
+  .produtos-relatorio-form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .search-data{
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      gap: 10px;
+
+
+    }
+
+    .form-group {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+
+      label {
+        font-size: .875rem;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: .875rem;
+        outline: none;
+        background-color: #F2F4F8;
+        transition: border-color .3s;
+
+        &:focus {
+          border-color: #4caf50;
+        }
+      }
+
+      .autocomplete-list {
+        list-style: none;
+        margin: 4px 0 0;
+        padding: 0;
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+
+        li {
+          padding: 8px;
+          cursor: pointer;
+          transition: background .2s;
+
+          &:hover {
+            background-color: #f0f0f0;
+          }
+        }
+      }
+    }
+
+    .btn-submit{
+      width: 100%;
+      text-align: center;
+      padding: 15px 10px;
+      font-weight: 500;
+      margin-top: 1rem;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.25rem;
+      transition: background-color 0.3s;
+
+      background-color: #28a745;
+
+      &:hover {
+        background-color: #218838;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
