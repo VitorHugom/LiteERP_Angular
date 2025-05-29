@@ -35,7 +35,7 @@ export class SidebarComponent {
           icone: 'images/icone-arrow.png',
           subItems: [
             { label: 'Cadastro', routerLink: '/clientes-busca' },
-            { label: 'Relatórios', routerLink: '/relatorio-clientes' }
+            { label: 'Relatórios', routerLink: '/clientes-relatorio' }
           ]
         },
         { label: 'Fornecedores', routerLink: '/fornecedores-busca' },

@@ -1,0 +1,31 @@
+<div class="clientes-relatorio-container">
+  <h1>Relatório de Clientes</h1>
+
+  <form [formGroup]="clientesRelatorioForm" class="clientes-relatorio-form">
+
+    <div class="search-data">
+      <div>
+        <label for="dataInicio">Data de Início:</label>
+        <input type="date" id="dataInicio" formControlName="dataInicio">
+      </div>
+
+      <div>
+        <label for="dataFim">Data de Fim:</label>
+        <input type="date" id="dataFim" formControlName="dataFim">
+      </div>
+    </div>
+
+    <div class="search-vendedor">
+      <label for="vendedor">Vendedor</label>
+      <input type="text" name="vendedor" id="vendedor" placeholder="Buscar Vendedor" formControlName="vendedor">
+    </div>
+
+    <div class="search-cidade">
+      <label for="cidade">Cidade</label>
+      <input type="text" name="cidade" id="cidade" placeholder="Buscar cidade" formControlName="cidade">
+    </div>
+
+    <button class="btn-submit" type="submit" >Gerar Relatório</button>
+
+  </form>
+</div>
