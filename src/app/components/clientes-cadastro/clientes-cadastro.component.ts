@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { CidadesService } from '../../services/cidades.service';
 import { VendedoresService } from '../../services/vendedores.service';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
-import { ButtonComponent } from '../shared/button/button.component';
 import { FooterButtonComponent } from '../shared/footer-button/footer-button.component';
 
 @Component({
@@ -15,7 +14,7 @@ import { FooterButtonComponent } from '../shared/footer-button/footer-button.com
   standalone: true,
   templateUrl: './clientes-cadastro.component.html',
   styleUrls: ['./clientes-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule, NgxMaskDirective,NavigateToSearchButtonComponent, ButtonComponent,FooterButtonComponent],
+  imports: [CommonModule, FormsModule, NgxMaskDirective,NavigateToSearchButtonComponent, FooterButtonComponent],
   providers: [provideNgxMask()]
 })
 export class ClientesCadastroComponent implements OnInit {
