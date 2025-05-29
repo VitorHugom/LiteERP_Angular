@@ -1,0 +1,63 @@
+<div class="clientes-relatorio-container">
+  <h1>Relatório de Pedidos de Venda</h1>
+
+  <form [formGroup]="PedidosRelatorioForm" class="pedidos-relatorio-form"
+        (ngSubmit)="onSubmit()">
+
+    <div class="search-data">
+      <div>
+        <label for="dataInicio">Data de emissão:</label>
+        <input type="date" id="dataInicio" formControlName="dataInicio">
+      </div>
+      <div>
+        <label for="dataFim">Data de referência:</label>
+        <input type="date" id="dataFim" formControlName="dataFim">
+      </div>
+    </div>
+
+    <div class="search-vendedor form-group">
+      <label for="vendedor">Vendedor:</label>
+      <input type="text"
+             id="vendedor"
+             formControlName="vendedorNome"
+             (input)="onSearchVendedores()"
+             [value]="vendedorInput"
+             placeholder="Buscar vendedor">
+      <ul *ngIf="showVendedoresList" class="autocomplete-list">
+        <li *ngFor="let v of vendedores" (click)="onSelectVendedor(v)">
+          {{ v.nome }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label for="cliente">Cliente:</label>
+      <input type="text"
+             id="cliente"
+             formControlName="clienteNome"
+             placeholder="Buscar cliente">
+    </div>
+
+    <div class="select-cobranca form-group">
+      <label for="status">Tipo de Cobrança:</label>
+      <select id="status" formControlName="tipoCobranca">
+        <option value=""></option>
+      </select>
+    </div>
+
+    <div class="select-valor">
+      <div>
+        <label for="valorInicio">Valor Inicial:</label>
+        <input type="number" id="valorInicio" formControlName="valorInicial" placeholder="Valor Inicial">
+      </div>
+      <div>
+        <label for="valorFinal">Valor Final:</label>
+        <input type="number" id="valorFinal" formControlName="valorFinal" placeholder="Valor Final">
+      </div>
+    </div>
+
+    <button class="btn-submit" type="submit" [disabled]="PedidosRelatorioForm.invalid">
+      Gerar Relatório
+    </button>
+  </form>
+</div>

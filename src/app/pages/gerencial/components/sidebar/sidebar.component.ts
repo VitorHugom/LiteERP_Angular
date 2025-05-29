@@ -69,7 +69,8 @@ export class SidebarComponent {
       icone: 'images/icone-arrow.png',
       label: 'Vendas',
       subItems: [
-        { label: 'Pedidos de Venda', routerLink: '/pedidos-busca' }
+        { label: 'Pedidos de Venda', routerLink: '/pedidos-busca' },
+        { label: 'Relatório de Venda', routerLink: '/pedidos-relatorio'},
       ]
     },
     {
