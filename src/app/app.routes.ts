@@ -37,6 +37,8 @@ import { FornecedoresRelatorioComponent } from './components/fornecedores-relato
 import { ProdutosRelatorioComponent } from './components/produtos-relatorio/produtos-relatorio.component';
 import { EstoqueRelatorioComponent } from './components/estoque-relatorio/estoque-relatorio.component';
 import { UsuarioRelatorioComponent } from './components/usuario-relatorio/usuario-relatorio.component';
+import { ContasPagarRelatorioComponent } from './components/contas-pagar-relatorio/contas-pagar-relatorio.component';
+import { ContasReceberRelatorioComponent } from './components/contas-receber-relatorio/contas-receber-relatorio.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -98,5 +100,10 @@ export const routes: Routes = [
 
   { path: 'estoque-relatorio', component: EstoqueRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
-  { path: 'usuario-relatorio', component: UsuarioRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }}
+  { path: 'usuario-relatorio', component: UsuarioRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
+  { path: 'contas-pagar-relatorio', component: ContasPagarRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
+  { path: 'contas-receber-relatorio', component: ContasReceberRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }}
+
 ];
