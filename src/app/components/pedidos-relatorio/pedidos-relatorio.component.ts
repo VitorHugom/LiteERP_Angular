@@ -122,8 +122,8 @@ export class PedidosRelatorioComponent implements OnInit {
       idVendedor:     f.vendedorId ?? undefined,
       dataEmissaoInicio:     f.dataInicio ?? undefined,
       dataEmissaoFim:        f.dataFim ?? undefined,
-      valorInicial:   f.valorInicial ?? undefined,
-      valorFinal:     f.valorFinal ?? undefined,
+      valorTotalInical:   f.valorInicial ?? undefined,
+      valorTotalFinal:     f.valorFinal ?? undefined,
       status:         undefined,
       idTipoCobranca: f.tipoCobranca ?? undefined
     };

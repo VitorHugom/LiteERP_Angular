@@ -10,8 +10,8 @@ export interface PedidosFiltro {
   idTipoCobranca?: number;
   dataEmissaoInicio?: string;
   dataEmissaoFim?: string;
-  valorInicial?: number;
-  valorFinal?: number;
+  valorTotalInical?: number;
+  valorTotalFinal?: number;
 }
 
 
