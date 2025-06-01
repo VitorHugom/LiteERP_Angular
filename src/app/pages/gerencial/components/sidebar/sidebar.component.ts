@@ -82,7 +82,10 @@ export class SidebarComponent {
       label: 'Financeiro',
       subItems: [
         { label: 'Contas a Pagar', routerLink: '/contas-pagar-busca' },
-        { label: 'Contas a Receber', routerLink: '/contas-receber-busca' }
+        { label: 'Contas a Receber', routerLink: '/contas-receber-busca' },
+        { label: 'Relatório de Contas a Pagar', routerLink: '/contas-pagar-relatorio' },
+        { label: 'Relatório de Contas a Receber', routerLink: '/contas-receber-relatorio' }
+
       ]
     },
     {
