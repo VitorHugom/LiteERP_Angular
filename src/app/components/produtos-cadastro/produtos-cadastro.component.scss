@@ -76,7 +76,6 @@
 
     select {
       background-color: #fff;
-      appearance: none;
       padding-right: 30px;
       background-image: url('data:image/svg+xml;base64,PHN2ZyB...'); /* ícone de seta para baixo */
       background-repeat: no-repeat;
@@ -115,6 +114,13 @@
     background-color: #f44336;
     color: white;
   }
+}
+
+.error-message{
+  font-size: 0.75rem;
+  color: red;             /* Cor vermelha para destacar o erro */
+  margin-top: 4px;         /* Margem para separar do campo */
+  display: block;
 }
 
 @media (max-width: 600px) {

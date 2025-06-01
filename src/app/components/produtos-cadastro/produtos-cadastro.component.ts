@@ -3,7 +3,7 @@ import { ProdutosService } from '../../services/produtos.service';
 import { GrupoProdutosService } from '../../services/grupo-produtos.service';
 import { ActivatedRoute, Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 import { CameraScannerComponent } from '../camera-scanner/camera-scanner.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,14 +11,36 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FooterButtonComponent } from '../shared/footer-button/footer-button.component';
 
+
 @Component({
   selector: 'app-cadastro-produto',
   standalone: true,
   templateUrl: './produtos-cadastro.component.html',
   styleUrls: ['./produtos-cadastro.component.scss'],
-  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent, MatIconModule, MatButtonModule,FooterButtonComponent]
+  imports: [CommonModule, FormsModule,NavigateToSearchButtonComponent, MatIconModule, MatButtonModule,FooterButtonComponent, ReactiveFormsModule]
 })
 export class ProdutosCadastroComponent implements OnInit {
+
+  geralForm: FormGroup = new FormGroup({
+    id: new FormControl<string | null>(null),
+    descricao: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+    grupoProdutos: new FormControl<string[]>([], { nonNullable: true, validators: Validators.required }),
+    marca: new FormControl<string>(''),
+    dataUltimaCompra: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+  })
+
+  tributacaoForm: FormGroup = new FormGroup({
+    codEan: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    codNcm: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8)] }),
+    codCest: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+  })
+
+  valoresForm: FormGroup = new FormGroup({
+    precoCompra: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(0)] }),
+    precoVenda: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(0)] }),
+    peso: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(0)] }),
+  })
+
   isNew = true;
   produto: any = {
     id: null,
@@ -31,7 +53,7 @@ export class ProdutosCadastroComponent implements OnInit {
     codCest: '',
     precoCompra: null,
     precoVenda: null,
-    peso: null
+    peso: null,
   };
 
   buttons = [
@@ -64,6 +86,22 @@ export class ProdutosCadastroComponent implements OnInit {
       this.produtoService.getProdutoById(id).subscribe({
         next: (data) => {
           this.produto = data;
+          this.geralForm.patchValue({
+            descricao: this.produto.descricao,
+            grupoProdutos: this.produto.grupoProdutos,
+            dataUltimaCompra: this.produto.dataUltimaCompra,
+          });
+          this.tributacaoForm.patchValue({
+            codEan: this.produto.codEan,
+            codNcm: this.produto.codNcm,
+            codCest: this.produto.codCest,
+          });
+          this.valoresForm.patchValue({
+            precoCompra: this.produto.precoCompra,
+            precoVenda: this.produto.precoVenda,
+            peso: this.produto.peso,
+          });
+
           // Carregar grupos de produtos após obter o produto
           this.loadGruposProdutos();
         },
@@ -94,34 +132,45 @@ export class ProdutosCadastroComponent implements OnInit {
   // Carregar grupos de produtos
   loadGruposProdutos(): void {
     this.grupoProdutosService.getGruposProdutos().subscribe({
-      next: (data) => {
-        this.gruposProdutos = data; // Recebe e armazena os grupos de produtos
-        if (this.produto.grupoProdutos) {
-          // Atualiza grupo de produtos após carregar todos os grupos disponíveis
-          this.produto.grupoProdutos = this.gruposProdutos.find(grupo => grupo.id === this.produto.grupoProdutos.id);
-        }
-      },
-      error: (err) => {
-        console.error('Erro ao carregar grupos de produtos:', err);
+  next: (data) => {
+    this.gruposProdutos = data;
+
+    if (this.produto?.grupoProdutos?.id) {
+      const grupoSelecionado = this.gruposProdutos.find(
+        g => g.id === this.produto.grupoProdutos.id
+      );
+
+      if (grupoSelecionado) {
+        this.geralForm.get('grupoProdutos')?.setValue(grupoSelecionado);
       }
-    });
+    }
+  },
+  error: (err) => {
+    console.error('Erro ao carregar grupos de produtos:', err);
+  }
+});
+
   }
 
   onSave(): void {
-    if (!this.produto.descricao || !this.produto.codEan || !this.produto.precoVenda) {
-      this.exibirMensagem('Preencha todos os campos obrigatórios.', false);
-      return;
-    }
+    this.valoresForm.markAllAsTouched();
 
-    if (!this.produto.codNcm || this.produto.codNcm.length !== 8) {
-      this.exibirMensagem('Código NCM deve conter 8 dígitos.', false);
-      return;
-    }
+    if (this.isNew && !this.valoresForm.invalid && !this.geralForm.invalid && !this.tributacaoForm.invalid) {
+      this.produto = {
+        ...this.geralForm.getRawValue(),
+        ...this.tributacaoForm.getRawValue(),
+        ...this.valoresForm.getRawValue()
+      };
 
-    if (this.isNew) {
+
       this.produtoService.createProduto(this.produto).subscribe({
         next: (response) => {
-          this.produto = response;
+          this.geralForm.reset()
+          this.tributacaoForm.reset()
+          this.valoresForm.reset()
+
+          this.setActiveTab('geral')
+
           this.isNew = false;
           this.exibirMensagem('Produto cadastrado com sucesso!', true);
         },
@@ -129,8 +178,8 @@ export class ProdutosCadastroComponent implements OnInit {
           this.exibirMensagem('Erro ao cadastrar produto.', false);
           console.error(err);
         }
-      });
-    } else {
+      })
+    } else if(!this.isNew && !this.valoresForm.invalid && !this.geralForm.invalid && !this.tributacaoForm.invalid) {
       this.produtoService.updateProduto(this.produto.id, this.produto).subscribe({
         next: () => {
           this.exibirMensagem('Produto atualizado com sucesso!', true);
@@ -165,36 +214,39 @@ export class ProdutosCadastroComponent implements OnInit {
 
   onNew(): void {
     this.isNew = true;
-    this.produto = {
-      id: null,
-      descricao: '',
-      grupoProdutos: null,
-      marca: '',
-      dataUltimaCompra: '',
-      codEan: '',
-      codNcm: '',
-      codCest: '',
-      precoCompra: null,
-      precoVenda: null,
-      peso: null
-    };
+
+    this.geralForm.reset()
+    this.tributacaoForm.reset()
+    this.valoresForm.reset()
   }
 
   setActiveTab(tab: string): void {
-    this.activeTab = tab;
+
+    if(tab == 'tributacao') {
+      this.geralForm.markAllAsTouched()
+      if(!this.geralForm.invalid) {
+        this.activeTab = tab;
+      }
+    }else if(tab == 'valores') {
+      this.tributacaoForm.markAllAsTouched()
+      if(!this.tributacaoForm.invalid) {
+        this.activeTab = tab;
+      }
+    }else if(tab == 'geral'){
+      this.activeTab = tab;
+    }
   }
 
   onConsultar(): void {
     this.router.navigate(['/busca-produtos']);
   }
 
-  // Função para exibir mensagem com timeout de 5 segundos
   exibirMensagem(mensagem: string, isSuccess: boolean): void {
     this.message = mensagem;
     this.isSuccess = isSuccess;
     setTimeout(() => {
       this.message = null;
-    }, 3000); // Mensagem desaparece após 5 segundos
+    }, 3000);
   }
 
   startScanner(): void {
