@@ -1,16 +1,30 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogModule
+} from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+
 import { PedidosService } from '../../services/pedidos.service';
 import { ProdutosService } from '../../services/produtos.service';
-import { CommonModule, CurrencyPipe } from '@angular/common'; // Adicionado o CurrencyPipe
-import { MatButtonModule } from '@angular/material/button'; // Adicionando MatButtonModule para os botões
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-baixar-pedidos-modal',
   templateUrl: './baixar-pedidos-modal.component.html',
   styleUrls: ['./baixar-pedidos-modal.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatButtonModule, CurrencyPipe] // Importando CurrencyPipe e MatButtonModule
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatDialogModule
+  ]
 })
 export class BaixarPedidosModalComponent implements OnInit {
   selectedPedido: any;
@@ -19,9 +33,10 @@ export class BaixarPedidosModalComponent implements OnInit {
     public dialogRef: MatDialogRef<BaixarPedidosModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private pedidosService: PedidosService,
-    private produtosService: ProdutosService
+    private produtosService: ProdutosService,
+    private dialog: MatDialog
   ) {
-    this.selectedPedido = data.pedido; // Inicializa o pedido selecionado
+    this.selectedPedido = data.pedido;
   }
 
   ngOnInit(): void {
@@ -30,17 +45,14 @@ export class BaixarPedidosModalComponent implements OnInit {
     }
   }
 
-  // Função para fechar o modal
   onClose(): void {
     this.dialogRef.close();
   }
 
-  // Carregar os itens do pedido selecionado
   loadItensDoPedido(idPedido: string): void {
     this.pedidosService.getItensPedido(idPedido).subscribe({
       next: (itens) => {
         this.selectedPedido.itens = itens;
-        // Carregar os detalhes dos produtos para cada item
         this.selectedPedido.itens.forEach((item: any) => {
           this.produtosService.getProdutoById(item.idProduto).subscribe({
             next: (produto) => {
@@ -58,18 +70,117 @@ export class BaixarPedidosModalComponent implements OnInit {
     });
   }
 
-  // Função para baixar o pedido (atualizar status para "baixado" ou "pago")
   baixarPedido(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        titulo: 'Deseja imprimir antes de baixar?',
+        mensagem:
+          'Após baixar o pedido, não será possível imprimir o comprovante. Imprimir agora?'
+      },
+      width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe((imprimir: boolean) => {
+      if (imprimir) {
+        this.onPrint();
+        this.finalizarBaixa();
+      } else {
+        this.finalizarBaixa();
+      }
+    });
+  }
+
+  private finalizarBaixa(): void {
     if (this.selectedPedido) {
-      this.pedidosService.atualizarStatusPedido(this.selectedPedido.id, 'baixado').subscribe({
-        next: () => {
-          console.log('Pedido baixado com sucesso!');
-          this.dialogRef.close(this.selectedPedido); // Fechar o modal ao finalizar
-        },
-        error: (err) => {
-          console.error('Erro ao baixar o pedido:', err);
-        }
-      });
+      this.pedidosService
+        .atualizarStatusPedido(this.selectedPedido.id, 'baixado')
+        .subscribe({
+          next: () => {
+            this.dialogRef.close(this.selectedPedido);
+          },
+          error: (err) => {
+            console.error('Erro ao baixar o pedido:', err);
+          }
+        });
     }
+  }
+
+  onPrint(): void {
+    const doc = new jsPDF({ orientation: 'portrait' });
+    const marginLeft = 14;
+    let y = 20;
+
+    doc.setFontSize(18);
+    doc.text('Pedido de Venda', marginLeft, y);
+    y += 10;
+
+    doc.setFontSize(12);
+    const nomeCliente =
+      this.selectedPedido.cliente.razaoSocial ||
+      this.selectedPedido.cliente.nomeFantasia ||
+      '-';
+    doc.text(`Cliente: ${nomeCliente}`, marginLeft, y);
+    y += 6;
+
+    const tipoDesc =
+      this.selectedPedido.tipoCobranca.descricao || '-';
+    doc.text(`Forma de Pagamento: ${tipoDesc}`, marginLeft, y);
+    y += 6;
+
+    const now = new Date();
+    const dataFormatada = this.formatarDataBR(
+      now.toISOString().slice(0, 10)
+    );
+    doc.text(`Data: ${dataFormatada}`, marginLeft, y);
+    y += 6;
+
+    const totalFormatado = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(this.selectedPedido.valorTotal);
+    doc.text(`Valor Total: ${totalFormatado}`, marginLeft, y);
+    y += 10;
+
+    const head = [
+      ['Produto', 'Quantidade', 'Valor Unitário', 'Subtotal']
+    ];
+    const body = this.selectedPedido.itens.map((item: any) => {
+      const desc = item.produto?.descricao || '-';
+      const qtd = item.quantidade;
+      const precoUnit = item.preco;
+      const subtotal = qtd * precoUnit;
+
+      const precoUnitFmt = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(precoUnit);
+      const subtotalFmt = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(subtotal);
+
+      return [desc, qtd.toString(), precoUnitFmt, subtotalFmt];
+    });
+
+    const startY = y + 4;
+    autoTable(doc, {
+      head,
+      body,
+      startY,
+      styles: { fontSize: 10, cellPadding: 3 },
+      headStyles: { fillColor: [41, 128, 185] }
+    });
+
+    const blob = doc.output('blob');
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+  }
+
+  private formatarDataBR(dataIso: string): string {
+    if (!dataIso) return dataIso;
+    const partes = dataIso.split('-');
+    if (partes.length !== 3) return dataIso;
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
   }
 }
