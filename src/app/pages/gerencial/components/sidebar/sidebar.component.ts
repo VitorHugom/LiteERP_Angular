@@ -108,8 +108,9 @@ export class SidebarComponent {
       icone: 'images/icone-arrow.png',
       label: 'Administrador',
       subItems: [
-        { label: 'Alterar Senha', routerLink: '/alterar-senha' },
-        { label: 'Liberar Usuários', routerLink: '/busca-liberacao' }
+        { label: 'Liberar Usuários', routerLink: '/busca-liberacao' },
+        { label: 'Usuários', routerLink: '/usuarios-busca' },
+        { label: 'Relatório', routerLink: '/usuario-relatorio' }
       ]
     }
   ];

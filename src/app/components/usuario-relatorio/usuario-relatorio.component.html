@@ -1,0 +1,24 @@
+<div class="usuario-relatorio-container">
+  <h1>Relatório de Usuário</h1>
+  <app-navigate-to-search-button [routerLink]="urlHome"></app-navigate-to-search-button>
+
+  <form [formGroup]="usuarioRelatorioForm" class="usuario-relatorio-form"
+        (ngSubmit)="onSubmit()">
+
+
+    <!-- select de grupo de produto -->
+    <div class="select-grupo-produto form-group">
+      <label for="categoriaUsuario">Categoria de Usuário:</label>
+      <select id="categoriaUsuario"
+              formControlName="categoriaUsuario">
+        <option value=""></option>
+      </select>
+    </div>
+
+
+    <button class="btn-submit" type="submit"
+      [disabled]="usuarioRelatorioForm.invalid">
+      Gerar Relatório
+    </button>
+  </form>
+</div>
