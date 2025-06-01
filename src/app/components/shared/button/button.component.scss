@@ -37,6 +37,14 @@
       background-color: #fb8c00;
     }
   }
+  &.imprimir-button {
+    background-color: #17a2b8;
+
+    &:hover {
+      background-color: #117a8b;
+    }
+  }
+
 
 }
 @media (max-width: 600px) {

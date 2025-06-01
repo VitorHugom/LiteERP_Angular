@@ -11,6 +11,9 @@ import { AddItemModalComponent } from '../add-item-modal/add-item-modal.componen
 import { MatDialog } from '@angular/material/dialog';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 import { FooterButtonComponent } from '../shared/footer-button/footer-button.component';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 
 @Component({
   selector: 'app-cadastro-pedido',
@@ -68,7 +71,8 @@ export class PedidosCadastroComponent implements OnInit {
       { text: 'Novo', color: 'novo-button', type: 'button', event: 'novo' },
       { text: 'Gravar', color: 'gravar-button', type: 'submit', event: 'gravar' },
       { text: 'Deletar', color: 'deletar-button', type: 'button', event: 'deletar' },
-      { text: 'Consultar', color: 'consultar-button', type: 'button', event: 'consultar' },
+      { text: 'Imprimir',   color: 'imprimir-button', type: 'button', event: 'imprimir' },
+      { text: 'Consultar', color: 'consultar-button', type: 'button', event: 'consultar' }
       ]
 
   constructor(
@@ -123,6 +127,8 @@ export class PedidosCadastroComponent implements OnInit {
     }else if (evento === 'consultar') {
       this.onConsultar();
 
+    }else if (evento === 'imprimir') {
+      this.onPrint();
     }
   }
 
@@ -557,5 +563,88 @@ export class PedidosCadastroComponent implements OnInit {
       this.pedido.valorTotal = total + item.quantidade * item.produto.precoVenda;
       return this.pedido.valorTotal;
     }, 0);
+  }
+
+  onPrint(): void {
+    if (this.isNew || !this.pedido?.id) {
+      return; // só imprimir se o pedido já existir
+    }
+
+    const doc = new jsPDF({ orientation: 'portrait' });
+    const marginLeft = 14;
+    let y = 20;
+
+    // Título
+    doc.setFontSize(18);
+    doc.text('Pedido de Venda', marginLeft, y);
+    y += 10;
+
+    // Cliente
+    doc.setFontSize(12);
+    const nomeCliente =
+      this.pedido.cliente?.razaoSocial ||
+      this.pedido.cliente?.nomeFantasia ||
+      '-';
+    doc.text(`Cliente: ${nomeCliente}`, marginLeft, y);
+    y += 6;
+
+    // Forma de Pagamento
+    const tipoDesc =
+      this.pedido.tipoCobranca?.descricao || '-';
+    doc.text(`Forma de Pagamento: ${tipoDesc}`, marginLeft, y);
+    y += 6;
+
+    // Data de Emissão formatada (dd/mm/aaaa)
+    let dataFmt = '-';
+    if (this.pedido.dataEmissao) {
+      const iso = this.pedido.dataEmissao.slice(0, 10);
+      const [yyyy, mm, dd] = iso.split('-');
+      dataFmt = `${dd}/${mm}/${yyyy}`;
+    }
+    doc.text(`Data de Emissão: ${dataFmt}`, marginLeft, y);
+    y += 6;
+
+    // Total do Pedido
+    const totalFormatado = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(this.getTotalPedido());
+    doc.text(`Valor Total: ${totalFormatado}`, marginLeft, y);
+    y += 10;
+
+    // Cabeçalho e corpo da tabela de itens
+    const head = [['Produto', 'Quantidade', 'Valor Unitário', 'Valor Total']];
+    const body = this.pedido.itens.map((item: any) => {
+      const desc = item.produto?.descricao || '-';
+      const qtd = item.quantidade;
+      const precoUnit = item.produto?.precoVenda || 0;
+      const subtotal = qtd * precoUnit;
+
+      const precoUnitFmt = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(precoUnit);
+      const subtotalFmt = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(subtotal);
+
+      return [desc, qtd.toString(), precoUnitFmt, subtotalFmt];
+    });
+
+    const startY = y + 4;
+    autoTable(doc, {
+      head,
+      body,
+      startY,
+      styles: { fontSize: 10, cellPadding: 3 },
+      headStyles: { fillColor: [41, 128, 185] }
+    });
+
+    // Abre em nova aba
+    const blob = doc.output('blob');
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
   }
 }
