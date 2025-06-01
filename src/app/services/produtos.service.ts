@@ -3,6 +3,18 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export interface ProdutosFiltro {
+  dataCompraInicio?:     string;
+  dataCompraFim?:        string;
+  grupoId?:              number;
+  precoVendaInicio?:     number;
+  precoVendaFim?:        number;
+  precoCompraInicio?:    number;
+  precoCompraFim?:       number;
+  pesoInicio?:           number;
+  pesoFim?:              number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -51,5 +63,9 @@ export class ProdutosService {
   getProdutosBusca(page: number = 0): Observable<any> {
     const params = new HttpParams().set('page', page.toString());
     return this.http.get(`${this.baseUrl}/busca`, { params });
+  }
+
+  gerarRelatorio(filtro: ProdutosFiltro): Observable<any[]> {
+    return this.http.post<any[]>(`${this.baseUrl}/relatorios`, filtro);
   }
 }

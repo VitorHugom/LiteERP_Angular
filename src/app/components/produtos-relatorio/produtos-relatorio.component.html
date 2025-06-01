@@ -1,63 +1,104 @@
 <div class="produtos-relatorio-container">
+  <app-navigate-to-search-button [routerLink]="urlHome"/>
   <h1>Relatório de Produtos</h1>
 
-  <form [formGroup]="ProdutosRelatorioForm" class="produtos-relatorio-form"
+  <form [formGroup]="produtosRelatorioForm" class="produtos-relatorio-form"
         (ngSubmit)="onSubmit()">
 
+    <!-- intervalo de datas (data de última compra) -->
     <div class="search-data">
       <div>
         <label for="dataCompraInicio">Compra a partir de:</label>
-        <input type="date" id="dataCompraInicio" formControlName="dataCompraInicio">
+        <input
+          type="date"
+          id="dataCompraInicio"
+          formControlName="dataCompraInicio">
       </div>
       <div>
         <label for="dataCompraFinal">Compra até:</label>
-        <input type="date" id="dataCompraFinal" formControlName="dataCompraFinal">
+        <input
+          type="date"
+          id="dataCompraFinal"
+          formControlName="dataCompraFinal">
       </div>
     </div>
 
+    <!-- select de grupo de produto -->
     <div class="select-grupo-produto form-group">
       <label for="grupoProduto">Grupo do produto:</label>
-      <select id="grupoProduto" formControlName="grupoProduto">
+      <select id="grupoProduto"
+              formControlName="grupoProdutoId">
         <option value=""></option>
+        <option *ngFor="let g of grupos" [value]="g.id">
+          {{ g.nome }}
+        </option>
       </select>
     </div>
 
+    <!-- intervalo de preço de venda -->
     <div class="search-data">
       <div>
         <label for="precoVendaInicio">Preço de venda a partir de:</label>
-        <input type="number" id="precoVendaInicio" formControlName="precoVendaInicio">
+        <input
+          type="number"
+          id="precoVendaInicio"
+          formControlName="precoVendaInicio"
+          placeholder="0.00">
       </div>
       <div>
-        <label for="precoVendaFim">Preço de venda até:</label>
-        <input type="number" id="precoVendaFim" formControlName="precoVendaFim">
+        <label for="precoVendaFinal">Preço de venda até:</label>
+        <input
+          type="number"
+          id="precoVendaFinal"
+          formControlName="precoVendaFinal"
+          placeholder="0.00">
       </div>
     </div>
 
+    <!-- intervalo de preço de custo -->
     <div class="search-data">
       <div>
         <label for="precoCustoInicial">Preço de custo a partir de:</label>
-        <input type="number" id="precoCustoInicial" formControlName="precoCustoInicial">
+        <input
+          type="number"
+          id="precoCustoInicial"
+          formControlName="precoCustoInicial"
+          placeholder="0.00">
       </div>
       <div>
         <label for="precoCustoFinal">Preço de custo até:</label>
-        <input type="number" id="precoCustoFinal" formControlName="precoCustoFinal">
+        <input
+          type="number"
+          id="precoCustoFinal"
+          formControlName="precoCustoFinal"
+          placeholder="0.00">
       </div>
     </div>
 
+    <!-- intervalo de peso -->
     <div class="search-data">
       <div>
         <label for="pesoInicial">Peso a partir de:</label>
-        <input type="number" id="pesoInicial" formControlName="pesoInicial">
+        <input
+          type="number"
+          id="pesoInicial"
+          formControlName="pesoInicial"
+          placeholder="0.000"
+          step="0.001">
       </div>
       <div>
         <label for="pesoFinal">Peso até:</label>
-        <input type="number" id="pesoFinal" formControlName="pesoFinal">
+        <input
+          type="number"
+          id="pesoFinal"
+          formControlName="pesoFinal"
+          placeholder="0.000"
+          step="0.001">
       </div>
     </div>
 
-
-
-    <button class="btn-submit" type="submit" [disabled]="ProdutosRelatorioForm.invalid">
+    <button class="btn-submit" type="submit"
+      [disabled]="produtosRelatorioForm.invalid">
       Gerar Relatório
     </button>
   </form>

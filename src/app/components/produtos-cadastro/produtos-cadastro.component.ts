@@ -152,25 +152,22 @@ export class ProdutosCadastroComponent implements OnInit {
 
   }
 
-  onSave(): void {
+ onSave(): void {
+    this.geralForm.markAllAsTouched();
+    this.tributacaoForm.markAllAsTouched();
     this.valoresForm.markAllAsTouched();
-
-    if (this.isNew && !this.valoresForm.invalid && !this.geralForm.invalid && !this.tributacaoForm.invalid) {
-      this.produto = {
+    if (this.isNew && !this.geralForm.invalid && !this.tributacaoForm.invalid && !this.valoresForm.invalid) {
+      const novoProduto = {
         ...this.geralForm.getRawValue(),
         ...this.tributacaoForm.getRawValue(),
         ...this.valoresForm.getRawValue()
       };
-
-
-      this.produtoService.createProduto(this.produto).subscribe({
+      this.produtoService.createProduto(novoProduto).subscribe({
         next: (response) => {
-          this.geralForm.reset()
-          this.tributacaoForm.reset()
-          this.valoresForm.reset()
-
-          this.setActiveTab('geral')
-
+          this.geralForm.reset();
+          this.tributacaoForm.reset();
+          this.valoresForm.reset();
+          this.setActiveTab('geral');
           this.isNew = false;
           this.exibirMensagem('Produto cadastrado com sucesso!', true);
         },
@@ -178,8 +175,17 @@ export class ProdutosCadastroComponent implements OnInit {
           this.exibirMensagem('Erro ao cadastrar produto.', false);
           console.error(err);
         }
-      })
-    } else if(!this.isNew && !this.valoresForm.invalid && !this.geralForm.invalid && !this.tributacaoForm.invalid) {
+      });
+    }
+    else if (!this.isNew && !this.geralForm.invalid && !this.tributacaoForm.invalid && !this.valoresForm.invalid) {
+      const { id: formId, ...geralValues } = this.geralForm.getRawValue();
+      this.produto = {
+        id: this.produto.id,
+        ...geralValues,
+        ...this.tributacaoForm.getRawValue(),
+        ...this.valoresForm.getRawValue() 
+      };
+
       this.produtoService.updateProduto(this.produto.id, this.produto).subscribe({
         next: () => {
           this.exibirMensagem('Produto atualizado com sucesso!', true);
@@ -190,7 +196,7 @@ export class ProdutosCadastroComponent implements OnInit {
         }
       });
     }
-  }
+}
 
   onDelete(): void {
     if (this.produto.id) {
