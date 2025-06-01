@@ -1,0 +1,26 @@
+<div class="produtos-relatorio-container">
+  <h1>Relatório de Estoque</h1>
+
+  <form [formGroup]="estoqueRelatorioForm" class="produtos-relatorio-form"
+        (ngSubmit)="onSubmit()">
+
+
+    <!-- select de grupo de produto -->
+    <div class="select-grupo-produto form-group">
+      <label for="grupoProduto">Grupo do produto:</label>
+      <select id="grupoProduto"
+              formControlName="grupoProdutoId">
+        <option value=""></option>
+        <option *ngFor="let g of grupos" [value]="g.id">
+          {{ g.nome }}
+        </option>
+      </select>
+    </div>
+
+
+    <button class="btn-submit" type="submit"
+      [disabled]="estoqueRelatorioForm.invalid">
+      Gerar Relatório
+    </button>
+  </form>
+</div>

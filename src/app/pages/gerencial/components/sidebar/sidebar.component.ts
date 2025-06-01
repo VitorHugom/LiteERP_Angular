@@ -99,7 +99,8 @@ export class SidebarComponent {
       label: 'Estoque',
       subItems: [
         { label: 'Movimento de Estoque', routerLink: '/movimento-estoque-busca' },
-        { label: 'Estoque', routerLink: '/estoque-busca' }
+        { label: 'Estoque', routerLink: '/estoque-busca' },
+        { label: 'Relatório', routerLink: '/estoque-relatorio' }
       ]
     },
     {

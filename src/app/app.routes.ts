@@ -35,6 +35,7 @@ import { ContasReceberCadastroComponent } from './components/contas-receber-cada
 import { PedidosRelatorioComponent } from './components/pedidos-relatorio/pedidos-relatorio.component';
 import { FornecedoresRelatorioComponent } from './components/fornecedores-relatorio/fornecedores-relatorio.component';
 import { ProdutosRelatorioComponent } from './components/produtos-relatorio/produtos-relatorio.component';
+import { EstoqueRelatorioComponent } from './components/estoque-relatorio/estoque-relatorio.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -91,5 +92,8 @@ export const routes: Routes = [
 
   { path: 'fornecedores-relatorio', component: FornecedoresRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
-  { path: 'produtos-relatorio', component: ProdutosRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }}
+  { path: 'produtos-relatorio', component: ProdutosRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
+
+  { path: 'estoque-relatorio', component: EstoqueRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }}
 ];
