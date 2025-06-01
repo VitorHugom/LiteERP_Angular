@@ -1,28 +1,31 @@
 <div class="clientes-relatorio-container">
+  <app-navigate-to-search-button [routerLink]="urlHome"/>
   <h1>Relatório de Pedidos de Venda</h1>
 
-  <form [formGroup]="PedidosRelatorioForm" class="pedidos-relatorio-form"
-        (ngSubmit)="onSubmit()">
+  <form [formGroup]="pedidosRelatorioForm" class="pedidos-relatorio-form" (ngSubmit)="onSubmit()">
 
+    <!-- intervalo de datas (emissão) -->
     <div class="search-data">
       <div>
-        <label for="dataInicio">Data de emissão:</label>
+        <label for="dataInicio">Data de emissão (início):</label>
         <input type="date" id="dataInicio" formControlName="dataInicio">
       </div>
       <div>
-        <label for="dataFim">Data de referência:</label>
+        <label for="dataFim">Data de emissão (fim):</label>
         <input type="date" id="dataFim" formControlName="dataFim">
       </div>
     </div>
 
+    <!-- autocomplete de vendedor -->
     <div class="search-vendedor form-group">
       <label for="vendedor">Vendedor:</label>
-      <input type="text"
-             id="vendedor"
-             formControlName="vendedorNome"
-             (input)="onSearchVendedores()"
-             [value]="vendedorInput"
-             placeholder="Buscar vendedor">
+      <input
+        type="text"
+        id="vendedor"
+        formControlName="vendedorNome"
+        (input)="onSearchVendedores()"
+        [value]="vendedorInput"
+        placeholder="Buscar vendedor">
       <ul *ngIf="showVendedoresList" class="autocomplete-list">
         <li *ngFor="let v of vendedores" (click)="onSelectVendedor(v)">
           {{ v.nome }}
@@ -30,33 +33,55 @@
       </ul>
     </div>
 
+    <!-- autocomplete de cliente -->
     <div class="form-group">
       <label for="cliente">Cliente:</label>
-      <input type="text"
-             id="cliente"
-             formControlName="clienteNome"
-             placeholder="Buscar cliente">
+      <input
+        type="text"
+        id="cliente"
+        formControlName="clienteNome"
+        (input)="onSearchClientes()"
+        [value]="clienteInput"
+        placeholder="Buscar cliente">
+      <ul *ngIf="showClientesList" class="autocomplete-list">
+        <li *ngFor="let c of clientes" (click)="onSelectCliente(c)">
+          {{ c.nomeFantasia || c.razaoSocial }}
+        </li>
+      </ul>
     </div>
 
+    <!-- select de tipo de cobrança -->
     <div class="select-cobranca form-group">
-      <label for="status">Tipo de Cobrança:</label>
-      <select id="status" formControlName="tipoCobranca">
+      <label for="tipoCobranca">Tipo de Cobrança:</label>
+      <select id="tipoCobranca" formControlName="tipoCobranca">
         <option value=""></option>
+        <option *ngFor="let tc of tiposCobranca" [value]="tc.id">
+          {{ tc.descricao }}
+        </option>
       </select>
     </div>
 
+    <!-- intervalo de valores -->
     <div class="select-valor">
       <div>
         <label for="valorInicio">Valor Inicial:</label>
-        <input type="number" id="valorInicio" formControlName="valorInicial" placeholder="Valor Inicial">
+        <input
+          type="number"
+          id="valorInicio"
+          formControlName="valorInicial"
+          placeholder="Valor Inicial">
       </div>
       <div>
         <label for="valorFinal">Valor Final:</label>
-        <input type="number" id="valorFinal" formControlName="valorFinal" placeholder="Valor Final">
+        <input
+          type="number"
+          id="valorFinal"
+          formControlName="valorFinal"
+          placeholder="Valor Final">
       </div>
     </div>
 
-    <button class="btn-submit" type="submit" [disabled]="PedidosRelatorioForm.invalid">
+    <button class="btn-submit" type="submit" [disabled]="pedidosRelatorioForm.invalid">
       Gerar Relatório
     </button>
   </form>

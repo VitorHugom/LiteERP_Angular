@@ -18,7 +18,7 @@
     font-weight: bold;
   }
 
-  select{
+  select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -50,7 +50,8 @@
     &:focus {
       border-color: #4caf50;
     }
-    &::placeholder{
+
+    &::placeholder {
       font-size: .875rem;
     }
   }
@@ -59,17 +60,17 @@
     font-size: .875rem;
   }
 
-  .pedidos-relatorio-form{
+  .pedidos-relatorio-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 
-    .search-data, .select-valor{
+    .search-data,
+    .select-valor {
       display: flex;
       width: 100%;
       justify-content: space-between;
       gap: 10px;
-
     }
 
     .form-group {
@@ -125,21 +126,19 @@
       }
     }
 
-    .btn-submit{
+    .btn-submit {
       width: 100%;
       text-align: center;
       padding: 15px 10px;
       font-weight: 500;
       margin-top: 1rem;
-      background-color: #007bff;
+      background-color: #28a745;
       color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       font-size: 1.25rem;
       transition: background-color 0.3s;
-
-      background-color: #28a745;
 
       &:hover {
         background-color: #218838;

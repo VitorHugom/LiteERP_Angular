@@ -3,6 +3,15 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export interface PedidosFiltro {
+  idCliente?:       number;
+  idVendedor?:      number;
+  dataEmissao?:     string;
+  valorTotal?:      number;
+  status?:          string;
+  idTipoCobranca?:  number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -74,5 +83,9 @@ export class PedidosService {
       .set('page', page.toString())
       .set('size', size.toString());
     return this.http.get(`${this.baseUrl}/busca-por-razao-social`, { params });
+  }
+
+  gerarRelatorio(filtro: PedidosFiltro): Observable<any[]> {
+    return this.http.post<any[]>(`${this.baseUrl}/relatorios`, filtro);
   }
 }
