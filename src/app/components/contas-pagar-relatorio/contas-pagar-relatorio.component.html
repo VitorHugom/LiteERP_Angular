@@ -1,5 +1,6 @@
+<!-- src/app/components/contas-pagar-relatorio/contas-pagar-relatorio.component.html -->
 <div class="contas-pagar-relatorio-container">
-  <app-navigate-to-search-button [routerLink]="urlHome"/>
+  <app-navigate-to-search-button [routerLink]="urlHome"></app-navigate-to-search-button>
   <h1>Relatório de Contas a Pagar</h1>
 
   <form [formGroup]="contasPagarRelatorioForm" class="contas-pagar-relatorio-form"
@@ -22,63 +23,59 @@
       </div>
     </div>
 
-
-    <div class=" form-group">
-      <label for="fornecedorId">Fornecedor:</label>
-      <select id="fornecedorId"
-              formControlName="fornecedorId">
-        <option value=""></option>
-
-      </select>
+    <div class="form-group">
+      <label for="fornecedor">Fornecedor:</label>
+      <input
+        type="text"
+        id="fornecedor"
+        formControlName="fornecedorNome"
+        (input)="onSearchFornecedores()"
+        [value]="fornecedorInput"
+        placeholder="Buscar fornecedor">
+      <ul *ngIf="showFornecedoresList" class="autocomplete-list">
+        <li *ngFor="let f of fornecedores" (click)="onSelectFornecedor(f)">
+          {{ f.razaoSocial }}
+        </li>
+      </ul>
     </div>
 
     <div class="form-group">
       <label for="tipoCobranca">Tipo de Cobrança:</label>
-      <select id="tipoCobranca"
-              formControlName="tipoCobranca">
+      <select id="tipoCobranca" formControlName="tipoCobranca">
         <option value=""></option>
-
+        <option *ngFor="let tc of tiposCobranca" [value]="tc.id">
+          {{ tc.descricao }}
+        </option>
       </select>
-    </div>
-
-     <div class="form-group">
-      <label for="formaPagamento">Forma de pagamento:</label>
-      <select id="formaPagamento"
-              formControlName="formaPagamento">
-        <option value=""></option>
-      </select>
-    </div>
-
-
-
-    <!-- intervalo de preço de custo -->
-    <div class="search-data">
-      <div>
-        <label for="valorParcelaInicial">Valor da parcela a partir de:</label>
-        <input
-          type="number"
-          id="valorParcelaInicial"
-          formControlName="valorParcelaInicial"
-          placeholder="0.00">
-      </div>
-      <div>
-        <label for="valorParcelaFinal">Valor da parcela até:</label>
-        <input
-          type="number"
-          id="valorParcelaFinal"
-          formControlName="valorParcelaFinal"
-          placeholder="0.00">
-      </div>
     </div>
 
     <div class="form-group">
-      <label for="status">Status:</label>
-      <select id="status" formControlName="status">
+      <label for="formaPagamento">Forma de Pagamento:</label>
+      <select id="formaPagamento" formControlName="formaPagamento">
         <option value=""></option>
-        <option value="PENDENTE">Pendente</option>
-        <option value="PAGO">Pago</option>
-        <option value="VENCIDO">Vencido</option>
+        <option *ngFor="let fp of formasPagamento" [value]="fp.id">
+          {{ fp.descricao }}
+        </option>
       </select>
+    </div>
+
+    <div class="search-data">
+      <div>
+        <label for="valorTotalInicial">Valor total a partir de:</label>
+        <input
+          type="number"
+          id="valorTotalInicial"
+          formControlName="valorTotalInicial"
+          placeholder="0.00">
+      </div>
+      <div>
+        <label for="valorTotalFinal">Valor total até:</label>
+        <input
+          type="number"
+          id="valorTotalFinal"
+          formControlName="valorTotalFinal"
+          placeholder="0.00">
+      </div>
     </div>
 
     <button class="btn-submit" type="submit"
@@ -87,4 +84,3 @@
     </button>
   </form>
 </div>
-

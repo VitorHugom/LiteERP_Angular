@@ -3,6 +3,38 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export interface ContasPagarFiltro {
+  dataVencimentoInicio?: string;
+  dataVencimentoFim?: string;
+  idFornecedor?: number;
+  idTipoCobranca?: number;
+  idFormaPagamento?: number;
+  valorTotalInicial?: number;
+  valorTotalFinal?: number;
+}
+
+export interface ContasPagarResponse {
+  id: number;
+  numeroDocumento: string;
+  parcela: number;
+  valorParcela: number;
+  valorTotal: number;
+  dataVencimento: string;
+  status: string;
+  fornecedor: {
+    id: number;
+    razaoSocial: string;
+  };
+  formaPagamento: {
+    id: number;
+    descricao: string;
+  };
+  tipoCobranca: {
+    id: number;
+    descricao: string;
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -51,5 +83,9 @@ export class ContasPagarService {
     }
 
     return this.http.get(`${this.baseUrl}/buscar`, { params });
+  }
+
+  gerarRelatorio(filtro: ContasPagarFiltro): Observable<ContasPagarResponse[]> {
+    return this.http.post<ContasPagarResponse[]>(`${this.baseUrl}/relatorios`, filtro);
   }
 }
