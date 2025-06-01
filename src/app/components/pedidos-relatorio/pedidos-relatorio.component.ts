@@ -120,8 +120,10 @@ export class PedidosRelatorioComponent implements OnInit {
     const filtro: PedidosFiltro = {
       idCliente:      f.clienteId ?? undefined,
       idVendedor:     f.vendedorId ?? undefined,
-      dataEmissao:    this.formatarParaIso(f.dataInicio, f.dataFim),
-      valorTotal:     undefined, 
+      dataEmissaoInicio:     f.dataInicio ?? undefined,
+      dataEmissaoFim:        f.dataFim ?? undefined,
+      valorInicial:   f.valorInicial ?? undefined,
+      valorFinal:     f.valorFinal ?? undefined,
       status:         undefined,
       idTipoCobranca: f.tipoCobranca ?? undefined
     };
@@ -136,20 +138,6 @@ export class PedidosRelatorioComponent implements OnInit {
       );
   }
 
-  /**
-   * Ajusta o método para também receber `undefined`.
-   * Retorna a string ISO de data se houver ao menos `dataInicio` ou `dataFim`.
-   */
-  private formatarParaIso(dataInicio?: string | null, dataFim?: string | null): string | undefined {
-    if (dataInicio) {
-      return dataInicio;
-    }
-    if (dataFim) {
-      return dataFim;
-    }
-    return undefined;
-  }
-
   private gerarPdf(dados: any[], filtro: PedidosFiltro): jsPDF {
     const doc = new jsPDF({ orientation: 'landscape' });
     doc.setFontSize(18);
@@ -160,9 +148,14 @@ export class PedidosRelatorioComponent implements OnInit {
     doc.text('Filtros Aplicados:', 14, yPosFilters);
     yPosFilters += 6;
 
-    if (filtro.dataEmissao) {
-      const data = filtro.dataEmissao.split('T')[0];
-      doc.text(`Data Emissão: ${this.formatarDataBR(data)}`, 14, yPosFilters);
+    if (filtro.dataEmissaoInicio) {
+      const data = filtro.dataEmissaoInicio.split('T')[0];
+      doc.text(`Data Emissão Inicial: ${this.formatarDataBR(data)}`, 14, yPosFilters);
+      yPosFilters += 6;
+    }
+    if (filtro.dataEmissaoFim) {
+      const data = filtro.dataEmissaoFim.split('T')[0];
+      doc.text(`Data Emissão Final: ${this.formatarDataBR(data)}`, 14, yPosFilters);
       yPosFilters += 6;
     }
     if (this.pedidosRelatorioForm.value.vendedorNome) {

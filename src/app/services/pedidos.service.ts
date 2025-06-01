@@ -4,13 +4,16 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface PedidosFiltro {
-  idCliente?:       number;
-  idVendedor?:      number;
-  dataEmissao?:     string;
-  valorTotal?:      number;
-  status?:          string;
-  idTipoCobranca?:  number;
+  idCliente?: number;
+  idVendedor?: number;
+  status?: string;
+  idTipoCobranca?: number;
+  dataEmissaoInicio?: string;
+  dataEmissaoFim?: string;
+  valorInicial?: number;
+  valorFinal?: number;
 }
+
 
 @Injectable({
   providedIn: 'root'
