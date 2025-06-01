@@ -3,6 +3,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export interface EstoqueFiltro {
+  grupoId?: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -33,5 +37,9 @@ export class EstoqueService {
       .set('size', size.toString());
 
     return this.http.get(`${this.baseUrl}/buscar-por-descricao`, { params });
+  }
+
+  gerarRelatorio(filtro: EstoqueFiltro): Observable<any[]> {
+    return this.http.post<any[]>(`${this.baseUrl}/relatorios`, filtro);
   }
 }

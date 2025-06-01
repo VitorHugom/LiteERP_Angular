@@ -1,11 +1,11 @@
 <div class="produtos-relatorio-container">
+  <app-navigate-to-search-button [routerLink]="urlHome"/>
   <h1>Relatório de Estoque</h1>
 
   <form [formGroup]="estoqueRelatorioForm" class="produtos-relatorio-form"
         (ngSubmit)="onSubmit()">
 
-
-    <!-- select de grupo de produto -->
+    <!-- Select de grupo de produto -->
     <div class="select-grupo-produto form-group">
       <label for="grupoProduto">Grupo do produto:</label>
       <select id="grupoProduto"
@@ -16,7 +16,6 @@
         </option>
       </select>
     </div>
-
 
     <button class="btn-submit" type="submit"
       [disabled]="estoqueRelatorioForm.invalid">
