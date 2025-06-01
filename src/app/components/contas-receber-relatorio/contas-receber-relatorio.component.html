@@ -1,8 +1,8 @@
 <div class="contas-pagar-relatorio-container">
-  <app-navigate-to-search-button [routerLink]="urlHome"/>
-  <h1>Relatório de Contas a Pagar</h1>
+  <app-navigate-to-search-button [routerLink]="urlHome"></app-navigate-to-search-button>
+  <h1>Relatório de Contas a Receber</h1>
 
-  <form [formGroup]="contasPagarRelatorioForm" class="contas-pagar-relatorio-form"
+  <form [formGroup]="contasReceberRelatorioForm" class="contas-pagar-relatorio-form"
         (ngSubmit)="onSubmit()">
 
     <div class="search-data">
@@ -22,36 +22,42 @@
       </div>
     </div>
 
-
-    <div class=" form-group">
-      <label for="fornecedorId">Fornecedor:</label>
-      <select id="fornecedorId"
-              formControlName="fornecedorId">
-        <option value=""></option>
-
-      </select>
+    <div class="form-group">
+      <label for="cliente">Cliente:</label>
+      <input
+        type="text"
+        id="cliente"
+        formControlName="clienteNome"
+        (input)="onSearchClientes()"
+        [value]="clienteInput"
+        placeholder="Buscar cliente">
+      <ul *ngIf="showClientesList" class="autocomplete-list">
+        <li *ngFor="let c of clientes" (click)="onSelectCliente(c)">
+          {{ c.nomeFantasia || c.razaoSocial }}
+        </li>
+      </ul>
     </div>
 
     <div class="form-group">
       <label for="tipoCobranca">Tipo de Cobrança:</label>
-      <select id="tipoCobranca"
-              formControlName="tipoCobranca">
+      <select id="tipoCobranca" formControlName="tipoCobranca">
         <option value=""></option>
-
+        <option *ngFor="let tc of tiposCobranca" [value]="tc.id">
+          {{ tc.descricao }}
+        </option>
       </select>
     </div>
 
-     <div class="form-group">
-      <label for="formaPagamento">Forma de pagamento:</label>
-      <select id="formaPagamento"
-              formControlName="formaPagamento">
+    <div class="form-group">
+      <label for="formaPagamento">Forma de Pagamento:</label>
+      <select id="formaPagamento" formControlName="formaPagamento">
         <option value=""></option>
+        <option *ngFor="let fp of formasPagamento" [value]="fp.id">
+          {{ fp.descricao }}
+        </option>
       </select>
     </div>
 
-
-
-    <!-- intervalo de preço de custo -->
     <div class="search-data">
       <div>
         <label for="valorTotalInicial">Valor total a partir de:</label>
@@ -71,11 +77,9 @@
       </div>
     </div>
 
-
     <button class="btn-submit" type="submit"
-      [disabled]="contasPagarRelatorioForm.invalid">
+      [disabled]="contasReceberRelatorioForm.invalid">
       Gerar Relatório
     </button>
   </form>
 </div>
-

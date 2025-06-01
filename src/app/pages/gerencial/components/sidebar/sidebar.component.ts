@@ -81,11 +81,20 @@ export class SidebarComponent {
       icone: 'images/icone-arrow.png',
       label: 'Financeiro',
       subItems: [
-        { label: 'Contas a Pagar', routerLink: '/contas-pagar-busca' },
-        { label: 'Contas a Receber', routerLink: '/contas-receber-busca' },
-        { label: 'Relatório de Contas a Pagar', routerLink: '/contas-pagar-relatorio' },
-        { label: 'Relatório de Contas a Receber', routerLink: '/contas-receber-relatorio' }
-
+        { label: 'Contas a Pagar',
+          icone: 'images/icone-arrow.png',
+          subItems: [
+            { label: 'Contas a Pagar', routerLink: '/contas-pagar-busca' },
+            { label: 'Relatórios', routerLink: '/contas-pagar-relatorio' }
+          ],
+        },
+        { label: 'Contas a Receber',
+          icone: 'images/icone-arrow.png',
+          subItems: [
+            { label: 'Contas a Receber', routerLink: '/contas-receber-busca' },
+            { label: 'Relatórios', routerLink: '/contas-receber-relatorio' }
+          ],
+        }
       ]
     },
     {

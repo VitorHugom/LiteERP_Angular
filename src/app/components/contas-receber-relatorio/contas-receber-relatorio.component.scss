@@ -1,3 +1,4 @@
+/* src/app/components/contas-receber-relatorio/contas-receber-relatorio.component.scss */
 .contas-pagar-relatorio-container {
   max-width: 800px;
   margin: 0 auto;
@@ -13,17 +14,17 @@
   }
 
   label {
-    font-size: .875rem;
+    font-size: 0.875rem;
     margin-bottom: 10px;
     font-weight: bold;
   }
 
-  input {
+  input, select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: .875rem;
+    font-size: 0.875rem;
     outline: none;
     transition: border 0.3s;
     background-color: #F2F4F8;
@@ -32,72 +33,34 @@
     &:focus {
       border-color: #4caf50;
     }
-    &::placeholder{
-      font-size: .875rem;
-    }
   }
 
-    select{
-    width: 100%;
+  option {
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: .875rem;
-    outline: none;
-    transition: border 0.3s;
     background-color: #F2F4F8;
     color: #555;
-
-    option {
-      padding: 10px;
-      background-color: #F2F4F8;
-      color: #555;
-    }
   }
 
   ::placeholder {
-    font-size: .875rem;
+    font-size: 0.875rem;
   }
 
-  .contas-pagar-relatorio-form{
+  .contas-pagar-relatorio-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 
-    .search-data{
+    .search-data {
       display: flex;
       width: 100%;
       justify-content: space-between;
       gap: 10px;
-
-
     }
 
     .form-group {
       position: relative;
       display: flex;
       flex-direction: column;
-
-      label {
-        font-size: .875rem;
-        margin-bottom: 5px;
-        font-weight: bold;
-      }
-
-      input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: .875rem;
-        outline: none;
-        background-color: #F2F4F8;
-        transition: border-color .3s;
-
-        &:focus {
-          border-color: #4caf50;
-        }
-      }
 
       .autocomplete-list {
         list-style: none;
@@ -117,7 +80,7 @@
         li {
           padding: 8px;
           cursor: pointer;
-          transition: background .2s;
+          transition: background 0.2s;
 
           &:hover {
             background-color: #f0f0f0;
@@ -126,21 +89,19 @@
       }
     }
 
-    .btn-submit{
+    .btn-submit {
       width: 100%;
       text-align: center;
       padding: 15px 10px;
       font-weight: 500;
       margin-top: 1rem;
-      background-color: #007bff;
+      background-color: #28a745;
       color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       font-size: 1.25rem;
       transition: background-color 0.3s;
-
-      background-color: #28a745;
 
       &:hover {
         background-color: #218838;
