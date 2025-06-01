@@ -109,8 +109,7 @@ export class SidebarComponent {
       label: 'Administrador',
       subItems: [
         { label: 'Liberar Usuários', routerLink: '/busca-liberacao' },
-        { label: 'Usuários', routerLink: '/usuarios-busca' },
-        { label: 'Relatório', routerLink: '/usuario-relatorio' }
+        { label: 'Relatório Usuários', routerLink: '/usuario-relatorio' }
       ]
     }
   ];

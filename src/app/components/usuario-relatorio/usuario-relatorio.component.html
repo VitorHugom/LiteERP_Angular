@@ -1,20 +1,19 @@
 <div class="usuario-relatorio-container">
-  <h1>Relatório de Usuário</h1>
   <app-navigate-to-search-button [routerLink]="urlHome"></app-navigate-to-search-button>
+  <h1>Relatório de Usuário</h1>
 
   <form [formGroup]="usuarioRelatorioForm" class="usuario-relatorio-form"
         (ngSubmit)="onSubmit()">
-
-
-    <!-- select de grupo de produto -->
-    <div class="select-grupo-produto form-group">
+    <div class="select-categoria-usuario form-group">
       <label for="categoriaUsuario">Categoria de Usuário:</label>
       <select id="categoriaUsuario"
-              formControlName="categoriaUsuario">
+              formControlName="categoriaId">
         <option value=""></option>
+        <option *ngFor="let c of categorias" [value]="c.idCategoria">
+          {{ c.descricaoCategoria }}
+        </option>
       </select>
     </div>
-
 
     <button class="btn-submit" type="submit"
       [disabled]="usuarioRelatorioForm.invalid">
