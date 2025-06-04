@@ -45,19 +45,19 @@
       <div *ngIf="fornecedor.tipoPessoa === 'juridica'" class="tab-content">
         <div class="form-group">
           <label for="nome">Nome</label>
-          <input type="text" id="nome" [(ngModel)]="fornecedor.nomeFantasia" name="nome" />
+          <input type="text" id="nome" [(ngModel)]="fornecedor.nomeFantasia" name="nome" placeholder="Digite o nome"/>
         </div>
 
         <div class="form-group">
           <label for="razaoSocial">Razão Social</label>
-          <input type="text" id="razaoSocial" [(ngModel)]="fornecedor.razaoSocial" name="razaoSocial" />
+          <input type="text" id="razaoSocial" [(ngModel)]="fornecedor.razaoSocial" name="razaoSocial" placeholder="Digite a razão social"/>
         </div>
       </div>
 
       <div *ngIf="fornecedor.tipoPessoa != 'juridica'" class="tab-content">
         <div class="form-group">
           <label for="nome">Nome</label>
-          <input type="text" id="nome" [(ngModel)]="fornecedor.razaoSocial" name="nome" />
+          <input type="text" id="nome" [(ngModel)]="fornecedor.razaoSocial" name="nome" placeholder="Digite o nome"/>
         </div>
       </div>
 
@@ -99,7 +99,7 @@
 
       <div class="form-group">
         <label for="endereco">Endereço</label>
-        <input type="text" id="endereco" [(ngModel)]="fornecedor.endereco" name="endereco" />
+        <input type="text" id="endereco" [(ngModel)]="fornecedor.endereco" name="endereco" placeholder=""/>
       </div>
       <div class="form-group">
         <label for="complemento">Complemento</label>
@@ -155,7 +155,7 @@
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" [(ngModel)]="fornecedor.email" name="email" />
+        <input type="email" id="email" [(ngModel)]="fornecedor.email" name="email" placeholder="Digite o email"/>
       </div>
     </div>
 
