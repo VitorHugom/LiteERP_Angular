@@ -100,23 +100,6 @@
       }
     }
 
-    .message-box {
-      padding: 10px;
-      border-radius: 5px;
-      text-align: center;
-      font-weight: bold;
-      margin-top: 15px;
-
-      &.success-message {
-        background-color: #4caf50;
-        color: #fff;
-      }
-
-      &.error-message {
-        background-color: #f44336;
-        color: #fff;
-      }
-    }
   }
 
   .button-group {
@@ -151,6 +134,24 @@
       }
     }
   }
+
+.message-box {
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 15px;
+
+  &.success-message {
+    background-color: #4caf50;
+    color: #fff;
+  }
+
+  &.error-message {
+    background-color: #f44336;
+    color: #fff;
+  }
+}
 
   @media (max-width: 768px) {
     padding: 15px;
