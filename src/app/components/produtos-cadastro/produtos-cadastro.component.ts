@@ -152,51 +152,65 @@ export class ProdutosCadastroComponent implements OnInit {
 
   }
 
- onSave(): void {
+  onSave(): void {
     this.geralForm.markAllAsTouched();
     this.tributacaoForm.markAllAsTouched();
     this.valoresForm.markAllAsTouched();
-    if (this.isNew && !this.geralForm.invalid && !this.tributacaoForm.invalid && !this.valoresForm.invalid) {
-      const novoProduto = {
-        ...this.geralForm.getRawValue(),
-        ...this.tributacaoForm.getRawValue(),
-        ...this.valoresForm.getRawValue()
-      };
-      this.produtoService.createProduto(novoProduto).subscribe({
-        next: (response) => {
-          this.geralForm.reset();
-          this.tributacaoForm.reset();
-          this.valoresForm.reset();
-          this.setActiveTab('geral');
+
+    if (this.geralForm.invalid || this.tributacaoForm.invalid || this.valoresForm.invalid) {
+      return;
+    }
+
+    const payload = {
+      ...this.geralForm.getRawValue(),
+      ...this.tributacaoForm.getRawValue(),
+      ...this.valoresForm.getRawValue()
+    };
+
+    if (this.isNew) {
+      this.produtoService.createProduto(payload).subscribe({
+        next: (created) => {
+          this.produto = created;
+
+          this.geralForm.patchValue({
+            descricao: created.descricao,
+            dataUltimaCompra: created.dataUltimaCompra,
+            grupoProdutos: this.gruposProdutos.find(g => g.id === created.grupoProdutos.id) ?? null
+          });
+          this.tributacaoForm.patchValue({
+            codEan: created.codEan,
+            codNcm: created.codNcm,
+            codCest: created.codCest
+          });
+          this.valoresForm.patchValue({
+            precoCompra: created.precoCompra,
+            precoVenda: created.precoVenda,
+            peso: created.peso
+          });
+
           this.isNew = false;
+          this.setActiveTab('geral');
           this.exibirMensagem('Produto cadastrado com sucesso!', true);
+
+          this.router.navigate(['/cadastro-produto', created.id], { replaceUrl: true });
         },
         error: (err) => {
           this.exibirMensagem('Erro ao cadastrar produto.', false);
           console.error(err);
         }
       });
-    }
-    else if (!this.isNew && !this.geralForm.invalid && !this.tributacaoForm.invalid && !this.valoresForm.invalid) {
-      const { id: formId, ...geralValues } = this.geralForm.getRawValue();
-      this.produto = {
+    } else {
+      const updated = {
         id: this.produto.id,
-        ...geralValues,
-        ...this.tributacaoForm.getRawValue(),
-        ...this.valoresForm.getRawValue() 
+        ...payload
       };
-
-      this.produtoService.updateProduto(this.produto.id, this.produto).subscribe({
-        next: () => {
-          this.exibirMensagem('Produto atualizado com sucesso!', true);
-        },
-        error: (err) => {
-          this.exibirMensagem('Erro ao atualizar produto.', false);
-          console.error(err);
-        }
+      this.produtoService.updateProduto(this.produto.id, updated).subscribe({
+        next: () => this.exibirMensagem('Produto atualizado com sucesso!', true),
+        error: () => this.exibirMensagem('Erro ao atualizar produto.', false)
       });
     }
-}
+  }
+
 
   onDelete(): void {
     if (this.produto.id) {
@@ -256,27 +270,27 @@ export class ProdutosCadastroComponent implements OnInit {
   }
 
   startScanner(): void {
-      const dialogRef = this.dialog.open(CameraScannerComponent, {
-        width: '100vw',
-        height: '100vh',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        panelClass: 'full-screen-dialog',
-        backdropClass: 'scanner-backdrop',
-        data: {
-          videoConstraints: {
-            facingMode: 'environment',
-            width:  { ideal: 1920 },  // idealmente 1280x720 ou 1920x1080
-            height: { ideal: 1080 }
-          }
+    const dialogRef = this.dialog.open(CameraScannerComponent, {
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'full-screen-dialog',
+      backdropClass: 'scanner-backdrop',
+      data: {
+        videoConstraints: {
+          facingMode: 'environment',
+          width:  { ideal: 1920 },
+          height: { ideal: 1080 }
         }
-      });
+      }
+    });
 
-      dialogRef.afterClosed().subscribe((barcode: string|undefined) => {
-        console.log("Código Barra: "+ barcode)
-        if (barcode) {
-          this.produto.codEan = barcode;
-        }
-      });
-    }
+    dialogRef.afterClosed().subscribe((barcode: string|undefined) => {
+      if (barcode) {
+        this.tributacaoForm.get('codEan')!.setValue(barcode);
+      }
+    });
+  }
+
 }
