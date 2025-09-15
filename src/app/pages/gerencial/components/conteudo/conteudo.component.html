@@ -1,36 +1,40 @@
 
 <div class="container__content">
-  <div *ngIf="carregandoDados" class="loading-container">
+  <div *ngIf="carregandoDadosBarras || carregandoDadosLinhas" class="loading-container">
     <p>Carregando dados dos gráficos...</p>
   </div>
 
-  <div *ngIf="erro" class="error-container">
-    <p>{{ erro }}</p>
+  <div *ngIf="erroBarras || erroLinhas" class="error-container">
+    <p *ngIf="erroBarras">{{ erroBarras }}</p>
+    <p *ngIf="erroLinhas">{{ erroLinhas }}</p>
     <button (click)="recarregarDados()" class="retry-button">Tentar novamente</button>
   </div>
 
-  <div *ngIf="!carregandoDados && !erro" class="graficos-container">
+  <div class="graficos-container">
     <div class="grafico-section">
       <app-grafico-barras-contas-pagar
-        [dados]="dadosGrafico"
-        titulo="Valores de Contas a Pagar">
+        [dados]="dadosGraficoBarras"
+        titulo="Valores de Contas a Pagar"
+        (onFiltroClick)="abrirModalFiltroBarras()">
       </app-grafico-barras-contas-pagar>
     </div>
 
     <div class="grafico-section">
       <app-grafico-linhas-contas-pagar
-        [dados]="dadosGrafico"
-        titulo="Quantidade de Contas a Pagar">
+        [dados]="dadosGraficoLinhas"
+        titulo="Quantidade de Contas a Pagar"
+        (onFiltroClick)="abrirModalFiltroLinhas()">
       </app-grafico-linhas-contas-pagar>
     </div>
 
     <div class="content__card">
       <h3>Resumo Financeiro</h3>
-      <p *ngIf="dadosGrafico.length > 0">
-        Total de {{ dadosGrafico.length }} datas com vencimentos pendentes.
+      <p *ngIf="dadosGraficoBarras.length > 0 || dadosGraficoLinhas.length > 0">
+        Gráfico de Barras: {{ dadosGraficoBarras.length }} datas<br>
+        Gráfico de Linhas: {{ dadosGraficoLinhas.length }} datas
       </p>
-      <p *ngIf="dadosGrafico.length === 0">
-        Nenhuma conta a pagar encontrada no período.
+      <p *ngIf="dadosGraficoBarras.length === 0 && dadosGraficoLinhas.length === 0">
+        Nenhuma conta a pagar encontrada nos períodos selecionados.
       </p>
     </div>
 
@@ -39,4 +43,15 @@
       <p>Acesse o menu lateral para gerenciar contas a pagar, relatórios e outras funcionalidades do sistema.</p>
     </div>
   </div>
+
+  <!-- Modal de Filtro de Datas -->
+  <app-modal-filtro-datas
+    [isVisible]="modalFiltroVisivel"
+    [dataInicial]="dataInicialAtual"
+    [dataFinal]="dataFinalAtual"
+    [titulo]="tituloModalAtual"
+    (onConfirmar)="aplicarFiltro($event)"
+    (onCancelar)="cancelarFiltro()"
+    (onFechar)="fecharModalFiltro()">
+  </app-modal-filtro-datas>
 </div>

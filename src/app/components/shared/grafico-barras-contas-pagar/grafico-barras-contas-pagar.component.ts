@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 import { ContasPagarGraficoItem } from '../../../services/contas-pagar.service';
@@ -17,6 +17,8 @@ export class GraficoBarrasContasPagarComponent implements OnInit, OnChanges {
   @Input() dados: ContasPagarGraficoItem[] = [];
   @Input() titulo: string = 'Valores de Contas a Pagar por Data';
   @Input() altura: number = 350;
+
+  @Output() onFiltroClick = new EventEmitter<void>();
 
   private chart: Chart | null = null;
 
@@ -140,6 +142,10 @@ export class GraficoBarrasContasPagarComponent implements OnInit, OnChanges {
     } catch {
       return data;
     }
+  }
+
+  abrirFiltro(): void {
+    this.onFiltroClick.emit();
   }
 
   ngOnDestroy(): void {

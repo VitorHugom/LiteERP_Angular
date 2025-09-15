@@ -1,4 +1,10 @@
 <div class="grafico-container">
+  <div class="grafico-header">
+    <h3 class="grafico-titulo">{{ titulo }}</h3>
+    <button class="menu-button" (click)="abrirFiltro()" title="Filtrar período">
+      <span class="dots">⋮</span>
+    </button>
+  </div>
   <div class="grafico-wrapper">
     <canvas #chartCanvas></canvas>
   </div>
