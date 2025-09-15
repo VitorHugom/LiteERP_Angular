@@ -1,0 +1,34 @@
+.grafico-container {
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.grafico-wrapper {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 250px;
+}
+
+.grafico-info {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-style: italic;
+}
+
+.grafico-info p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+canvas {
+  max-width: 100%;
+  height: auto;
+}

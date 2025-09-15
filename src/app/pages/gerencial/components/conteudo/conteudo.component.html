@@ -1,20 +1,42 @@
 
 <div class="container__content">
-  <!-- Exemplo de cards no content -->
-  <div class="content__card">
-    <h3>Relatório de Vendas</h3>
-    <p>Gráfico de vendas recente...</p>
+  <div *ngIf="carregandoDados" class="loading-container">
+    <p>Carregando dados dos gráficos...</p>
   </div>
-  <div class="content__card">
-    <h3>Estoque</h3>
-    <p>Status do estoque atual...</p>
+
+  <div *ngIf="erro" class="error-container">
+    <p>{{ erro }}</p>
+    <button (click)="recarregarDados()" class="retry-button">Tentar novamente</button>
   </div>
-  <div class="content__card">
-    <h3>Pedidos</h3>
-    <p>Resumo dos pedidos...</p>
-  </div>
-  <div class="content__card">
-    <h3>Finanças</h3>
-    <p>Resumo financeiro recente...</p>
+
+  <div *ngIf="!carregandoDados && !erro" class="graficos-container">
+    <div class="grafico-section">
+      <app-grafico-barras-contas-pagar
+        [dados]="dadosGrafico"
+        titulo="Valores de Contas a Pagar">
+      </app-grafico-barras-contas-pagar>
+    </div>
+
+    <div class="grafico-section">
+      <app-grafico-linhas-contas-pagar
+        [dados]="dadosGrafico"
+        titulo="Quantidade de Contas a Pagar">
+      </app-grafico-linhas-contas-pagar>
+    </div>
+
+    <div class="content__card">
+      <h3>Resumo Financeiro</h3>
+      <p *ngIf="dadosGrafico.length > 0">
+        Total de {{ dadosGrafico.length }} datas com vencimentos pendentes.
+      </p>
+      <p *ngIf="dadosGrafico.length === 0">
+        Nenhuma conta a pagar encontrada no período.
+      </p>
+    </div>
+
+    <div class="content__card">
+      <h3>Outras Funcionalidades</h3>
+      <p>Acesse o menu lateral para gerenciar contas a pagar, relatórios e outras funcionalidades do sistema.</p>
+    </div>
   </div>
 </div>

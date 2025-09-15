@@ -1,10 +1,68 @@
 
 .container__content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsivo com colunas de no mÃ­nimo 300px */
-  grid-gap: 20px; /* EspaÃ§o entre os cards */
+  padding: 20px;
+  max-width: 100%;
+  overflow-x: hidden;
+  height: calc(100vh - 40px); /* Usar toda a altura disponível menos o padding */
+  display: flex;
+  flex-direction: column;
 }
-.content__card {
+
+.loading-container,
+.error-container {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.error-container {
+  background-color: #fee;
+  color: #c33;
+}
+
+.retry-button {
+  background-color: #8b6508;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+.retry-button:hover {
+  background-color: #6b4906;
+}
+
+.graficos-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 20px;
+  grid-template-areas:
+    "grafico1 grafico2"
+    "card1 card2";
+  flex: 1; /* Ocupar todo o espaço disponível */
+  min-height: 0; /* Permitir que os gráficos se ajustem */
+}
+
+.grafico-section {
+  width: 100%;
+}
+
+.grafico-section:first-child {
+  grid-area: grafico1;
+}
+
+.grafico-section:nth-child(2) {
+  grid-area: grafico2;
+}
+
+/* Cards informativos em grid responsivo */
+.graficos-container .content__card {
   background-color: #f5f5f5;
   padding: 20px;
   border-radius: 8px;
@@ -12,6 +70,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.content__card:first-of-type {
+  grid-area: card1;
+}
+
+.content__card:last-of-type {
+  grid-area: card2;
 }
 
 .content__card h3 {
@@ -23,4 +89,22 @@
 .content__card p {
   font-size: 1rem;
   color: #666;
+  margin: 0;
+}
+
+/* Layout responsivo para telas menores */
+@media (max-width: 768px) {
+  .graficos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .grafico-section {
+    width: 100%;
+  }
+
+  .content__card {
+    margin-bottom: 20px;
+  }
 }

@@ -35,6 +35,42 @@ export interface ContasPagarResponse {
   };
 }
 
+export interface ContasPagarGraficoItem {
+  dataVencimento: string;
+  valorTotalParcelas: number;
+  qtdParcelas: number;
+  idsParcelas: number[];
+}
+
+export interface ContasPagarGraficoResponse {
+  content: ContasPagarGraficoItem[];
+  pageable: {
+    pageNumber: number;
+    pageSize: number;
+    sort: {
+      empty: boolean;
+      unsorted: boolean;
+      sorted: boolean;
+    };
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  last: boolean;
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  sort: {
+    empty: boolean;
+    unsorted: boolean;
+    sorted: boolean;
+  };
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -87,5 +123,24 @@ export class ContasPagarService {
 
   gerarRelatorio(filtro: ContasPagarFiltro): Observable<ContasPagarResponse[]> {
     return this.http.post<ContasPagarResponse[]>(`${this.baseUrl}/relatorios`, filtro);
+  }
+
+  getRelatorioGrafico(
+    dataInicio: string,
+    dataFim: string,
+    status: string = 'aberta',
+    page: number = 0,
+    size: number = 10,
+    sort: string = 'dataVencimento,asc'
+  ): Observable<ContasPagarGraficoResponse> {
+    let params = new HttpParams()
+      .set('dataInicio', dataInicio)
+      .set('dataFim', dataFim)
+      .set('status', status)
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', sort);
+
+    return this.http.get<ContasPagarGraficoResponse>(`${this.baseUrl}/relatorio-grafico`, { params });
   }
 }
