@@ -40,6 +40,7 @@ import { UsuarioRelatorioComponent } from './components/usuario-relatorio/usuari
 import { ContasPagarRelatorioComponent } from './components/contas-pagar-relatorio/contas-pagar-relatorio.component';
 import { ContasReceberRelatorioComponent } from './components/contas-receber-relatorio/contas-receber-relatorio.component';
 import { RecebimentoComponent } from './components/recebimento/recebimento.component';
+import { PagamentosComponent } from './components/pagamentos/pagamentos.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -83,6 +84,8 @@ export const routes: Routes = [
 
   { path: 'contas-pagar-busca', component: ContasPagarBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
   { path: 'contas-pagar/:id', component: ContasPagarCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
+  { path: 'pagamentos', component: PagamentosComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
   { path: 'contas-receber-busca', component: ContasReceberBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
   { path: 'contas-receber/:id', component: ContasReceberCadastroComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},

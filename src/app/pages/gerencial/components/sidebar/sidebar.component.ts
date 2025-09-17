@@ -85,6 +85,7 @@ export class SidebarComponent {
           icone: 'images/icone-arrow.png',
           subItems: [
             { label: 'Contas a Pagar', routerLink: '/contas-pagar-busca' },
+            { label: 'Pagamentos', routerLink: '/pagamentos' },
             { label: 'Relatórios', routerLink: '/contas-pagar-relatorio' }
           ],
         },

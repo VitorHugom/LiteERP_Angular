@@ -1,0 +1,250 @@
+<div class="pagamentos-container">
+  <app-navigate-to-search-button [routerLink]="urlHome"></app-navigate-to-search-button>
+  
+  <h1>Pagamentos</h1>
+  
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-field">
+        <label for="fornecedorInput">Buscar Fornecedor:</label>
+        <div class="input-container">
+          <input
+            type="text"
+            id="fornecedorInput"
+            [(ngModel)]="fornecedorInput"
+            (input)="onSearchFornecedores($event)"
+            placeholder="Digite o nome do fornecedor..."
+            class="search-input"
+            autocomplete="off">
+          
+          <button 
+            *ngIf="fornecedorInput" 
+            (click)="limparBusca()" 
+            class="clear-button"
+            title="Limpar busca">
+            ✕
+          </button>
+        </div>
+
+        <div class="fornecedores-list" *ngIf="showFornecedoresList">
+          <div *ngIf="loadingFornecedores" class="loading-item">
+            Carregando fornecedores...
+          </div>
+          
+          <div 
+            *ngFor="let fornecedor of fornecedores" 
+            class="fornecedor-item"
+            (click)="onSelectFornecedor(fornecedor)">
+            <div class="fornecedor-info">
+              <strong>{{ fornecedor.razaoSocial || fornecedor.nomeFantasia }}</strong>
+              <span class="fornecedor-documento">{{ fornecedor.cpfCnpj }}</span>
+            </div>
+          </div>
+          
+          <div *ngIf="!loadingFornecedores && fornecedores.length === 0" class="no-results">
+            Nenhum fornecedor encontrado
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="fornecedorSelecionado" class="fornecedor-selecionado">
+      <h3>Fornecedor Selecionado:</h3>
+      <div class="fornecedor-card">
+        <div class="fornecedor-details">
+          <p><strong>Nome:</strong> {{ fornecedorSelecionado.razaoSocial || fornecedorSelecionado.nomeFantasia }}</p>
+          <p><strong>Documento:</strong> {{ fornecedorSelecionado.cpfCnpj }}</p>
+          <p *ngIf="fornecedorSelecionado.email"><strong>Email:</strong> {{ fornecedorSelecionado.email }}</p>
+          <p *ngIf="fornecedorSelecionado.telefone"><strong>Telefone:</strong> {{ fornecedorSelecionado.telefone }}</p>
+        </div>
+        <button (click)="buscarContasPagar()" class="btn-buscar-contas">
+          Ver Contas a Pagar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="contasParaPagamento.length > 0" class="pagamentos-section">
+    <div class="pagamentos-header">
+      <h2>Pagamentos</h2>
+      <div class="header-actions">
+        <span class="total-info">
+          Total: {{ formatarValor(calcularTotalPagamentos()) }}
+        </span>
+        <button (click)="limparListaPagamentos()" class="btn-limpar" title="Limpar lista">
+          Limpar Todos
+        </button>
+      </div>
+    </div>
+
+    <div class="pagamentos-container-inner">
+      <div class="pagamentos-table-container">
+        <table class="pagamentos-table">
+          <thead>
+            <tr>
+              <th>Fornecedor</th>
+              <th>Documento</th>
+              <th>Parcela</th>
+              <th>Valor</th>
+              <th>Vencimento</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let conta of contasParaPagamento" class="pagamento-row">
+              <td>{{ fornecedorSelecionado?.razaoSocial || fornecedorSelecionado?.nomeFantasia }}</td>
+              <td>{{ conta.numeroDocumento }}</td>
+              <td>{{ conta.parcela }}</td>
+              <td>{{ formatarValor(conta.valorParcela) }}</td>
+              <td>{{ formatarData(conta.dataVencimento) }}</td>
+              <td>
+                <span class="status" [class]="'status-' + conta.status.toLowerCase()">
+                  {{ conta.status }}
+                </span>
+              </td>
+              <td>
+                <button 
+                  (click)="removerContaPagamento(conta.id)" 
+                  class="btn-remover"
+                  title="Remover da lista">
+                  ✕
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagamentos-footer">
+        <div class="footer-summary">
+          <p><strong>{{ contasParaPagamento.length }}</strong> conta(s) selecionada(s)</p>
+          <p><strong>Total: {{ formatarValor(calcularTotalPagamentos()) }}</strong></p>
+        </div>
+        
+        <button 
+          (click)="realizarPagamento()" 
+          class="btn-pagar"
+          [disabled]="processandoPagamento || contasParaPagamento.length === 0">
+          <span *ngIf="!processandoPagamento">Pagar</span>
+          <span *ngIf="processandoPagamento">Processando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="modalContasVisible" (click)="fecharModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Contas a Pagar - {{ fornecedorSelecionado?.razaoSocial || fornecedorSelecionado?.nomeFantasia }}</h3>
+      <button class="close-button" (click)="fecharModal()">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="loadingContas" class="loading-container">
+        <p>Carregando contas a pagar...</p>
+      </div>
+
+      <div *ngIf="erroContas" class="error-container">
+        <p>{{ erroContas }}</p>
+        <button (click)="recarregarContas()" class="retry-button">Tentar novamente</button>
+      </div>
+
+      <div *ngIf="!loadingContas && !erroContas">
+        <div *ngIf="contasPagar.length === 0" class="no-contas">
+          <p>Nenhuma conta a pagar encontrada para este fornecedor.</p>
+        </div>
+
+        <div *ngIf="contasPagar.length > 0" class="contas-container">
+          <div class="contas-info">
+            <p>Total de {{ totalElementsContas }} conta(s) encontrada(s)</p>
+          </div>
+
+          <div class="contas-table-container">
+            <table class="contas-table">
+              <thead>
+                <tr>
+                  <th class="checkbox-column">
+                    <input 
+                      type="checkbox" 
+                      [checked]="todasContasSelecionadas()"
+                      (change)="selecionarTodasContas()"
+                      title="Selecionar todas">
+                  </th>
+                  <th>Documento</th>
+                  <th>Parcela</th>
+                  <th>Valor Parcela</th>
+                  <th>Data Vencimento</th>
+                  <th>Status</th>
+                  <th>Forma Pagamento</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let conta of contasPagar" class="conta-row">
+                  <td class="checkbox-column">
+                    <input 
+                      type="checkbox" 
+                      [checked]="isContaSelecionada(conta.id)"
+                      (change)="toggleContaSelecionada(conta.id)">
+                  </td>
+                  <td>{{ conta.numeroDocumento }}</td>
+                  <td>{{ conta.parcela }}</td>
+                  <td>{{ formatarValor(conta.valorParcela) }}</td>
+                  <td>{{ formatarData(conta.dataVencimento) }}</td>
+                  <td>
+                    <span class="status" [class]="'status-' + conta.status.toLowerCase()">
+                      {{ conta.status }}
+                    </span>
+                  </td>
+                  <td>{{ conta.formaPagamento?.descricao || '-' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination" *ngIf="totalPagesContas > 1">
+            <button 
+              (click)="goToPageContas(currentPageContas - 1)" 
+              [disabled]="currentPageContas === 0"
+              class="pagination-btn">
+              Anterior
+            </button>
+            
+            <span class="pagination-info">
+              Página {{ currentPageContas + 1 }} de {{ totalPagesContas }}
+            </span>
+            
+            <button 
+              (click)="goToPageContas(currentPageContas + 1)" 
+              [disabled]="currentPageContas >= totalPagesContas - 1"
+              class="pagination-btn">
+              Próxima
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="footer-info" *ngIf="algumContaSelecionada()">
+        <span>{{ contasSelecionadas.size }} conta(s) selecionada(s)</span>
+      </div>
+      
+      <div class="footer-buttons">
+        <button type="button" class="btn-fechar" (click)="fecharModal()">
+          Fechar
+        </button>
+        <button 
+          type="button" 
+          class="btn-adicionar" 
+          (click)="adicionarContasParaPagamento()"
+          [disabled]="!algumContaSelecionada()">
+          Adicionar ({{ contasSelecionadas.size }})
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

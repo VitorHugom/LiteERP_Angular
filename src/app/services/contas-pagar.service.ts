@@ -143,4 +143,24 @@ export class ContasPagarService {
 
     return this.http.get<ContasPagarGraficoResponse>(`${this.baseUrl}/relatorio-grafico`, { params });
   }
+
+  buscarContasPagarPorFornecedor(
+    idFornecedor: number,
+    page: number = 0,
+    size: number = 10,
+    sort: string = 'dataVencimento,asc'
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('idFornecedor', idFornecedor.toString())
+      .set('somentePagar', 'true')
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', sort);
+
+    return this.http.get(`${this.baseUrl}/buscar`, { params });
+  }
+
+  realizarPagamentoConta(idConta: number): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/${idConta}/pagar`, {});
+  }
 }
