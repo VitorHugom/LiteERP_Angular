@@ -92,6 +92,7 @@ export class SidebarComponent {
           icone: 'images/icone-arrow.png',
           subItems: [
             { label: 'Contas a Receber', routerLink: '/contas-receber-busca' },
+            { label: 'Recebimento', routerLink: '/recebimento' },
             { label: 'Relatórios', routerLink: '/contas-receber-relatorio' }
           ],
         }

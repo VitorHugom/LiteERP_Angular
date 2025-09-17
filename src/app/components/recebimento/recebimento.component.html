@@ -1,0 +1,250 @@
+<div class="recebimento-container">
+  <app-navigate-to-search-button [routerLink]="urlHome"></app-navigate-to-search-button>
+  
+  <h1>Recebimento</h1>
+  
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-field">
+        <label for="clienteInput">Buscar Cliente:</label>
+        <div class="input-container">
+          <input
+            type="text"
+            id="clienteInput"
+            [(ngModel)]="clienteInput"
+            (input)="onSearchClientes($event)"
+            placeholder="Digite o nome do cliente..."
+            class="search-input"
+            autocomplete="off">
+          
+          <button 
+            *ngIf="clienteInput" 
+            (click)="limparBusca()" 
+            class="clear-button"
+            title="Limpar busca">
+            ✕
+          </button>
+        </div>
+
+        <div class="clientes-list" *ngIf="showClientesList">
+          <div *ngIf="loadingClientes" class="loading-item">
+            Carregando clientes...
+          </div>
+          
+          <div 
+            *ngFor="let cliente of clientes" 
+            class="cliente-item"
+            (click)="onSelectCliente(cliente)">
+            <div class="cliente-info">
+              <strong>{{ cliente.razaoSocial || cliente.nomeFantasia }}</strong>
+              <span class="cliente-documento">{{ cliente.cpfCnpj }}</span>
+            </div>
+          </div>
+          
+          <div *ngIf="!loadingClientes && clientes.length === 0" class="no-results">
+            Nenhum cliente encontrado
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="clienteSelecionado" class="cliente-selecionado">
+      <h3>Cliente Selecionado:</h3>
+      <div class="cliente-card">
+        <div class="cliente-details">
+          <p><strong>Nome:</strong> {{ clienteSelecionado.razaoSocial || clienteSelecionado.nomeFantasia }}</p>
+          <p><strong>Documento:</strong> {{ clienteSelecionado.cpfCnpj }}</p>
+          <p *ngIf="clienteSelecionado.email"><strong>Email:</strong> {{ clienteSelecionado.email }}</p>
+          <p *ngIf="clienteSelecionado.celular"><strong>Celular:</strong> {{ clienteSelecionado.celular }}</p>
+        </div>
+        <button (click)="buscarContasReceber()" class="btn-buscar-contas">
+          Ver Contas a Receber
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="contasParaRecebimento.length > 0" class="recebimentos-section">
+    <div class="recebimentos-header">
+      <h2>Recebimentos</h2>
+      <div class="header-actions">
+        <span class="total-info">
+          Total: {{ formatarValor(calcularTotalRecebimentos()) }}
+        </span>
+        <button (click)="limparListaRecebimentos()" class="btn-limpar" title="Limpar lista">
+          Limpar Todos
+        </button>
+      </div>
+    </div>
+
+    <div class="recebimentos-container">
+      <div class="recebimentos-table-container">
+        <table class="recebimentos-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Documento</th>
+              <th>Parcela</th>
+              <th>Valor</th>
+              <th>Vencimento</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let conta of contasParaRecebimento" class="recebimento-row">
+              <td>{{ clienteSelecionado?.razaoSocial || clienteSelecionado?.nomeFantasia }}</td>
+              <td>{{ conta.numeroDocumento }}</td>
+              <td>{{ conta.parcela }}</td>
+              <td>{{ formatarValor(conta.valorParcela) }}</td>
+              <td>{{ formatarData(conta.dataVencimento) }}</td>
+              <td>
+                <span class="status" [class]="'status-' + conta.status.toLowerCase()">
+                  {{ conta.status }}
+                </span>
+              </td>
+              <td>
+                <button
+                  (click)="removerContaRecebimento(conta.id)"
+                  class="btn-remover"
+                  title="Remover da lista">
+                  ✕
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="recebimentos-footer">
+        <div class="footer-summary">
+          <p><strong>{{ contasParaRecebimento.length }}</strong> conta(s) selecionada(s)</p>
+          <p><strong>Total: {{ formatarValor(calcularTotalRecebimentos()) }}</strong></p>
+        </div>
+
+        <button
+          (click)="realizarRecebimento()"
+          class="btn-receber"
+          [disabled]="processandoRecebimento || contasParaRecebimento.length === 0">
+          <span *ngIf="!processandoRecebimento">Receber</span>
+          <span *ngIf="processandoRecebimento">Processando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="modalContasVisible" (click)="fecharModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Contas a Receber - {{ clienteSelecionado?.razaoSocial || clienteSelecionado?.nomeFantasia }}</h3>
+      <button class="close-button" (click)="fecharModal()">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="loadingContas" class="loading-container">
+        <p>Carregando contas a receber...</p>
+      </div>
+
+      <div *ngIf="erroContas" class="error-container">
+        <p>{{ erroContas }}</p>
+        <button (click)="recarregarContas()" class="retry-button">Tentar novamente</button>
+      </div>
+
+      <div *ngIf="!loadingContas && !erroContas">
+        <div *ngIf="contasReceber.length === 0" class="no-contas">
+          <p>Nenhuma conta a receber encontrada para este cliente.</p>
+        </div>
+
+        <div *ngIf="contasReceber.length > 0" class="contas-container">
+          <div class="contas-info">
+            <p>Total de {{ totalElementsContas }} conta(s) encontrada(s)</p>
+          </div>
+
+          <div class="contas-table-container">
+            <table class="contas-table">
+              <thead>
+                <tr>
+                  <th class="checkbox-column">
+                    <input
+                      type="checkbox"
+                      [checked]="todasContasSelecionadas()"
+                      (change)="selecionarTodasContas()"
+                      title="Selecionar todas">
+                  </th>
+                  <th>Documento</th>
+                  <th>Parcela</th>
+                  <th>Valor Parcela</th>
+                  <th>Data Vencimento</th>
+                  <th>Status</th>
+                  <th>Forma Pagamento</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let conta of contasReceber" class="conta-row">
+                  <td class="checkbox-column">
+                    <input
+                      type="checkbox"
+                      [checked]="isContaSelecionada(conta.id)"
+                      (change)="toggleContaSelecionada(conta.id)">
+                  </td>
+                  <td>{{ conta.numeroDocumento }}</td>
+                  <td>{{ conta.parcela }}</td>
+                  <td>{{ formatarValor(conta.valorParcela) }}</td>
+                  <td>{{ formatarData(conta.dataVencimento) }}</td>
+                  <td>
+                    <span class="status" [class]="'status-' + conta.status.toLowerCase()">
+                      {{ conta.status }}
+                    </span>
+                  </td>
+                  <td>{{ conta.formaPagamento?.descricao || '-' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination" *ngIf="totalPagesContas > 1">
+            <button 
+              (click)="goToPageContas(currentPageContas - 1)" 
+              [disabled]="currentPageContas === 0"
+              class="pagination-btn">
+              Anterior
+            </button>
+            
+            <span class="pagination-info">
+              Página {{ currentPageContas + 1 }} de {{ totalPagesContas }}
+            </span>
+            
+            <button 
+              (click)="goToPageContas(currentPageContas + 1)" 
+              [disabled]="currentPageContas >= totalPagesContas - 1"
+              class="pagination-btn">
+              Próxima
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="footer-info" *ngIf="algumContaSelecionada()">
+        <span>{{ contasSelecionadas.size }} conta(s) selecionada(s)</span>
+      </div>
+
+      <div class="footer-buttons">
+        <button type="button" class="btn-fechar" (click)="fecharModal()">
+          Fechar
+        </button>
+        <button
+          type="button"
+          class="btn-adicionar"
+          (click)="adicionarContasParaRecebimento()"
+          [disabled]="!algumContaSelecionada()">
+          Adicionar ({{ contasSelecionadas.size }})
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

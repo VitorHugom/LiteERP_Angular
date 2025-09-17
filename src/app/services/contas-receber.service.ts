@@ -88,4 +88,24 @@ export class ContasReceberService {
   gerarRelatorio(filtro: ContasReceberFiltro): Observable<ContasReceberResponse[]> {
     return this.http.post<ContasReceberResponse[]>(`${this.baseUrl}/relatorios`, filtro);
   }
+
+  buscarContasReceberPorCliente(
+    idCliente: number,
+    page: number = 0,
+    size: number = 10,
+    sort: string = 'dataVencimento,asc'
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('idCliente', idCliente.toString())
+      .set('somenteReceber', 'true')
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', sort);
+
+    return this.http.get(`${this.baseUrl}/buscar`, { params });
+  }
+
+  realizarRecebimentoConta(idConta: number): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/${idConta}/receber`, {});
+  }
 }
