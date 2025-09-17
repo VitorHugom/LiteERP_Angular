@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { PedidosService } from '../../services/pedidos.service';
 import { ProdutosService } from '../../services/produtos.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { EnviarCarteiraModalComponent } from '../enviar-carteira-modal/enviar-carteira-modal.component';
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -182,5 +183,29 @@ export class BaixarPedidosModalComponent implements OnInit {
     const partes = dataIso.split('-');
     if (partes.length !== 3) return dataIso;
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
+  }
+
+  enviarParaCarteira(): void {
+    const dialogRef = this.dialog.open(EnviarCarteiraModalComponent, {
+      data: {
+        pedido: this.selectedPedido
+      },
+      width: '500px',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.success) {
+        console.log('Conta a receber gerada com sucesso:', result.data);
+        // Fecha o modal de baixar pedidos e sinaliza que houve atualização
+        this.dialogRef.close({
+          pedidoEnviadoCarteira: true,
+          pedido: this.selectedPedido
+        });
+      } else if (result && !result.success) {
+        console.error('Erro ao gerar conta a receber:', result.error);
+        // Aqui você pode adicionar uma notificação de erro
+      }
+    });
   }
 }

@@ -108,4 +108,8 @@ export class ContasReceberService {
   realizarRecebimentoConta(idConta: number): Observable<any> {
     return this.http.patch(`${this.baseUrl}/${idConta}/receber`, {});
   }
+
+  gerarContaPorPedido(payload: { idPedido: number; idFormaPagamento: number; idTipoCobranca: number }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/gerar-por-pedido`, payload);
+  }
 }

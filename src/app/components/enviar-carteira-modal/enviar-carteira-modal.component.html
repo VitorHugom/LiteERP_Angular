@@ -1,0 +1,51 @@
+<div class="container-modal">
+  <h2 mat-dialog-title>Enviar para Carteira</h2>
+
+  <div class="modal-content">
+    <div class="form-group">
+      <label for="formaPagamento">Forma de Pagamento *</label>
+      <select
+        id="formaPagamento"
+        [(ngModel)]="selectedFormaPagamento"
+        class="form-control"
+        required>
+        <option value="" disabled>Selecione uma forma de pagamento</option>
+        <option *ngFor="let forma of formasPagamento" [value]="forma.id">
+          {{ forma.descricao }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="tipoCobranca">Tipo de Cobrança *</label>
+      <select
+        id="tipoCobranca"
+        [(ngModel)]="selectedTipoCobranca"
+        class="form-control"
+        required>
+        <option value="" disabled>Selecione um tipo de cobrança</option>
+        <option *ngFor="let tipo of tiposCobranca" [value]="tipo.id">
+          {{ tipo.descricao }}
+        </option>
+      </select>
+    </div>
+
+    <div class="pedido-info">
+      <p><strong>Pedido:</strong> #{{ pedido.id }}</p>
+      <p><strong>Cliente:</strong> {{ pedido.cliente.razaoSocial }}</p>
+      <p><strong>Valor Total:</strong> {{ pedido.valorTotal | currency: 'BRL' }}</p>
+    </div>
+  </div>
+
+  <div class="modal-actions">
+    <button mat-button class="btn-cancelar" (click)="onCancel()">Cancelar</button>
+    <button 
+      mat-button 
+      class="btn-finalizar" 
+      (click)="onFinalize()"
+      [disabled]="!selectedFormaPagamento || !selectedTipoCobranca || isLoading">
+      <span *ngIf="isLoading">Processando...</span>
+      <span *ngIf="!isLoading">Finalizar</span>
+    </button>
+  </div>
+</div>
