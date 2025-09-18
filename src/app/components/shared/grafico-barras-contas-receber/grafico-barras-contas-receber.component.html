@@ -1,0 +1,18 @@
+<div class="grafico-container">
+  <div class="grafico-header">
+    <h3 class="grafico-titulo">{{ titulo }}</h3>
+    <button class="menu-button" (click)="abrirFiltro()" title="Filtrar período">
+      <span class="dots">⋮</span>
+    </button>
+  </div>
+  
+  <div class="grafico-content">
+    <div *ngIf="dados.length === 0" class="no-data">
+      <p>Nenhum dado disponível para o período selecionado</p>
+    </div>
+
+    <div class="chart-wrapper" [style.display]="dados.length === 0 ? 'none' : 'block'">
+      <canvas #chartCanvas></canvas>
+    </div>
+  </div>
+</div>

@@ -8,7 +8,6 @@
     </div>
 
     <div class="modal-body">
-      <!-- Períodos pré-definidos -->
       <div class="periodos-predefinidos">
         <h4>Períodos Rápidos:</h4>
         <div class="botoes-periodo">
@@ -21,19 +20,22 @@
           <button type="button" class="btn-periodo" (click)="definirPeriodoPreDefinido('ultimos-3-meses')">
             Últimos 3 Meses
           </button>
-          <button type="button" class="btn-periodo" (click)="definirPeriodoPreDefinido('ultimo-ano')">
+          <button type="button" class="btn-periodo" (click)="definirPeriodoPreDefinido('ultimo-ano')" *ngIf="tipoGrafico === 'pagar'">
             Último Ano
           </button>
           <button type="button" class="btn-periodo" (click)="definirPeriodoPreDefinido('proximo-mes')">
             Próximo Mês
           </button>
+          <button type="button" class="btn-periodo" (click)="definirPeriodoPreDefinido('proximos-3-meses')" *ngIf="tipoGrafico === 'receber'">
+            Próximos 3 Meses
+          </button>
           <button type="button" class="btn-periodo btn-padrao" (click)="definirPeriodoPreDefinido('padrao')">
-            Padrão (1 ano + 1 semana)
+            <span *ngIf="tipoGrafico === 'pagar'">Padrão (1 ano + 1 semana)</span>
+            <span *ngIf="tipoGrafico === 'receber'">Padrão (1 semana + 3 meses)</span>
           </button>
         </div>
       </div>
 
-      <!-- Seleção manual de datas -->
       <div class="selecao-manual">
         <h4>Ou selecione as datas:</h4>
         <div class="campos-data">

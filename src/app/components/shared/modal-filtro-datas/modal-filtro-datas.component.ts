@@ -19,6 +19,7 @@ export class ModalFiltroDatasComponent implements OnInit, OnChanges {
   @Input() titulo: string = 'Filtrar por Período';
   @Input() dataInicial: string = '';
   @Input() dataFinal: string = '';
+  @Input() tipoGrafico: 'pagar' | 'receber' = 'pagar';
   
   @Output() onConfirmar = new EventEmitter<FiltroData>();
   @Output() onCancelar = new EventEmitter<void>();
@@ -104,8 +105,21 @@ export class ModalFiltroDatasComponent implements OnInit, OnChanges {
         dataFim.setMonth(hoje.getMonth() + 1);
         break;
       case 'padrao':
-        dataInicio.setFullYear(hoje.getFullYear() - 1);
-        dataFim.setDate(hoje.getDate() + 7);
+        if (this.tipoGrafico === 'receber') {
+          dataInicio.setDate(hoje.getDate() - 7);
+          dataFim.setMonth(hoje.getMonth() + 3);
+        } else {
+          dataInicio.setFullYear(hoje.getFullYear() - 1);
+          dataFim.setDate(hoje.getDate() + 7);
+        }
+        break;
+      case 'proximos-3-meses':
+        dataInicio = new Date(hoje);
+        dataFim.setMonth(hoje.getMonth() + 3);
+        break;
+      case 'semana-passada-3-meses':
+        dataInicio.setDate(hoje.getDate() - 7);
+        dataFim.setMonth(hoje.getMonth() + 3);
         break;
     }
 

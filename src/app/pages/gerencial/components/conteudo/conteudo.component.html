@@ -1,12 +1,14 @@
 
 <div class="container__content">
-  <div *ngIf="carregandoDadosBarras || carregandoDadosLinhas" class="loading-container">
+  <div *ngIf="carregandoDadosBarras || carregandoDadosLinhas || carregandoDadosBarrasReceber || carregandoDadosLinhasReceber" class="loading-container">
     <p>Carregando dados dos gráficos...</p>
   </div>
 
-  <div *ngIf="erroBarras || erroLinhas" class="error-container">
+  <div *ngIf="erroBarras || erroLinhas || erroBarrasReceber || erroLinhasReceber" class="error-container">
     <p *ngIf="erroBarras">{{ erroBarras }}</p>
     <p *ngIf="erroLinhas">{{ erroLinhas }}</p>
+    <p *ngIf="erroBarrasReceber">{{ erroBarrasReceber }}</p>
+    <p *ngIf="erroLinhasReceber">{{ erroLinhasReceber }}</p>
     <button (click)="recarregarDados()" class="retry-button">Tentar novamente</button>
   </div>
 
@@ -27,20 +29,40 @@
       </app-grafico-linhas-contas-pagar>
     </div>
 
+    <div class="grafico-section">
+      <app-grafico-barras-contas-receber
+        [dados]="dadosGraficoBarrasReceber"
+        titulo="Valores de Contas a Receber"
+        (onFiltroClick)="abrirModalFiltroBarrasReceber()">
+      </app-grafico-barras-contas-receber>
+    </div>
+
+    <div class="grafico-section">
+      <app-grafico-linhas-contas-receber
+        [dados]="dadosGraficoLinhasReceber"
+        titulo="Quantidade de Contas a Receber"
+        (onFiltroClick)="abrirModalFiltroLinhasReceber()">
+      </app-grafico-linhas-contas-receber>
+    </div>
+
     <div class="content__card">
       <h3>Resumo Financeiro</h3>
-      <p *ngIf="dadosGraficoBarras.length > 0 || dadosGraficoLinhas.length > 0">
+      <p *ngIf="dadosGraficoBarras.length > 0 || dadosGraficoLinhas.length > 0 || dadosGraficoBarrasReceber.length > 0 || dadosGraficoLinhasReceber.length > 0">
+        <strong>Contas a Pagar:</strong><br>
         Gráfico de Barras: {{ dadosGraficoBarras.length }} datas<br>
-        Gráfico de Linhas: {{ dadosGraficoLinhas.length }} datas
+        Gráfico de Linhas: {{ dadosGraficoLinhas.length }} datas<br><br>
+        <strong>Contas a Receber:</strong><br>
+        Gráfico de Barras: {{ dadosGraficoBarrasReceber.length }} datas<br>
+        Gráfico de Linhas: {{ dadosGraficoLinhasReceber.length }} datas
       </p>
-      <p *ngIf="dadosGraficoBarras.length === 0 && dadosGraficoLinhas.length === 0">
-        Nenhuma conta a pagar encontrada nos períodos selecionados.
+      <p *ngIf="dadosGraficoBarras.length === 0 && dadosGraficoLinhas.length === 0 && dadosGraficoBarrasReceber.length === 0 && dadosGraficoLinhasReceber.length === 0">
+        Nenhuma conta encontrada nos períodos selecionados.
       </p>
     </div>
 
     <div class="content__card">
       <h3>Outras Funcionalidades</h3>
-      <p>Acesse o menu lateral para gerenciar contas a pagar, relatórios e outras funcionalidades do sistema.</p>
+      <p>Acesse o menu lateral para gerenciar contas a pagar, contas a receber, relatórios e outras funcionalidades do sistema.</p>
     </div>
   </div>
 
@@ -50,6 +72,7 @@
     [dataInicial]="dataInicialAtual"
     [dataFinal]="dataFinalAtual"
     [titulo]="tituloModalAtual"
+    [tipoGrafico]="tipoGraficoAtual"
     (onConfirmar)="aplicarFiltro($event)"
     (onCancelar)="cancelarFiltro()"
     (onFechar)="fecharModalFiltro()">

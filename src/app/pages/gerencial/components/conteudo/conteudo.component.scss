@@ -3,7 +3,7 @@
   padding: 20px;
   max-width: 100%;
   overflow-x: hidden;
-  height: calc(100vh - 40px); /* Usar toda a altura disponível menos o padding */
+  height: calc(100vh - 40px);
   display: flex;
   flex-direction: column;
 }
@@ -40,13 +40,14 @@
 .graficos-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr auto;
-  gap: 20px;
+  grid-template-rows: 300px 300px auto;
+  gap: 15px;
   grid-template-areas:
     "grafico1 grafico2"
+    "grafico3 grafico4"
     "card1 card2";
-  flex: 1; /* Ocupar todo o espaço disponível */
-  min-height: 0; /* Permitir que os gráficos se ajustem */
+  flex: 1;
+  min-height: 0;
 }
 
 .grafico-section {
@@ -61,7 +62,14 @@
   grid-area: grafico2;
 }
 
-/* Cards informativos em grid responsivo */
+.grafico-section:nth-child(3) {
+  grid-area: grafico3;
+}
+
+.grafico-section:nth-child(4) {
+  grid-area: grafico4;
+}
+
 .graficos-container .content__card {
   background-color: #f5f5f5;
   padding: 20px;
@@ -92,7 +100,6 @@
   margin: 0;
 }
 
-/* Layout responsivo para telas menores */
 @media (max-width: 768px) {
   .graficos-container {
     display: flex;
