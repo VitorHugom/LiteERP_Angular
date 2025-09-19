@@ -1,0 +1,36 @@
+// Estilo compartilhado para o wrapper das páginas de busca
+.page-wrapper {
+  position: relative;
+  width: 100%;
+
+  app-navigate-to-search-button {
+    position: absolute;
+    left: calc(50% - 450px); // 50% da tela - (400px da div + 50px de espaço)
+    top: 30px;
+    z-index: 10;
+  }
+}
+
+// Para telas menores, ajusta a posição
+@media (max-width: 900px) {
+  .page-wrapper {
+    app-navigate-to-search-button {
+      left: 20px; // Volta para a esquerda da tela em telas pequenas
+    }
+  }
+}
+
+// Responsividade para telas menores
+@media (max-width: 768px) {
+  .page-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    
+    app-navigate-to-search-button {
+      margin-top: 0;
+      align-self: flex-start;
+    }
+  }
+}

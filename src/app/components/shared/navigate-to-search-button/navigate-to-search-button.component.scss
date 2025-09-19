@@ -1,15 +1,24 @@
 .button-back{
   display: flex;
   align-items: center;
+  justify-content: center;
   color: #333;
   background-color: #E3E3E3;
-  padding: 5px;
+  padding: 8px;
   border-radius: 50%;
   border: none;
-  margin-bottom: 5px;
   cursor: pointer;
+  width: 32px;
+  height: 32px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
   img{
-    width: 12px;
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover {
+    background-color: #d0d0d0;
+    transform: scale(1.05);
   }
 }
