@@ -3,13 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FornecedoresService } from '../../services/fornecedores.service';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-fornecedores-busca',
   standalone: true,
   templateUrl: './fornecedores-busca.component.html',
   styleUrls: ['./fornecedores-busca.component.scss'],
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent],
   providers: [FornecedoresService]
 })
 export class FornecedoresBuscaComponent implements OnInit {

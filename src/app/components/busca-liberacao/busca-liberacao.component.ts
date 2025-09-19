@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BuscaLiberacaoService } from '../../services/busca-liberacao.service';
 import { Router } from '@angular/router';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-busca-liberacao',
   standalone: true,
   templateUrl: './busca-liberacao.component.html',
   styleUrls: ['./busca-liberacao.component.scss'],
-  imports: [FormsModule, CommonModule, RouterModule]
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent]
 })
 export class BuscaLiberacaoComponent implements OnInit {
   usuarios: any[] = [];

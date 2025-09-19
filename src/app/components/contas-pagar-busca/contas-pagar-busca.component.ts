@@ -3,13 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ContasPagarService } from '../../services/contas-pagar.service';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-contas-pagar-busca',
   standalone: true,
   templateUrl: './contas-pagar-busca.component.html',
   styleUrls: ['./contas-pagar-busca.component.scss'],
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent],
   providers: [ContasPagarService]
 })
 export class ContasPagarBuscaComponent implements OnInit {

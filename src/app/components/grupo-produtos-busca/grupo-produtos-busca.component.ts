@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { GrupoProdutosService } from '../../services/grupo-produtos.service';
 import { Router } from '@angular/router';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-grupo-produtos-busca',
   standalone: true,
   templateUrl: './grupo-produtos-busca.component.html',
   styleUrls: ['./grupo-produtos-busca.component.scss'],
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent],
   providers: [GrupoProdutosService]
 })
 export class GrupoProdutosBuscaComponent implements OnInit {

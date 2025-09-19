@@ -1,3 +1,9 @@
-<button class="button-back" [routerLink]="[routerLink]">
+<!-- Botão com routerLink estático (para cadastros) -->
+<button *ngIf="!useHomeNavigation && routerLink" class="button-back" [routerLink]="[routerLink]">
+  <img src="images/icone-back.png" alt="">
+</button>
+
+<!-- Botão com navegação dinâmica para home (para telas de busca) -->
+<button *ngIf="useHomeNavigation" class="button-back" (click)="onClick()">
   <img src="images/icone-back.png" alt="">
 </button>

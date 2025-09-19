@@ -3,13 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormaPagamentoService } from '../../services/forma-pagamento.service';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-forma-pagamento-busca',
   standalone: true,
   templateUrl: './forma-pagamento-busca.component.html',
   styleUrls: ['./forma-pagamento-busca.component.scss'],
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent],
   providers: [FormaPagamentoService]
 })
 export class FormaPagamentoBuscaComponent implements OnInit {

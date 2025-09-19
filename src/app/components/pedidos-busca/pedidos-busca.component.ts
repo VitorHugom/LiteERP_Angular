@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PedidosService } from '../../services/pedidos.service';
 import { Router } from '@angular/router';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-busca-pedidos',
   standalone: true,
   templateUrl: './pedidos-busca.component.html',
   styleUrls: ['./pedidos-busca.component.scss'],
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent],
   providers: [PedidosService]
 })
 export class PedidosBuscaComponent implements OnInit {

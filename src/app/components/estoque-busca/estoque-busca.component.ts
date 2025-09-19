@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EstoqueService } from '../../services/estoque.service';
 import { Router } from '@angular/router';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-busca-estoque',
   standalone: true,
   templateUrl: './estoque-busca.component.html',
   styleUrls: ['./estoque-busca.component.scss'],
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent],
   providers: [EstoqueService]
 })
 export class EstoqueBuscaComponent implements OnInit {

@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RecebimentoMercadoriasService } from '../../services/recebimento-mercadorias.service';
 import { Router } from '@angular/router';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-busca-recebimento-mercadorias',
   standalone: true,
   templateUrl: './recebimento-mercadorias-busca.component.html',
   styleUrls: ['./recebimento-mercadorias-busca.component.scss'],
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent],
   providers: [RecebimentoMercadoriasService]
 })
 export class RecebimentoMercadoriasBuscaComponent implements OnInit {

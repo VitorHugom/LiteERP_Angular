@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ContasReceberService } from '../../services/contas-receber.service';
+import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
 @Component({
   selector: 'app-contas-receber-busca',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent],
   templateUrl: './contas-receber-busca.component.html',
   styleUrl: './contas-receber-busca.component.scss'
 })
