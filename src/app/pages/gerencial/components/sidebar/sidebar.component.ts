@@ -94,7 +94,8 @@ export class SidebarComponent {
           subItems: [
             { label: 'Contas a Receber', routerLink: '/contas-receber-busca' },
             { label: 'Recebimento', routerLink: '/recebimento' },
-            { label: 'Relatórios', routerLink: '/contas-receber-relatorio' }
+            { label: 'Relatórios', routerLink: '/contas-receber-relatorio' },
+            { label: 'Relatório de Fluxo de Caixa', routerLink: '/fluxo-caixa-relatorio' }
           ],
         }
       ]

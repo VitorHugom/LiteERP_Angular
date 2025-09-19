@@ -1,0 +1,39 @@
+<div class="seletor-conta-container">
+  <label class="label" [class.required]="required">
+    {{ label }}
+    <span *ngIf="required" class="asterisco">*</span>
+  </label>
+  
+  <div class="select-wrapper">
+    <select 
+      class="select-conta"
+      [value]="contaSelecionadaId || ''"
+      [disabled]="disabled || carregandoContas"
+      (change)="onContaChange($event)"
+      [class.error]="erroCarregamento">
+      
+      <option value="" disabled>
+        {{ carregandoContas ? 'Carregando...' : placeholder }}
+      </option>
+      
+      <option 
+        *ngFor="let conta of contas" 
+        [value]="conta.id">
+        {{ conta.descricao }} - R$ {{ conta.saldoAtual.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}
+      </option>
+    </select>
+    
+    <button 
+      *ngIf="erroCarregamento" 
+      type="button" 
+      class="btn-recarregar"
+      (click)="recarregarContas()"
+      title="Tentar novamente">
+      🔄
+    </button>
+  </div>
+  
+  <div *ngIf="erroCarregamento" class="erro-mensagem">
+    Erro ao carregar contas. Clique em 🔄 para tentar novamente.
+  </div>
+</div>

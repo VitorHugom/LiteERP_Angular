@@ -1,0 +1,42 @@
+<div class="fluxo-caixa-relatorio-container">
+  <app-navigate-to-search-button [routerLink]="urlHome"></app-navigate-to-search-button>
+  <h1>Relatório de Fluxo de Caixa</h1>
+
+  <form [formGroup]="fluxoCaixaRelatorioForm" class="fluxo-caixa-relatorio-form"
+        (ngSubmit)="onSubmit()">
+
+    <!-- Seletor de Conta Caixa -->
+    <div class="form-group conta-caixa-group">
+      <app-seletor-conta-caixa
+        label="Conta de Caixa"
+        placeholder="Selecione a conta para o relatório"
+        [required]="true"
+        (contaSelecionada)="onContaCaixaSelecionada($event)"
+        (contaIdSelecionada)="onContaCaixaIdSelecionada($event)">
+      </app-seletor-conta-caixa>
+    </div>
+
+    <!-- Período -->
+    <div class="search-data">
+      <div>
+        <label for="dataInicio">Data de Início:</label>
+        <input
+          type="date"
+          id="dataInicio"
+          formControlName="dataInicio">
+      </div>
+      <div>
+        <label for="dataFim">Data de Fim:</label>
+        <input
+          type="date"
+          id="dataFim"
+          formControlName="dataFim">
+      </div>
+    </div>
+
+    <button class="btn-submit" type="submit"
+      [disabled]="fluxoCaixaRelatorioForm.invalid">
+      Gerar Relatório PDF
+    </button>
+  </form>
+</div>

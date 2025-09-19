@@ -39,6 +39,7 @@ import { EstoqueRelatorioComponent } from './components/estoque-relatorio/estoqu
 import { UsuarioRelatorioComponent } from './components/usuario-relatorio/usuario-relatorio.component';
 import { ContasPagarRelatorioComponent } from './components/contas-pagar-relatorio/contas-pagar-relatorio.component';
 import { ContasReceberRelatorioComponent } from './components/contas-receber-relatorio/contas-receber-relatorio.component';
+import { FluxoCaixaRelatorioComponent } from './components/fluxo-caixa-relatorio/fluxo-caixa-relatorio.component';
 import { RecebimentoComponent } from './components/recebimento/recebimento.component';
 import { PagamentosComponent } from './components/pagamentos/pagamentos.component';
 
@@ -110,6 +111,8 @@ export const routes: Routes = [
 
   { path: 'contas-pagar-relatorio', component: ContasPagarRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
-  { path: 'contas-receber-relatorio', component: ContasReceberRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }}
+  { path: 'contas-receber-relatorio', component: ContasReceberRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
+
+  { path: 'fluxo-caixa-relatorio', component: FluxoCaixaRelatorioComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }}
 
 ];
