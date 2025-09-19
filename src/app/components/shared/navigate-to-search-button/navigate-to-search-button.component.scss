@@ -1,24 +1,54 @@
+// Estilo padrão para cadastros (comportamento original)
 .button-back{
   display: flex;
   align-items: center;
-  justify-content: center;
   color: #333;
   background-color: #E3E3E3;
-  padding: 8px;
+  padding: 5px;
   border-radius: 50%;
   border: none;
+  margin-bottom: 5px;
   cursor: pointer;
-  width: 32px;
-  height: 32px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
   img{
-    width: 14px;
-    height: 14px;
+    width: 12px;
   }
+}
 
-  &:hover {
-    background-color: #d0d0d0;
-    transform: scale(1.05);
+// Estilo específico para telas de busca (posicionamento absoluto)
+.busca-movimentos-container,
+.clientes-busca-container,
+.fornecedores-busca-container,
+.produtos-busca-container,
+.busca-vendedores-container,
+.busca-contas-receber-container,
+.busca-contas-pagar-container,
+.busca-recebimentos-mercadoria-container,
+.busca-grupo-produtos-container,
+.busca-formas-pagamento-container,
+.busca-estoque-container,
+.busca-pedidos-container,
+.busca-liberacao-container {
+  .button-back {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+    z-index: 10;
+    margin-bottom: 0;
+    padding: 8px;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    img {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover {
+      background-color: #d0d0d0;
+      transform: scale(1.05);
+    }
   }
 }

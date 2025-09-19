@@ -1,0 +1,19 @@
+// CSS compartilhado para posicionamento dos containers de busca
+// Adiciona position: relative para que os botões absolutos funcionem corretamente
+
+// Apenas containers de busca (não cadastro)
+.busca-movimentos-container,
+.clientes-busca-container,
+.fornecedores-busca-container,
+.produtos-busca-container,
+.busca-vendedores-container,
+.busca-contas-receber-container,
+.busca-contas-pagar-container,
+.busca-recebimentos-mercadoria-container,
+.busca-grupo-produtos-container,
+.busca-formas-pagamento-container,
+.busca-estoque-container,
+.busca-pedidos-container,
+.busca-liberacao-container {
+  position: relative;
+}
