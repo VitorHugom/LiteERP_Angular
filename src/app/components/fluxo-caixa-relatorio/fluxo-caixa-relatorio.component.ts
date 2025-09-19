@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 import { SeletorContaCaixaComponent } from '../shared/seletor-conta-caixa/seletor-conta-caixa.component';
-import { FluxoCaixaService, ContaCaixa } from '../../services/fluxo-caixa.service';
+import { FluxoCaixaService, ContaCaixa, MovimentacaoFluxoCaixaResponse, MovimentacaoFluxoCaixa } from '../../services/fluxo-caixa.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -12,6 +12,8 @@ export interface FluxoCaixaFiltro {
   dataFim?: string;
   contaCaixaId?: number;
 }
+
+
 
 export interface FluxoCaixaMovimento {
   id: number;
@@ -53,6 +55,7 @@ export class FluxoCaixaRelatorioComponent implements OnInit {
 
   contaCaixaSelecionada: ContaCaixa | null = null;
   urlHome = '/gerencial';
+  carregandoRelatorio = false;
 
   constructor(private fluxoCaixaService: FluxoCaixaService) {}
 
@@ -107,55 +110,79 @@ export class FluxoCaixaRelatorioComponent implements OnInit {
       contaCaixaId: f.contaCaixaId
     };
 
-    // Simular dados do relatório (substituir pela chamada real da API)
-    const dadosSimulados: FluxoCaixaRelatorioResponse = {
-      movimentos: [
-        {
-          id: 1,
-          data: '2024-01-15',
-          descricao: 'Recebimento - Cliente ABC Ltda',
-          tipo: 'ENTRADA',
-          valor: 1500.00,
-          saldoAnterior: 0,
-          saldoAtual: 1500.00,
-          origem: 'Contas a Receber',
-          documento: 'REC-001'
-        },
-        {
-          id: 2,
-          data: '2024-01-16',
-          descricao: 'Pagamento - Fornecedor XYZ S.A.',
-          tipo: 'SAIDA',
-          valor: 800.00,
-          saldoAnterior: 1500.00,
-          saldoAtual: 700.00,
-          origem: 'Contas a Pagar',
-          documento: 'PAG-001'
-        },
-        {
-          id: 3,
-          data: '2024-01-17',
-          descricao: 'Venda à Vista - Cliente DEF',
-          tipo: 'ENTRADA',
-          valor: 250.00,
-          saldoAnterior: 700.00,
-          saldoAtual: 950.00,
-          origem: 'Vendas',
-          documento: 'VEN-001'
-        }
-      ],
-      saldoInicial: 0,
-      saldoFinal: 950.00,
-      totalEntradas: 1750.00,
-      totalSaidas: 800.00,
+    // Buscar dados reais da API
+    this.carregandoRelatorio = true;
+
+    this.fluxoCaixaService.getMovimentacoesPorConta(
+      f.contaCaixaId,
+      f.dataInicio,
+      f.dataFim
+    ).subscribe({
+      next: (response: MovimentacaoFluxoCaixaResponse) => {
+        this.carregandoRelatorio = false;
+        const dadosRelatorio = this.processarDadosParaRelatorio(response, filtro);
+        const doc = this.gerarPdf(dadosRelatorio, filtro);
+        this.abrirPdfEmNovaAba(doc);
+      },
+      error: (error) => {
+        this.carregandoRelatorio = false;
+        console.error('Erro ao buscar movimentações:', error);
+        alert('Erro ao buscar dados do fluxo de caixa. Tente novamente.');
+      }
+    });
+  }
+
+  private processarDadosParaRelatorio(
+    response: MovimentacaoFluxoCaixaResponse,
+    filtro: FluxoCaixaFiltro
+  ): FluxoCaixaRelatorioResponse {
+    const movimentacoes = response.content;
+
+    // Ordenar por data para calcular saldos corretamente
+    const movimentacoesOrdenadas = movimentacoes.sort((a, b) =>
+      new Date(a.dataMovimentacao).getTime() - new Date(b.dataMovimentacao).getTime()
+    );
+
+    let saldoAtual = 0;
+    let totalEntradas = 0;
+    let totalSaidas = 0;
+
+    const movimentos: FluxoCaixaMovimento[] = movimentacoesOrdenadas.map((mov) => {
+      const saldoAnterior = saldoAtual;
+      const valorMovimento = mov.valor; // Valor já vem em reais
+
+      if (mov.categoria === 'RECEITA') {
+        saldoAtual += valorMovimento;
+        totalEntradas += valorMovimento;
+      } else {
+        saldoAtual -= valorMovimento;
+        totalSaidas += valorMovimento;
+      }
+
+      return {
+        id: mov.id,
+        data: mov.dataMovimentacao,
+        descricao: mov.descricao,
+        tipo: mov.categoria === 'RECEITA' ? 'ENTRADA' : 'SAIDA',
+        valor: valorMovimento,
+        saldoAnterior: saldoAnterior,
+        saldoAtual: saldoAtual,
+        origem: mov.tipoMovimentacaoDescricao,
+        documento: mov.numeroDocumento
+      };
+    });
+
+    return {
+      movimentos,
+      saldoInicial: 0, // Pode ser calculado baseado no primeiro movimento
+      saldoFinal: saldoAtual,
+      totalEntradas,
+      totalSaidas,
       periodo: {
-        dataInicio: f.dataInicio,
-        dataFim: f.dataFim
+        dataInicio: filtro.dataInicio || '',
+        dataFim: filtro.dataFim || ''
       }
     };
-
-    const doc = this.gerarPdf(dadosSimulados, filtro);
-    this.abrirPdfEmNovaAba(doc);
   }
 
   private gerarPdf(dados: FluxoCaixaRelatorioResponse, filtro: FluxoCaixaFiltro): jsPDF {

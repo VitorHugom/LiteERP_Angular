@@ -35,8 +35,9 @@
     </div>
 
     <button class="btn-submit" type="submit"
-      [disabled]="fluxoCaixaRelatorioForm.invalid">
-      Gerar Relatório PDF
+      [disabled]="fluxoCaixaRelatorioForm.invalid || carregandoRelatorio">
+      <span *ngIf="carregandoRelatorio">Gerando relatório...</span>
+      <span *ngIf="!carregandoRelatorio">Gerar Relatório PDF</span>
     </button>
   </form>
 </div>
