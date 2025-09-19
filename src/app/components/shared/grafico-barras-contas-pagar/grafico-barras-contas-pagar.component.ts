@@ -133,7 +133,9 @@ export class GraficoBarrasContasPagarComponent implements OnInit, OnChanges {
 
   private formatarData(data: string): string {
     try {
-      const date = new Date(data);
+      // Evitar problemas de fuso horário fazendo parsing manual
+      const [ano, mes, dia] = data.split('-');
+      const date = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
       return date.toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
