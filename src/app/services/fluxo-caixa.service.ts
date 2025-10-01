@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface ContaCaixa {
   id: number;
@@ -16,7 +17,7 @@ export interface ContaCaixa {
   dataCriacao: string;
 }
 
-// Interface para movimentação individual
+// Interface para movimenta??o individual
 export interface MovimentacaoFluxoCaixa {
   id: number;
   contaCaixaId: number;
@@ -74,7 +75,7 @@ export interface MovimentacaoFluxoCaixaResponse {
   providedIn: 'root'
 })
 export class FluxoCaixaService {
-  private baseUrl = 'http://localhost:8080/fluxo-caixa';
+  private baseUrl = `${environment.apiUrl}/fluxo-caixa`;
 
   constructor(private http: HttpClient) { }
 
@@ -98,5 +99,12 @@ export class FluxoCaixaService {
       .set('sort', sort);
 
     return this.http.get<MovimentacaoFluxoCaixaResponse>(`${this.baseUrl}/movimentacoes/conta/${contaId}`, { params });
+  }
+
+  getSaldoAnterior(contaId: number, dataReferencia: string): Observable<{saldo: number}> {
+    let params = new HttpParams()
+      .set('dataReferencia', dataReferencia);
+
+    return this.http.get<{saldo: number}>(`${this.baseUrl}/saldo-anterior/conta/${contaId}`, { params });
   }
 }

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 import { SeletorContaCaixaComponent } from '../shared/seletor-conta-caixa/seletor-conta-caixa.component';
 import { FluxoCaixaService, ContaCaixa, MovimentacaoFluxoCaixaResponse, MovimentacaoFluxoCaixa } from '../../services/fluxo-caixa.service';
+import { forkJoin } from 'rxjs';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -113,28 +114,58 @@ export class FluxoCaixaRelatorioComponent implements OnInit {
     // Buscar dados reais da API
     this.carregandoRelatorio = true;
 
-    this.fluxoCaixaService.getMovimentacoesPorConta(
+    // Buscar saldo anterior e movimentações em paralelo
+    const movimentacoes$ = this.fluxoCaixaService.getMovimentacoesPorConta(
       f.contaCaixaId,
       f.dataInicio,
       f.dataFim
-    ).subscribe({
-      next: (response: MovimentacaoFluxoCaixaResponse) => {
+    );
+
+    const saldoAnterior$ = this.fluxoCaixaService.getSaldoAnterior(
+      f.contaCaixaId,
+      f.dataInicio
+    );
+
+    // Combinar as duas requisições usando forkJoin
+    forkJoin({
+      movimentacoes: movimentacoes$,
+      saldoAnterior: saldoAnterior$
+    }).subscribe({
+      next: (result) => {
         this.carregandoRelatorio = false;
-        const dadosRelatorio = this.processarDadosParaRelatorio(response, filtro);
+        const dadosRelatorio = this.processarDadosParaRelatorio(
+          result.movimentacoes,
+          filtro,
+          result.saldoAnterior.saldo
+        );
         const doc = this.gerarPdf(dadosRelatorio, filtro);
         this.abrirPdfEmNovaAba(doc);
       },
       error: (error) => {
         this.carregandoRelatorio = false;
-        console.error('Erro ao buscar movimentações:', error);
-        alert('Erro ao buscar dados do fluxo de caixa. Tente novamente.');
+        console.error('Erro ao buscar dados do fluxo de caixa:', error);
+
+        // Tentar buscar apenas as movimentações se o saldo anterior falhar
+        movimentacoes$.subscribe({
+          next: (response: MovimentacaoFluxoCaixaResponse) => {
+            console.warn('Usando saldo inicial 0 devido ao erro no saldo anterior');
+            const dadosRelatorio = this.processarDadosParaRelatorio(response, filtro, 0);
+            const doc = this.gerarPdf(dadosRelatorio, filtro);
+            this.abrirPdfEmNovaAba(doc);
+          },
+          error: (movError) => {
+            console.error('Erro ao buscar movimentações:', movError);
+            alert('Erro ao buscar dados do fluxo de caixa. Tente novamente.');
+          }
+        });
       }
     });
   }
 
   private processarDadosParaRelatorio(
     response: MovimentacaoFluxoCaixaResponse,
-    filtro: FluxoCaixaFiltro
+    filtro: FluxoCaixaFiltro,
+    saldoInicial: number = 0
   ): FluxoCaixaRelatorioResponse {
     const movimentacoes = response.content;
 
@@ -143,7 +174,7 @@ export class FluxoCaixaRelatorioComponent implements OnInit {
       new Date(a.dataMovimentacao).getTime() - new Date(b.dataMovimentacao).getTime()
     );
 
-    let saldoAtual = 0;
+    let saldoAtual = saldoInicial; // Começar com o saldo inicial correto
     let totalEntradas = 0;
     let totalSaidas = 0;
 
@@ -151,12 +182,18 @@ export class FluxoCaixaRelatorioComponent implements OnInit {
       const saldoAnterior = saldoAtual;
       const valorMovimento = mov.valor; // Valor já vem em reais
 
+      // Lógica corrigida para tratar valores baseado na categoria
+      // Independente do sinal do valor, usamos a categoria para determinar se é entrada ou saída
+      const valorAbsoluto = Math.abs(valorMovimento);
+
       if (mov.categoria === 'RECEITA') {
-        saldoAtual += valorMovimento;
-        totalEntradas += valorMovimento;
+        // Receitas sempre aumentam o saldo
+        saldoAtual += valorAbsoluto;
+        totalEntradas += valorAbsoluto;
       } else {
-        saldoAtual -= valorMovimento;
-        totalSaidas += valorMovimento;
+        // Despesas sempre diminuem o saldo
+        saldoAtual -= valorAbsoluto;
+        totalSaidas += valorAbsoluto;
       }
 
       return {
@@ -164,7 +201,7 @@ export class FluxoCaixaRelatorioComponent implements OnInit {
         data: mov.dataMovimentacao,
         descricao: mov.descricao,
         tipo: mov.categoria === 'RECEITA' ? 'ENTRADA' : 'SAIDA',
-        valor: valorMovimento,
+        valor: valorAbsoluto, // Mostrar sempre valor absoluto no relatório
         saldoAnterior: saldoAnterior,
         saldoAtual: saldoAtual,
         origem: mov.tipoMovimentacaoDescricao,
@@ -174,7 +211,7 @@ export class FluxoCaixaRelatorioComponent implements OnInit {
 
     return {
       movimentos,
-      saldoInicial: 0, // Pode ser calculado baseado no primeiro movimento
+      saldoInicial: saldoInicial, // Usar o saldo inicial correto
       saldoFinal: saldoAtual,
       totalEntradas,
       totalSaidas,
