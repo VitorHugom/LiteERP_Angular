@@ -45,20 +45,6 @@
       </app-grafico-linhas-contas-receber>
     </div>
 
-    <div class="content__card">
-      <h3>Resumo Financeiro</h3>
-      <p *ngIf="dadosGraficoBarras.length > 0 || dadosGraficoLinhas.length > 0 || dadosGraficoBarrasReceber.length > 0 || dadosGraficoLinhasReceber.length > 0">
-        <strong>Contas a Pagar:</strong><br>
-        Gráfico de Barras: {{ dadosGraficoBarras.length }} datas<br>
-        Gráfico de Linhas: {{ dadosGraficoLinhas.length }} datas<br><br>
-        <strong>Contas a Receber:</strong><br>
-        Gráfico de Barras: {{ dadosGraficoBarrasReceber.length }} datas<br>
-        Gráfico de Linhas: {{ dadosGraficoLinhasReceber.length }} datas
-      </p>
-      <p *ngIf="dadosGraficoBarras.length === 0 && dadosGraficoLinhas.length === 0 && dadosGraficoBarrasReceber.length === 0 && dadosGraficoLinhasReceber.length === 0">
-        Nenhuma conta encontrada nos períodos selecionados.
-      </p>
-    </div>
 
     <div class="content__card">
       <h3>Outras Funcionalidades</h3>
