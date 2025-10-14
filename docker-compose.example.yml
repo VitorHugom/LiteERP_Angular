@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  lite-erp-frontend:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      # Define a URL da API do backend
+      - API_URL=https://api.lite-erp-enterprise.com
+    restart: unless-stopped
+
+  # Exemplo alternativo usando variáveis de ambiente do host
+  lite-erp-frontend-env:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      # Usa variável de ambiente do host ou valor padrão
+      - API_URL=${API_URL:-https://api.lite-erp-enterprise.com}
+    restart: unless-stopped

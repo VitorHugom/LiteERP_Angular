@@ -18,9 +18,16 @@ find /usr/share/nginx/html -name "*.js" | head -5
 
 # Encontra todos os arquivos JavaScript no diretório do nginx e substitui qualquer URL da API pela variável de ambiente
 echo "Substituindo URLs da API por $API_URL nos arquivos JavaScript..."
+
+# Substitui todas as possíveis URLs da API
 find /usr/share/nginx/html -name "*.js" -exec sed -i "s|http://localhost:8080|$API_URL|g" {} \;
 find /usr/share/nginx/html -name "*.js" -exec sed -i "s|https://api\.seu-dominio\.com|$API_URL|g" {} \;
 find /usr/share/nginx/html -name "*.js" -exec sed -i "s|https://api\.lite-erp-enterprise\.com|$API_URL|g" {} \;
+
+# Substitui também possíveis variações com escape de caracteres
+find /usr/share/nginx/html -name "*.js" -exec sed -i "s|http:\\/\\/localhost:8080|$API_URL|g" {} \;
+find /usr/share/nginx/html -name "*.js" -exec sed -i "s|https:\\/\\/api\\.seu-dominio\\.com|$API_URL|g" {} \;
+find /usr/share/nginx/html -name "*.js" -exec sed -i "s|https:\\/\\/api\\.lite-erp-enterprise\\.com|$API_URL|g" {} \;
 
 # Verifica se a substituição foi feita
 echo "Verificando substituição..."
@@ -28,6 +35,22 @@ echo "Procurando por URLs antigas nos arquivos JS:"
 find /usr/share/nginx/html -name "*.js" -exec grep -l "localhost:8080\|seu-dominio\.com" {} \; | head -3
 echo "Procurando pela nova URL ($API_URL) nos arquivos JS:"
 find /usr/share/nginx/html -name "*.js" -exec grep -l "$API_URL" {} \; | head -3
+
+# Debug mais detalhado - mostra o conteúdo real dos arquivos
+echo "=== DEBUG: Conteúdo das URLs encontradas ==="
+for file in $(find /usr/share/nginx/html -name "*.js" | head -2); do
+    echo "Arquivo: $file"
+    echo "URLs encontradas:"
+    grep -o "https\?://[^\"']*" "$file" | grep -E "(api\.|localhost)" | head -5
+    echo "---"
+done
+
+# Cache busting - adiciona timestamp aos arquivos para forçar reload no Cloudflare
+TIMESTAMP=$(date +%s)
+echo "Adicionando timestamp $TIMESTAMP para cache busting..."
+
+# Adiciona comentário com timestamp no final dos arquivos JS
+find /usr/share/nginx/html -name "*.js" -exec sh -c 'echo "/* Cache bust: '$TIMESTAMP' */" >> "$1"' _ {} \;
 
 echo "Substituição de variáveis concluída."
 
