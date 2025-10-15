@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Selecionar Produto</h2>
+
+<mat-dialog-content class="mat-typography">
+  <p>Encontrados {{ produtos.length }} produtos para: <strong>"{{ termoBusca }}"</strong></p>
+  
+  <div class="produtos-list">
+    <div *ngFor="let produto of produtos" 
+         class="produto-item" 
+         (click)="onSelectProduto(produto)">
+      <div class="produto-info">
+        <h4>{{ produto.descricao }}</h4>
+        <p *ngIf="produto.marca"><strong>Marca:</strong> {{ produto.marca }}</p>
+        <p *ngIf="produto.codEan"><strong>EAN:</strong> {{ produto.codEan }}</p>
+        <p *ngIf="produto.codNcm"><strong>NCM:</strong> {{ produto.codNcm }}</p>
+        <p *ngIf="produto.precoCompra"><strong>Preço de Compra:</strong> {{ produto.precoCompra | currency:'BRL' }}</p>
+      </div>
+      <div class="select-indicator">
+        <span>Selecionar →</span>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+</mat-dialog-actions>

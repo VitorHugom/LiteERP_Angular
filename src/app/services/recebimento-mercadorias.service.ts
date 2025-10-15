@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { UploadXmlResponse, VinculacaoProdutoRequest, VinculacaoProdutoResponse } from '../models/upload-xml.models';
 
 @Injectable({
   providedIn: 'root'
@@ -54,5 +55,17 @@ export class RecebimentoMercadoriasService {
       .set('page', page.toString())
       .set('size', size.toString());
     return this.http.get(`${this.baseUrl}/busca-por-razao-social`, { params });
+  }
+
+  // Upload e processamento de XML NFe
+  uploadXmlNfe(arquivo: File): Observable<UploadXmlResponse> {
+    const formData = new FormData();
+    formData.append('arquivo', arquivo);
+    return this.http.post<UploadXmlResponse>(`${this.baseUrl}/upload-xml`, formData);
+  }
+
+  // Vincular produto ao fornecedor (criar código do fornecedor)
+  vincularProdutoFornecedor(request: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/produto-fornecedor-codigo`, request);
   }
 }

@@ -11,6 +11,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddItemRecebimentoModalComponent } from '../add-item-recebimento-modal/add-item-recebimento-modal.component';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 import { FooterButtonComponent } from '../shared/footer-button/footer-button.component';
+import { UploadXmlResponse, ItemRecebimentoXml, DadosNfe, FornecedorNfe } from '../../models/upload-xml.models';
+import { SelecionarProdutoModalComponent } from '../selecionar-produto-modal/selecionar-produto-modal.component';
 @Component({
   selector: 'app-cadastro-recebimento',
   standalone: true,
@@ -48,6 +50,14 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
   currentPageFornecedores = 0;
   pageSize = 5;
   loadingFornecedores = false;
+
+  // Propriedades para upload de XML
+  dadosNfe: DadosNfe | null = null;
+  fornecedorNfe: FornecedorNfe | null = null;
+  itensXml: ItemRecebimentoXml[] = [];
+  uploadedFile: File | null = null;
+  isProcessingXml = false;
+  xmlProcessed = false;
 
   buttons = [
     { text: 'Novo', color: 'novo-button', type: 'button', event: 'novo' },
@@ -298,7 +308,96 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
     this.message = null;
     this.isSuccess = true;
 
+    // Limpar dados do XML
+    this.dadosNfe = null;
+    this.fornecedorNfe = null;
+    this.itensXml = [];
+    this.uploadedFile = null;
+    this.xmlProcessed = false;
+    this.isProcessingXml = false;
+
+    // Limpar dados de busca do XML
+    this.produtoInputXml = {};
+    this.produtosXml = {};
+    this.showProdutosListXml = {};
+    this.itemVinculandoAtual = null;
+
     this.router.navigate(['/recebimento-mercadorias-cadastro/novo']);
+  }
+
+  // Upload do arquivo XML
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.uploadedFile = file;
+      this.processarXmlNfe(file);
+    }
+  }
+
+  // Processar XML da NFe
+  processarXmlNfe(file: File): void {
+    this.isProcessingXml = true;
+    this.exibirMensagem('Processando XML da NFe...', true);
+
+    this.recebimentoService.uploadXmlNfe(file).subscribe({
+      next: (response: UploadXmlResponse) => {
+        this.dadosNfe = response.dadosNfe;
+        this.fornecedorNfe = response.fornecedor;
+        this.itensXml = response.itens.map(item => ({
+          ...item,
+          editandoPreco: false,
+          precoEditado: item.valorUnitario,
+          mostrarSugestoes: !item.produtoVinculado
+        }));
+
+        // Preencher dados do recebimento com base no XML
+        this.preencherDadosRecebimento(response);
+
+        this.xmlProcessed = true;
+        this.isProcessingXml = false;
+        this.exibirMensagem(response.mensagem, true);
+      },
+      error: (error) => {
+        this.isProcessingXml = false;
+        this.exibirMensagem('Erro ao processar XML: ' + (error.error?.mensagem || 'Erro desconhecido'), false);
+        console.error('Erro ao processar XML:', error);
+      }
+    });
+  }
+
+  // Preencher dados do recebimento com base no XML
+  preencherDadosRecebimento(response: UploadXmlResponse): void {
+    // Preencher data de recebimento com a data de emissão da NFe
+    this.recebimento.dataRecebimento = response.dadosNfe.dataEmissao;
+
+    // Se o fornecedor foi encontrado, selecioná-lo
+    if (response.fornecedor.encontrado && response.fornecedor.idFornecedor) {
+      this.recebimento.fornecedor = {
+        id: response.fornecedor.idFornecedor,
+        razaoSocial: response.fornecedor.razaoSocial,
+        nomeFantasia: response.fornecedor.nomeFantasia
+      };
+      this.fornecedorInput = response.fornecedor.razaoSocial || response.fornecedor.nomeFantasia;
+    } else {
+      // Se não encontrou, mostrar alerta e limpar seleção
+      this.exibirMensagem(`Fornecedor ${response.fornecedor.razaoSocial} não encontrado no sistema. Selecione manualmente.`, false);
+      this.recebimento.fornecedor = null;
+      this.fornecedorInput = '';
+    }
+
+    // Converter itens vinculados para o formato do recebimento
+    this.recebimento.itensRecebimento = this.itensXml
+      .filter(item => item.produtoVinculado)
+      .map(item => ({
+        produto: {
+          id: item.idProdutoVinculado,
+          descricao: item.descricaoProdutoVinculado
+        },
+        quantidade: item.quantidade,
+        valorUnitario: item.valorUnitario
+      }));
+
+    this.calculaValorTotal();
   }
 
   // Excluir recebimento
@@ -333,4 +432,187 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
       return total + (item.quantidade * item.produto.valorUnitario);
     }, 0);
   }
+
+  // Vincular produto a um item do XML
+  vincularProdutoXml(item: ItemRecebimentoXml, produto: any): void {
+    // Primeiro criar a vinculação produto-fornecedor
+    const vinculacaoRequest = {
+      idProduto: produto.id,
+      idFornecedor: this.recebimento.fornecedor.id,
+      codigoFornecedor: item.codigoProdutoFornecedor,
+      ativo: true
+    };
+
+    this.recebimentoService.vincularProdutoFornecedor(vinculacaoRequest).subscribe({
+      next: (response) => {
+        // Após vincular, atualizar o item na lista
+        const index = this.itensXml.findIndex((i: ItemRecebimentoXml) => i.numeroItem === item.numeroItem);
+        if (index !== -1) {
+          this.itensXml[index] = {
+            ...item,
+            produtoVinculado: true,
+            idProdutoVinculado: produto.id,
+            descricaoProdutoVinculado: produto.descricao,
+            editandoPreco: false,
+            precoEditado: item.valorUnitario,
+            mostrarSugestoes: false
+          };
+
+          // Adicionar ao recebimento
+          this.adicionarItemAoRecebimento(this.itensXml[index]);
+          this.exibirMensagem('Produto vinculado com sucesso!', true);
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao vincular produto:', error);
+        this.exibirMensagem('Erro ao vincular produto', false);
+      }
+    });
+  }
+
+  // Adicionar item vinculado ao recebimento
+  adicionarItemAoRecebimento(item: ItemRecebimentoXml): void {
+    const itemRecebimento = {
+      produto: {
+        id: item.idProdutoVinculado,
+        descricao: item.descricaoProdutoVinculado
+      },
+      quantidade: item.quantidade,
+      valorUnitario: item.precoEditado || item.valorUnitario,
+      codigoFornecedor: item.codigoProdutoFornecedor, // Adicionar código do fornecedor
+      numeroItemXml: item.numeroItem // Adicionar referência ao item do XML
+    };
+
+    // Verificar se já existe no recebimento (mesmo produto E mesmo código do fornecedor)
+    const existeIndex = this.recebimento.itensRecebimento.findIndex(
+      (i: any) => i.produto.id === item.idProdutoVinculado &&
+                  i.codigoFornecedor === item.codigoProdutoFornecedor
+    );
+
+    if (existeIndex !== -1) {
+      // Se já existe o mesmo produto com o mesmo código do fornecedor, atualizar
+      this.recebimento.itensRecebimento[existeIndex] = itemRecebimento;
+    } else {
+      // Se não existe ou é um código diferente do mesmo produto, adicionar novo item
+      this.recebimento.itensRecebimento.push(itemRecebimento);
+    }
+
+    this.calculaValorTotal();
+  }
+
+  // Editar preço de um item do XML
+  editarPrecoItemXml(item: ItemRecebimentoXml): void {
+    item.editandoPreco = true;
+  }
+
+  // Salvar preço editado
+  salvarPrecoEditado(item: ItemRecebimentoXml): void {
+    if (item.precoEditado !== undefined && item.precoEditado > 0) {
+      item.valorUnitario = item.precoEditado;
+      item.valorTotal = item.quantidade * item.precoEditado;
+      item.editandoPreco = false;
+
+      // Se o item está vinculado, atualizar no recebimento também
+      if (item.produtoVinculado) {
+        this.adicionarItemAoRecebimento(item);
+      }
+
+      this.exibirMensagem('Preço atualizado com sucesso!', true);
+    }
+  }
+
+  // Cancelar edição de preço
+  cancelarEdicaoPreco(item: ItemRecebimentoXml): void {
+    item.precoEditado = item.valorUnitario;
+    item.editandoPreco = false;
+  }
+
+  // Mostrar/ocultar sugestões
+  toggleSugestoes(item: ItemRecebimentoXml): void {
+    item.mostrarSugestoes = !item.mostrarSugestoes;
+  }
+
+  // Selecionar sugestão
+  selecionarSugestao(item: ItemRecebimentoXml, sugestao: any): void {
+    this.vincularProdutoXml(item, sugestao);
+  }
+
+  // Propriedades para busca de produtos no XML
+  produtoInputXml: { [key: number]: string } = {};
+  produtosXml: { [key: number]: any[] } = {};
+  showProdutosListXml: { [key: number]: boolean } = {};
+  itemVinculandoAtual: ItemRecebimentoXml | null = null;
+
+  // Buscar produtos para vincular (igual ao modo manual)
+  onSearchProdutosXml(event: any, item: ItemRecebimentoXml): void {
+    const query = event.target.value;
+    this.produtoInputXml[item.numeroItem] = query;
+
+    if (query.length >= 2) {
+      this.produtosService.searchProdutosByDescCodEan(query, 0, 10).subscribe({
+        next: (response) => {
+          this.produtosXml[item.numeroItem] = response.content || [];
+          this.showProdutosListXml[item.numeroItem] = this.produtosXml[item.numeroItem].length > 0;
+        },
+        error: (error) => {
+          console.error('Erro ao buscar produtos:', error);
+          this.produtosXml[item.numeroItem] = [];
+          this.showProdutosListXml[item.numeroItem] = false;
+        }
+      });
+    } else {
+      this.produtosXml[item.numeroItem] = [];
+      this.showProdutosListXml[item.numeroItem] = false;
+    }
+  }
+
+  // Selecionar produto da lista (igual ao modo manual)
+  onSelectProdutoXml(produto: any, item: ItemRecebimentoXml): void {
+    this.produtoInputXml[item.numeroItem] = produto.descricao;
+    this.showProdutosListXml[item.numeroItem] = false;
+    this.produtosXml[item.numeroItem] = [];
+
+    // Vincular o produto selecionado
+    this.vincularProdutoXml(item, produto);
+  }
+
+  // Buscar produto para vincular (método antigo - manter para compatibilidade)
+  buscarProdutoParaVincular(item: ItemRecebimentoXml, termoBusca: string): void {
+    if (termoBusca.length >= 2) {
+      this.produtosService.searchProdutosByDescCodEan(termoBusca, 0, 10).subscribe({
+        next: (response) => {
+          this.produtosXml[item.numeroItem] = response.content || [];
+          this.showProdutosListXml[item.numeroItem] = this.produtosXml[item.numeroItem].length > 0;
+        },
+        error: (error) => {
+          console.error('Erro ao buscar produtos:', error);
+          this.produtosXml[item.numeroItem] = [];
+          this.showProdutosListXml[item.numeroItem] = false;
+        }
+      });
+    }
+  }
+
+  // Remover arquivo XML e voltar ao modo manual
+  removerXml(): void {
+    this.dadosNfe = null;
+    this.fornecedorNfe = null;
+    this.itensXml = [];
+    this.uploadedFile = null;
+    this.xmlProcessed = false;
+    this.recebimento.itensRecebimento = [];
+    this.calculaValorTotal();
+    this.exibirMensagem('XML removido. Voltando ao modo manual.', true);
+  }
+
+  // Métodos auxiliares para contagem de itens
+  getItensVinculados(): number {
+    return this.itensXml.filter(item => item.produtoVinculado).length;
+  }
+
+  getItensNaoVinculados(): number {
+    return this.itensXml.filter(item => !item.produtoVinculado).length;
+  }
+
+
 }

@@ -13,6 +13,57 @@
 
   <!-- Conteúdo da Aba Dados Gerais -->
   <div *ngIf="activeTab === 'geral'" class="tab-content">
+    <!-- Seção de Upload de XML -->
+    <div class="xml-upload-section" *ngIf="isNew">
+      <h3>Upload de XML da NFe</h3>
+      <div class="upload-container">
+        <input type="file"
+               #fileInput
+               accept=".xml"
+               (change)="onFileSelected($event)"
+               style="display: none;">
+        <button type="button"
+                class="upload-button"
+                (click)="fileInput.click()"
+                [disabled]="isProcessingXml">
+          {{ isProcessingXml ? 'Processando...' : 'Selecionar XML da NFe' }}
+        </button>
+        <button type="button"
+                class="remove-xml-button"
+                *ngIf="xmlProcessed"
+                (click)="removerXml()">
+          Remover XML
+        </button>
+      </div>
+
+      <!-- Informações do XML processado -->
+      <div *ngIf="dadosNfe" class="xml-info">
+        <h4>Dados da NFe</h4>
+        <div class="nfe-details">
+          <p><strong>Número:</strong> {{ dadosNfe.numeroNota }} / {{ dadosNfe.serie }}</p>
+          <p><strong>Data de Emissão:</strong> {{ dadosNfe.dataEmissao | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Valor Total:</strong> {{ dadosNfe.valorTotal | currency:'BRL' }}</p>
+          <p><strong>Chave de Acesso:</strong> {{ dadosNfe.chaveAcesso }}</p>
+        </div>
+      </div>
+
+      <!-- Status do fornecedor -->
+      <div *ngIf="fornecedorNfe" class="fornecedor-status">
+        <div [ngClass]="{'fornecedor-encontrado': fornecedorNfe.encontrado, 'fornecedor-nao-encontrado': !fornecedorNfe.encontrado}">
+          <h4>Fornecedor da NFe</h4>
+          <p><strong>{{ fornecedorNfe.razaoSocial }}</strong></p>
+          <p>CNPJ: {{ fornecedorNfe.cnpj }}</p>
+          <p *ngIf="fornecedorNfe.nomeFantasia">Nome Fantasia: {{ fornecedorNfe.nomeFantasia }}</p>
+          <p class="status">
+            <span *ngIf="fornecedorNfe.encontrado" class="status-ok">✓ Fornecedor encontrado no sistema</span>
+            <span *ngIf="!fornecedorNfe.encontrado" class="status-warning">⚠ Fornecedor não cadastrado - Selecione manualmente</span>
+          </p>
+        </div>
+      </div>
+
+      <hr *ngIf="xmlProcessed">
+    </div>
+
     <div class="form-group">
       <label>ID:</label>
       <span>{{ isNew ? 'Será gerado automaticamente' : recebimento.id }}</span>
@@ -51,7 +102,116 @@
 
   <!-- Conteúdo da Aba Itens do Recebimento -->
   <div *ngIf="activeTab === 'itens'" class="tab-content">
-    <div class="form-group">
+
+    <!-- Itens do XML (se processado) -->
+    <div *ngIf="xmlProcessed && itensXml.length > 0" class="xml-items-section">
+      <h3>Itens da NFe</h3>
+      <div class="xml-summary">
+        <p><strong>Total de itens:</strong> {{ itensXml.length }}</p>
+        <p><strong>Vinculados automaticamente:</strong> {{ getItensVinculados() }}</p>
+        <p><strong>Precisam de vinculação:</strong> {{ getItensNaoVinculados() }}</p>
+      </div>
+
+      <div class="xml-items-table">
+        <div *ngFor="let item of itensXml; let i = index" class="xml-item"
+             [ngClass]="{'item-vinculado': item.produtoVinculado, 'item-nao-vinculado': !item.produtoVinculado}">
+
+          <div class="item-header">
+            <div class="item-info">
+              <h4>{{ item.descricaoProduto }}</h4>
+              <p><strong>Código:</strong> {{ item.codigoProdutoFornecedor }}</p>
+              <p *ngIf="item.ean"><strong>EAN:</strong> {{ item.ean }}</p>
+              <p><strong>NCM:</strong> {{ item.ncm }}</p>
+              <p><strong>Quantidade:</strong> {{ item.quantidade }} {{ item.unidade }}</p>
+            </div>
+
+            <div class="item-status">
+              <span *ngIf="item.produtoVinculado" class="status-badge vinculado">✓ Vinculado</span>
+              <span *ngIf="!item.produtoVinculado" class="status-badge nao-vinculado">⚠ Não Vinculado</span>
+            </div>
+          </div>
+
+          <!-- Produto vinculado -->
+          <div *ngIf="item.produtoVinculado" class="produto-vinculado">
+            <p><strong>Produto do Sistema:</strong> {{ item.descricaoProdutoVinculado }}</p>
+
+            <!-- Edição de preço -->
+            <div class="preco-section">
+              <label>Preço Unitário:</label>
+              <div *ngIf="!item.editandoPreco" class="preco-display">
+                <span>{{ item.valorUnitario | currency:'BRL' }}</span>
+                <button type="button" class="edit-price-btn" (click)="editarPrecoItemXml(item)">Editar</button>
+              </div>
+              <div *ngIf="item.editandoPreco" class="preco-edit">
+                <input type="number"
+                       [(ngModel)]="item.precoEditado"
+                       step="0.01"
+                       min="0"
+                       class="preco-input">
+                <button type="button" class="save-btn" (click)="salvarPrecoEditado(item)">Salvar</button>
+                <button type="button" class="cancel-btn" (click)="cancelarEdicaoPreco(item)">Cancelar</button>
+              </div>
+            </div>
+
+            <p><strong>Total:</strong> {{ item.valorTotal | currency:'BRL' }}</p>
+          </div>
+
+          <!-- Produto não vinculado -->
+          <div *ngIf="!item.produtoVinculado" class="produto-nao-vinculado">
+            <p><strong>Preço da NFe:</strong> {{ item.valorUnitario | currency:'BRL' }}</p>
+
+            <!-- Sugestões -->
+            <div *ngIf="item.sugestoes && item.sugestoes.length > 0" class="sugestoes-section">
+              <button type="button"
+                      class="toggle-sugestoes-btn"
+                      (click)="toggleSugestoes(item)">
+                {{ item.mostrarSugestoes ? 'Ocultar' : 'Ver' }} Sugestões ({{ item.sugestoes.length }})
+              </button>
+
+              <div *ngIf="item.mostrarSugestoes" class="sugestoes-list">
+                <h5>Produtos Sugeridos:</h5>
+                <div *ngFor="let sugestao of item.sugestoes" class="sugestao-item">
+                  <div class="sugestao-info">
+                    <p><strong>{{ sugestao.descricao }}</strong></p>
+                    <p>Marca: {{ sugestao.marca }}</p>
+                    <p *ngIf="sugestao.codEan">EAN: {{ sugestao.codEan }}</p>
+                    <p>NCM: {{ sugestao.codNcm }}</p>
+                    <span class="score">Score: {{ sugestao.score }}%</span>
+                  </div>
+                  <button type="button"
+                          class="vincular-btn"
+                          (click)="selecionarSugestao(item, sugestao)">
+                    Vincular
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Busca manual de produto -->
+            <div class="busca-manual">
+              <label>Buscar Produto Manualmente:</label>
+              <div class="search-container">
+                <input type="text"
+                       [value]="produtoInputXml[item.numeroItem] || ''"
+                       (input)="onSearchProdutosXml($event, item)"
+                       placeholder="Digite o nome do produto..."
+                       class="busca-input">
+                <ul *ngIf="produtosXml[item.numeroItem]?.length && showProdutosListXml[item.numeroItem]"
+                    class="autocomplete-list">
+                  <li *ngFor="let produto of produtosXml[item.numeroItem]"
+                      (click)="onSelectProdutoXml(produto, item)">
+                    {{ produto.descricao }} - {{ produto.precoCompra | currency:'BRL' }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Busca manual de produtos (modo tradicional - só aparece se não há XML) -->
+    <div *ngIf="!xmlProcessed" class="form-group">
       <label for="produto">Buscar Produto</label>
       <input type="text" id="produto" [(ngModel)]="produtoInput" (input)="onSearchProdutos($event)" placeholder="Digite o nome do produto..." />
       <ul *ngIf="produtos.length && showProdutosList" class="autocomplete-list">
@@ -65,6 +225,7 @@
       <thead>
         <tr>
           <th>Produto</th>
+          <th>Código Fornecedor</th>
           <th>Quantidade</th>
           <th>Custo Unitário</th>
           <th>Valor Total</th>
@@ -74,6 +235,10 @@
       <tbody>
         <tr *ngFor="let item of recebimento.itensRecebimento; let i = index">
           <td>{{ item.produto.descricao }}</td>
+          <td>
+            <span *ngIf="item.codigoFornecedor" class="codigo-fornecedor">{{ item.codigoFornecedor }}</span>
+            <span *ngIf="!item.codigoFornecedor" class="sem-codigo">-</span>
+          </td>
           <td>{{ item.quantidade }}</td>
           <td>{{ item.valorUnitario | currency:'BRL' }}</td>
           <td>{{ (item.quantidade * item.valorUnitario) | currency:'BRL' }}</td>
