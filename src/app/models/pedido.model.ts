@@ -3,7 +3,7 @@ export interface PedidoBuscaDTO {
   id: number;
   nomeCliente: string;
   nomeVendedor: string;
-  dataEmissao: Date; // Sempre convertido para Date pelo serviço
+  dataEmissao: Date; // Sempre convertido para Date pelo servico
   status: string;
 }
 
