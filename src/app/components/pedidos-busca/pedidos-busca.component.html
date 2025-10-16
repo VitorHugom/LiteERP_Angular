@@ -28,7 +28,7 @@
         <td data-label="Cliente">{{ pedido.nomeCliente }}</td>
         <td data-label="Vendedor">{{ pedido.nomeVendedor }}</td>
         <td data-label="Emissão">{{ pedido.dataEmissao | date:'dd/MM/yyyy' }}</td>
-        <td data-label="Status">{{ pedido.status }}</td>
+        <td data-label="Status">{{ pedido.status | statusPedido }}</td>
       </tr>
     </tbody>
   </table>

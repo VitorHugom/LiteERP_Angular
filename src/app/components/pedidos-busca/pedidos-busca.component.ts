@@ -5,17 +5,19 @@ import { RouterModule } from '@angular/router';
 import { PedidosService } from '../../services/pedidos.service';
 import { Router } from '@angular/router';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
+import { PedidoBuscaDTO } from '../../models/pedido.model';
+import { StatusPedidoPipe } from '../../pipes/status-pedido.pipe';
 
 @Component({
   selector: 'app-busca-pedidos',
   standalone: true,
   templateUrl: './pedidos-busca.component.html',
   styleUrls: ['./pedidos-busca.component.scss'],
-  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent],
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent, StatusPedidoPipe],
   providers: [PedidosService]
 })
 export class PedidosBuscaComponent implements OnInit {
-  pedidos: any[] = [];
+  pedidos: PedidoBuscaDTO[] = [];
   searchQuery: string = '';
   searchBy: string = 'id';
   page: number = 0;
@@ -93,7 +95,7 @@ export class PedidosBuscaComponent implements OnInit {
     }
   }
 
-  viewPedido(id: string): void {
+  viewPedido(id: number): void {
     this.router.navigate(['/pedidos-cadastro', id]);
   }
 

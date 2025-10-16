@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { PedidoBuscaDTO, PedidosBuscaResponse } from '../models/pedido.model';
 
 export interface PedidosFiltro {
   idCliente?: number;
@@ -23,16 +25,61 @@ export class PedidosService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Converte array de data do Java [ano, mês, dia, hora, minuto, segundo, nano]
+   * para objeto Date do JavaScript
+   */
+  private convertJavaDateToDate(dateArray: any): Date | null {
+    if (!dateArray) {
+      return null;
+    }
+
+    // Se já for uma Date, retorna
+    if (dateArray instanceof Date) {
+      return dateArray;
+    }
+
+    // Se for uma string ISO, converte para Date
+    if (typeof dateArray === 'string') {
+      return new Date(dateArray);
+    }
+
+    // Se for um array (formato do Java LocalDateTime)
+    if (Array.isArray(dateArray) && dateArray.length >= 3) {
+      const [year, month, day, hour = 0, minute = 0, second = 0, nano = 0] = dateArray;
+      // Mês no JavaScript é 0-indexed, então subtraímos 1
+      return new Date(year, month - 1, day, hour, minute, second, Math.floor(nano / 1000000));
+    }
+
+    return null;
+  }
+
+  /**
+   * Converte um pedido de busca, transformando a data de array para Date
+   */
+  private convertPedidoBusca(pedido: any): PedidoBuscaDTO {
+    return {
+      ...pedido,
+      dataEmissao: this.convertJavaDateToDate(pedido.dataEmissao) || pedido.dataEmissao
+    };
+  }
+
   getPedidos(): Observable<any> {
-    return this.http.get(this.baseUrl);
+    return this.http.get<any[]>(this.baseUrl).pipe(
+      map(pedidos => pedidos.map(pedido => ({
+        ...pedido,
+        dataEmissao: this.convertJavaDateToDate(pedido.dataEmissao) || pedido.dataEmissao
+      })))
+    );
   }
 
   getPedidoById(id: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
-  }
-
-  getSimplePedidoById(id: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/busca/${id}`);
+    return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(
+      map(pedido => ({
+        ...pedido,
+        dataEmissao: this.convertJavaDateToDate(pedido.dataEmissao) || pedido.dataEmissao
+      }))
+    );
   }
 
   createPedido(pedido: any): Observable<any> {
@@ -55,7 +102,7 @@ export class PedidosService {
     return this.http.get(`${this.baseUrl}/${idPedido}/itens`);  // Chama o endpoint /pedidos/{id}/itens
   }
 
-  updateItemPedido(idPedido: number, idItem: number, itemPayload: any): Observable<any> {
+  updateItemPedido(_idPedido: number, idItem: number, itemPayload: any): Observable<any> {
     const url = `${this.baseUrl}/itens/${idItem}`; // Endpoint de atualização
     return this.http.put(url, itemPayload); // Faz a requisição PUT
   }
@@ -65,7 +112,12 @@ export class PedidosService {
   }
 
   getPedidosEmAberto(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/em-aberto`);
+    return this.http.get<any[]>(`${this.baseUrl}/em-aberto`).pipe(
+      map(pedidos => pedidos.map(pedido => ({
+        ...pedido,
+        dataEmissao: this.convertJavaDateToDate(pedido.dataEmissao) || pedido.dataEmissao
+      })))
+    );
   }
 
   atualizarStatusPedido(id: number, status: string): Observable<any> {
@@ -73,19 +125,35 @@ export class PedidosService {
   }
 
   // Novo método para consumir o endpoint de busca com paginação e ordenação
-  getPedidosBusca(page: number = 0, size: number = 10): Observable<any> {
+  getPedidosBusca(page: number = 0, size: number = 10): Observable<PedidosBuscaResponse> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.http.get(`${this.baseUrl}/busca`, { params });
+    return this.http.get<PedidosBuscaResponse>(`${this.baseUrl}/busca`, { params }).pipe(
+      map(response => ({
+        ...response,
+        content: response.content.map(pedido => this.convertPedidoBusca(pedido))
+      }))
+    );
   }
 
-  buscarPedidosPorRazaoSocial(razaoSocial: string, page: number = 0, size: number = 10): Observable<any> {
+  buscarPedidosPorRazaoSocial(razaoSocial: string, page: number = 0, size: number = 10): Observable<PedidosBuscaResponse> {
     const params = new HttpParams()
       .set('razaoSocial', razaoSocial)
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.http.get(`${this.baseUrl}/busca-por-razao-social`, { params });
+    return this.http.get<PedidosBuscaResponse>(`${this.baseUrl}/busca-por-razao-social`, { params }).pipe(
+      map(response => ({
+        ...response,
+        content: response.content.map(pedido => this.convertPedidoBusca(pedido))
+      }))
+    );
+  }
+
+  getSimplePedidoById(id: string): Observable<PedidoBuscaDTO> {
+    return this.http.get<any>(`${this.baseUrl}/busca/${id}`).pipe(
+      map(pedido => this.convertPedidoBusca(pedido))
+    );
   }
 
   gerarRelatorio(filtro: PedidosFiltro): Observable<any[]> {
