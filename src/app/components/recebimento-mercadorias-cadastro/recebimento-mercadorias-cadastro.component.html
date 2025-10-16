@@ -56,7 +56,7 @@
           <p *ngIf="fornecedorNfe.nomeFantasia">Nome Fantasia: {{ fornecedorNfe.nomeFantasia }}</p>
           <p class="status">
             <span *ngIf="fornecedorNfe.encontrado" class="status-ok">✓ Fornecedor encontrado no sistema</span>
-            <span *ngIf="!fornecedorNfe.encontrado" class="status-warning">⚠ Fornecedor não cadastrado - Selecione manualmente</span>
+            <span *ngIf="!fornecedorNfe.encontrado" class="status-error">❌ Fornecedor não cadastrado - Cadastre o fornecedor antes de processar a NFe</span>
           </p>
         </div>
       </div>
@@ -102,6 +102,20 @@
 
   <!-- Conteúdo da Aba Itens do Recebimento -->
   <div *ngIf="activeTab === 'itens'" class="tab-content">
+
+    <!-- Mensagem quando fornecedor não está cadastrado -->
+    <div *ngIf="fornecedorNfe && !fornecedorNfe.encontrado" class="fornecedor-nao-cadastrado-message">
+      <div class="alert-error">
+        <h3>❌ Fornecedor Não Cadastrado</h3>
+        <p>O fornecedor <strong>{{ fornecedorNfe.razaoSocial }}</strong> (CNPJ: {{ fornecedorNfe.cnpj }}) não está cadastrado no sistema.</p>
+        <p>Para processar os itens da NFe, é necessário cadastrar o fornecedor primeiro.</p>
+        <div class="actions">
+          <button type="button" class="btn-primary" (click)="removerXml()">
+            Remover XML e Cadastrar Fornecedor
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Itens do XML (se processado) -->
     <div *ngIf="xmlProcessed && itensXml.length > 0" class="xml-items-section">

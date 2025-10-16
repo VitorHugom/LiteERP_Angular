@@ -343,6 +343,17 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
       next: (response: UploadXmlResponse) => {
         this.dadosNfe = response.dadosNfe;
         this.fornecedorNfe = response.fornecedor;
+
+        // Verificar se o fornecedor está cadastrado
+        if (!response.fornecedor.encontrado) {
+          this.isProcessingXml = false;
+          this.xmlProcessed = false;
+          this.itensXml = [];
+          this.exibirMensagem('Fornecedor não cadastrado no sistema. Cadastre o fornecedor antes de processar a NFe.', false);
+          return;
+        }
+
+        // Se o fornecedor está cadastrado, processar os itens
         this.itensXml = response.itens.map(item => ({
           ...item,
           editandoPreco: false,
@@ -355,7 +366,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
 
         this.xmlProcessed = true;
         this.isProcessingXml = false;
-        this.exibirMensagem(response.mensagem, true);
+        this.exibirMensagem('XML processado com sucesso! Fornecedor encontrado.', true);
       },
       error: (error) => {
         this.isProcessingXml = false;
@@ -394,7 +405,9 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
           descricao: item.descricaoProdutoVinculado
         },
         quantidade: item.quantidade,
-        valorUnitario: item.valorUnitario
+        valorUnitario: item.valorUnitario,
+        codigoFornecedor: item.codigoProdutoFornecedor, // Adicionar código do fornecedor
+        numeroItemXml: item.numeroItem // Adicionar referência ao item do XML
       }));
 
     this.calculaValorTotal();
@@ -444,7 +457,7 @@ export class RecebimentoMercadoriasCadastroComponent implements OnInit {
     };
 
     this.recebimentoService.vincularProdutoFornecedor(vinculacaoRequest).subscribe({
-      next: (response) => {
+      next: () => {
         // Após vincular, atualizar o item na lista
         const index = this.itensXml.findIndex((i: ItemRecebimentoXml) => i.numeroItem === item.numeroItem);
         if (index !== -1) {
