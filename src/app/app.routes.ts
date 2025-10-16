@@ -1,6 +1,9 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { SolicitarRecuperacaoComponent } from './components/solicitar-recuperacao/solicitar-recuperacao.component';
+import { ValidarCodigoComponent } from './components/validar-codigo/validar-codigo.component';
+import { RedefinirSenhaComponent } from './components/redefinir-senha/redefinir-senha.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { GerencialComponent } from './pages/gerencial/gerencial.component';
 import { CaixaComponent } from './pages/caixa/caixa.component';
@@ -47,6 +50,11 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
 
   { path: 'signup', component: SignupComponent },
+
+  // Rotas de recuperação de senha (sem autenticação)
+  { path: 'recuperar-senha', component: SolicitarRecuperacaoComponent },
+  { path: 'recuperar-senha/validar', component: ValidarCodigoComponent },
+  { path: 'recuperar-senha/redefinir', component: RedefinirSenhaComponent },
 
   { path: 'gerencial', component: GerencialComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 

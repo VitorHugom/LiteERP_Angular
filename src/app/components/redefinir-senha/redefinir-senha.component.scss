@@ -1,0 +1,295 @@
+.redefinir-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+
+  .redefinir-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+
+    .sucesso-section {
+      text-align: center;
+      padding: 20px 0;
+
+      .sucesso-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        color: white;
+        margin: 0 auto 20px;
+        animation: scaleIn 0.5s ease-out;
+      }
+
+      h2 {
+        color: #4caf50;
+        font-size: 28px;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      p {
+        color: #666;
+        font-size: 16px;
+        margin: 10px 0;
+      }
+
+      .redirect-info {
+        color: #999;
+        font-size: 14px;
+        margin-top: 20px;
+      }
+
+      .loading-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 15px;
+
+        span {
+          width: 8px;
+          height: 8px;
+          background-color: #667eea;
+          border-radius: 50%;
+          animation: bounce 1.4s infinite ease-in-out both;
+
+          &:nth-child(1) {
+            animation-delay: -0.32s;
+          }
+
+          &:nth-child(2) {
+            animation-delay: -0.16s;
+          }
+        }
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+
+      h2 {
+        color: #333;
+        font-size: 28px;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .subtitle {
+        color: #666;
+        font-size: 14px;
+      }
+    }
+
+    .redefinir-form {
+      .form-group {
+        margin-bottom: 20px;
+
+        label {
+          display: block;
+          margin-bottom: 8px;
+          color: #333;
+          font-weight: 500;
+          font-size: 14px;
+        }
+
+        .password-input {
+          position: relative;
+          display: flex;
+          align-items: center;
+
+          input {
+            width: 100%;
+            padding: 12px 50px 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+
+            &:focus {
+              outline: none;
+              border-color: #667eea;
+              box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+            &:disabled {
+              background-color: #f5f5f5;
+              cursor: not-allowed;
+            }
+          }
+
+          .toggle-password {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 5px;
+            transition: opacity 0.3s ease;
+
+            &:hover:not(:disabled) {
+              opacity: 0.7;
+            }
+
+            &:disabled {
+              cursor: not-allowed;
+              opacity: 0.5;
+            }
+          }
+        }
+
+        .password-strength {
+          margin-top: 8px;
+
+          .strength-bar {
+            height: 4px;
+            background-color: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 5px;
+
+            .strength-fill {
+              height: 100%;
+              transition: all 0.3s ease;
+              background-color: #e0e0e0;
+            }
+
+            &.weak .strength-fill {
+              background-color: #ff9800;
+            }
+
+            &.good .strength-fill {
+              background-color: #4caf50;
+            }
+          }
+        }
+
+        .hint {
+          margin-top: 6px;
+          font-size: 12px;
+          color: #ff9800;
+          transition: color 0.3s ease;
+
+          &.valid {
+            color: #4caf50;
+          }
+        }
+      }
+
+      .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+
+        &.alert-danger {
+          background-color: #fee;
+          border: 1px solid #fcc;
+          color: #c33;
+
+          .icon {
+            font-size: 18px;
+          }
+        }
+      }
+
+      .btn-primary {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+        &:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        &:active:not(:disabled) {
+          transform: translateY(0);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        .loading {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+
+          .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .redefinir-container {
+    padding: 10px;
+
+    .redefinir-card {
+      padding: 30px 20px;
+    }
+  }
+}
+

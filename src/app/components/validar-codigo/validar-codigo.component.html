@@ -1,0 +1,80 @@
+<div class="validacao-container">
+  <div class="validacao-card">
+    <div class="header">
+      <h2>Validar Código</h2>
+      <p class="subtitle">
+        Um código de 6 dígitos foi enviado para<br>
+        <strong>{{ emailMascarado }}</strong>
+      </p>
+    </div>
+
+    <!-- Contador de tempo -->
+    <div class="timer-section">
+      <div class="timer" [class.expirando]="tempoRestante < 60" [class.expirado]="tempoExpirado">
+        <span class="icon">⏱️</span>
+        <span class="tempo">{{ tempoFormatado }}</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress" [style.width.%]="progressoTempo"></div>
+      </div>
+      <p class="timer-info" *ngIf="!tempoExpirado">Tempo restante para validar o código</p>
+      <p class="timer-info expirado" *ngIf="tempoExpirado">⚠️ Código expirado</p>
+    </div>
+    
+    <form (ngSubmit)="validarCodigo()" class="validacao-form">
+      <div class="form-group">
+        <label for="nomeUsuario">Usuário</label>
+        <input 
+          type="text" 
+          id="nomeUsuario" 
+          [value]="nomeUsuario" 
+          readonly
+          disabled
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="codigo">Código de Verificação</label>
+        <input 
+          type="text" 
+          id="codigo" 
+          [(ngModel)]="codigo" 
+          name="codigo"
+          (input)="onCodigoInput($event)"
+          placeholder="000000"
+          maxlength="6"
+          [disabled]="loading || tempoExpirado"
+          required
+          autocomplete="off"
+          class="codigo-input"
+        />
+        <p class="hint">Digite o código de 6 dígitos recebido por email</p>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="erro">
+        <span class="icon">⚠️</span>
+        <span>{{ erro }}</span>
+      </div>
+
+      <button 
+        type="submit" 
+        class="btn-primary" 
+        [disabled]="loading || codigo.length !== 6 || tempoExpirado"
+      >
+        <span *ngIf="!loading">Validar Código</span>
+        <span *ngIf="loading" class="loading">
+          <span class="spinner"></span>
+          Validando...
+        </span>
+      </button>
+    </form>
+
+    <div class="footer">
+      <p class="reenviar-texto">Não recebeu o código?</p>
+      <a (click)="reenviarCodigo()" class="link-reenviar">
+        Reenviar código
+      </a>
+    </div>
+  </div>
+</div>
+

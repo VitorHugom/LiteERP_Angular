@@ -1,0 +1,108 @@
+<div class="redefinir-container">
+  <div class="redefinir-card">
+    <!-- Tela de sucesso -->
+    <div *ngIf="sucesso" class="sucesso-section">
+      <div class="sucesso-icon">✓</div>
+      <h2>Senha Redefinida!</h2>
+      <p>Sua senha foi alterada com sucesso.</p>
+      <p class="redirect-info">Redirecionando para o login...</p>
+      <div class="loading-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- Formulário de redefinição -->
+    <div *ngIf="!sucesso">
+      <div class="header">
+        <h2>Redefinir Senha</h2>
+        <p class="subtitle">Digite sua nova senha</p>
+      </div>
+      
+      <form (ngSubmit)="redefinirSenha()" class="redefinir-form">
+        <div class="form-group">
+          <label for="novaSenha">Nova Senha</label>
+          <div class="password-input">
+            <input 
+              [type]="mostrarSenha ? 'text' : 'password'" 
+              id="novaSenha" 
+              [(ngModel)]="novaSenha" 
+              name="novaSenha"
+              placeholder="Digite sua nova senha"
+              [disabled]="loading"
+              required
+              autocomplete="new-password"
+            />
+            <button 
+              type="button" 
+              class="toggle-password" 
+              (click)="toggleMostrarSenha()"
+              [disabled]="loading"
+            >
+              <span *ngIf="!mostrarSenha">👁️</span>
+              <span *ngIf="mostrarSenha">🙈</span>
+            </button>
+          </div>
+          <div class="password-strength">
+            <div class="strength-bar" [class.weak]="novaSenha.length > 0 && novaSenha.length < 6" 
+                 [class.good]="novaSenha.length >= 6">
+              <div class="strength-fill" [style.width.%]="(novaSenha.length / 6) * 100"></div>
+            </div>
+            <p class="hint" [class.valid]="senhaValida">
+              <span *ngIf="!senhaValida">⚠️ Mínimo 6 caracteres</span>
+              <span *ngIf="senhaValida">✓ Senha válida</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmarSenha">Confirmar Nova Senha</label>
+          <div class="password-input">
+            <input 
+              [type]="mostrarConfirmarSenha ? 'text' : 'password'" 
+              id="confirmarSenha" 
+              [(ngModel)]="confirmarSenha" 
+              name="confirmarSenha"
+              placeholder="Confirme sua nova senha"
+              [disabled]="loading"
+              required
+              autocomplete="new-password"
+            />
+            <button 
+              type="button" 
+              class="toggle-password" 
+              (click)="toggleMostrarConfirmarSenha()"
+              [disabled]="loading"
+            >
+              <span *ngIf="!mostrarConfirmarSenha">👁️</span>
+              <span *ngIf="mostrarConfirmarSenha">🙈</span>
+            </button>
+          </div>
+          <p class="hint" [class.valid]="senhasConferem" *ngIf="confirmarSenha.length > 0">
+            <span *ngIf="!senhasConferem">⚠️ As senhas não coincidem</span>
+            <span *ngIf="senhasConferem">✓ As senhas coincidem</span>
+          </p>
+        </div>
+
+        <div class="alert alert-danger" *ngIf="erro">
+          <span class="icon">⚠️</span>
+          <span>{{ erro }}</span>
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn-primary" 
+          [disabled]="loading || !senhaValida || !senhasConferem"
+        >
+          <span *ngIf="!loading">Redefinir Senha</span>
+          <span *ngIf="loading" class="loading">
+            <span class="spinner"></span>
+            Redefinindo...
+          </span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
