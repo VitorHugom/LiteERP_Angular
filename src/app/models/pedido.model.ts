@@ -5,12 +5,14 @@ export interface PedidoBuscaDTO {
   nomeVendedor: string;
   dataEmissao: Date; // Sempre convertido para Date pelo servico
   status: string;
+  clienteFinal?: string; // Nome do cliente final quando nao ha vinculo com cliente cadastrado
 }
 
 // Modelo completo de pedido
 export interface Pedido {
   id: number | null;
   cliente: any;
+  clienteFinal?: string; // Nome do cliente final quando nao ha vinculo com cliente cadastrado
   vendedor: any;
   dataEmissao: string | Date;
   valorTotal: number | null;

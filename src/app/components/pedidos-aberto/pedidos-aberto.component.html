@@ -13,7 +13,7 @@
     <tbody>
       <tr *ngFor="let pedido of pedidosEmAberto" (click)="abrirModal(pedido)" class="pedido-item">
         <td>{{ pedido.id }}</td>
-        <td>{{ pedido.cliente.razaoSocial }}</td>
+        <td>{{ pedido | nomeCliente }}</td>
         <td>{{ pedido.dataEmissao | date: 'short' }}</td>
         <td>{{ pedido.valorTotal | currency: 'BRL' }}</td>
       </tr>
@@ -29,7 +29,7 @@
         </div>
         <div class="card-row">
           <span>Cliente:</span>
-          <span>{{ pedido.cliente.razaoSocial }}</span>
+          <span>{{ pedido | nomeCliente }}</span>
         </div>
         <div class="card-row">
           <span>Data de Emissão:</span>

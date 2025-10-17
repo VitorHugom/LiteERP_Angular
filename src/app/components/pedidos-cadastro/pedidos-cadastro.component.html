@@ -17,9 +17,9 @@
 
     <div class="form-group">
       <label for="cliente">Cliente</label>
-      <input type="text" id="cliente" [(ngModel)]="clienteInput" (input)="onSearchClientes($event)" name="cliente" placeholder="Digite o nome do cliente...">
+      <input type="text" id="cliente" [(ngModel)]="clienteInput" (input)="onSearchClientes($event)" (blur)="onClienteBlur()" (focus)="onClienteFocus()" name="cliente" placeholder="Digite o nome do cliente...">
       <ul *ngIf="clientes.length > 0 && showClientesList" class="autocomplete-list">
-        <li *ngFor="let cliente of clientes" (click)="onSelectCliente(cliente)">
+        <li *ngFor="let cliente of clientes" (mousedown)="onSelectCliente(cliente)">
           {{ cliente.razaoSocial || cliente.nomeFantasia }}
         </li>
       </ul>

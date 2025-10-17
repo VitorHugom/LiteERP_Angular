@@ -27,6 +27,7 @@ export class PedidosCadastroComponent implements OnInit {
   pedido: any = {
     id: null,
     cliente: null,
+    clienteFinal: null,
     vendedor: null,
     dataEmissao: '',
     valorTotal: null,
@@ -34,6 +35,8 @@ export class PedidosCadastroComponent implements OnInit {
     tipoCobranca: null,
     itens: []
   };
+
+  clienteSelecionado: any = null; // Armazena o cliente selecionado da lista
 
   urlPedidosBusca = '/pedidos-busca'
 
@@ -100,7 +103,17 @@ export class PedidosCadastroComponent implements OnInit {
         next: (data) => {
           this.pedido = data;
           this.pedido.itens = this.pedido.itens || []; // Garante que a propriedade itens exista
-          this.clienteInput = this.pedido.cliente?.razaoSocial || this.pedido.cliente?.nomeFantasia;
+
+          // Se houver cliente vinculado, armazena e exibe
+          if (this.pedido.cliente) {
+            this.clienteSelecionado = this.pedido.cliente;
+            this.clienteInput = this.pedido.cliente.razaoSocial || this.pedido.cliente.nomeFantasia;
+          } else if (this.pedido.clienteFinal) {
+            // Se houver apenas clienteFinal, exibe o nome
+            this.clienteInput = this.pedido.clienteFinal;
+            this.clienteSelecionado = null;
+          }
+
           this.vendedorInput = this.pedido.vendedor?.nome;
 
           // Verifica e associa o tipo de cobrança correto ao objeto
@@ -222,9 +235,24 @@ export class PedidosCadastroComponent implements OnInit {
   }
 
   onSelectCliente(cliente: any): void {
+    this.clienteSelecionado = cliente;
     this.pedido.cliente = cliente;
     this.clienteInput = cliente.razaoSocial || cliente.nomeFantasia;
     this.showClientesList = false;
+  }
+
+  onClienteBlur(): void {
+    // Aguarda um pequeno delay para permitir o clique no item da lista
+    setTimeout(() => {
+      this.showClientesList = false;
+    }, 200);
+  }
+
+  onClienteFocus(): void {
+    // Mostra a lista novamente se houver clientes e texto digitado
+    if (this.clientes.length > 0 && this.clienteInput.length >= 2) {
+      this.showClientesList = true;
+    }
   }
 
   onScrollClientes(): void {
@@ -286,7 +314,7 @@ export class PedidosCadastroComponent implements OnInit {
 
   onSave(): void {
     // Verificação de campos obrigatórios
-    if (!this.pedido.cliente || !this.pedido.vendedor || !this.pedido.valorTotal || !this.pedido.tipoCobranca) {
+    if ((!this.clienteSelecionado && !this.clienteInput.trim()) || !this.pedido.vendedor || !this.pedido.valorTotal || !this.pedido.tipoCobranca) {
       this.exibirMensagem('Preencha todos os campos obrigatórios.', false);
       return;
     }
@@ -298,8 +326,9 @@ export class PedidosCadastroComponent implements OnInit {
       this.pedido.dataEmissao = now.toISOString();
     }
 
-    const pedidoPayload = {
-      idCliente: this.pedido.cliente.id,
+    const pedidoPayload: any = {
+      idCliente: this.clienteSelecionado ? this.clienteSelecionado.id : null,
+      clienteFinal: !this.clienteSelecionado && this.clienteInput.trim() ? this.clienteInput.trim() : null,
       idVendedor: this.pedido.vendedor.id,
       dataEmissao: this.pedido.dataEmissao,
       valorTotal: this.pedido.valorTotal,
@@ -411,6 +440,7 @@ export class PedidosCadastroComponent implements OnInit {
     this.pedido = {
       id: null,
       cliente: null,
+      clienteFinal: null,
       vendedor: null,
       dataEmissao: '',
       valorTotal: null,
@@ -420,6 +450,7 @@ export class PedidosCadastroComponent implements OnInit {
     };
     this.clienteInput = '';
     this.vendedorInput = '';
+    this.clienteSelecionado = null;
     this.clientes = [];
     this.vendedores = [];
   }
@@ -581,10 +612,9 @@ export class PedidosCadastroComponent implements OnInit {
 
     // Cliente
     doc.setFontSize(12);
-    const nomeCliente =
-      this.pedido.cliente?.razaoSocial ||
-      this.pedido.cliente?.nomeFantasia ||
-      '-';
+    const nomeCliente = this.pedido.cliente
+      ? (this.pedido.cliente.razaoSocial || this.pedido.cliente.nomeFantasia)
+      : (this.pedido.clienteFinal || '-');
     doc.text(`Cliente: ${nomeCliente}`, marginLeft, y);
     y += 6;
 

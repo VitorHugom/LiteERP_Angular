@@ -2,7 +2,7 @@
   <h2 mat-dialog-title>
     Detalhes do Pedido<br />
     <span class="cliente-nome">
-      Cliente: {{ selectedPedido.cliente.razaoSocial }}
+      Cliente: {{ selectedPedido | nomeCliente }}
     </span>
   </h2>
 
@@ -42,7 +42,7 @@
   <div class="modal-actions">
     <button mat-button class="btn-voltar" (click)="onClose()">Fechar</button>
     <button mat-button class="btn-imprimir" (click)="onPrint()">Imprimir</button>
-    <button mat-button class="btn-carteira" (click)="enviarParaCarteira()">Enviar para Carteira</button>
+    <button *ngIf="selectedPedido.cliente" mat-button class="btn-carteira" (click)="enviarParaCarteira()">Enviar para Carteira</button>
     <button mat-button class="btn-baixar" (click)="baixarPedido()">Baixar Pedido</button>
   </div>
 </div>

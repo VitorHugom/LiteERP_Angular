@@ -27,6 +27,7 @@ export class FinalizarPedidoModalComponent implements OnInit {
   loadingClientes = false;
   currentPageClientes = 0;
   pageSize = 10;
+  clienteSelecionado: any = null; // Armazena o cliente selecionado da lista
 
   constructor(
     public dialogRef: MatDialogRef<FinalizarPedidoModalComponent>,
@@ -88,14 +89,28 @@ export class FinalizarPedidoModalComponent implements OnInit {
   }
 
   onSelectCliente(cliente: any): void {
-    this.data.cliente = cliente;  // Armazena o cliente selecionado no data.cliente
+    this.clienteSelecionado = cliente;  // Armazena o cliente selecionado
     this.clienteInput = cliente.razaoSocial || cliente.nomeFantasia;
     this.showClientesList = false;
   }
 
+  onClienteBlur(): void {
+    // Aguarda um pequeno delay para permitir o clique no item da lista
+    setTimeout(() => {
+      this.showClientesList = false;
+    }, 200);
+  }
+
+  onClienteFocus(): void {
+    // Mostra a lista novamente se houver clientes e texto digitado
+    if (this.clientes.length > 0 && this.clienteInput.length >= 2) {
+      this.showClientesList = true;
+    }
+  }
+
   onFinalizar(): void {
     // Verificação de campos obrigatórios
-    if (!this.data.cliente || !this.tipoCobranca) {
+    if ((!this.clienteSelecionado && !this.clienteInput.trim()) || !this.tipoCobranca) {
         alert('Preencha todos os campos obrigatórios.');
         return;
     }
@@ -112,8 +127,9 @@ export class FinalizarPedidoModalComponent implements OnInit {
         next: (vendedor) => {
             if (vendedor) {
                 // Gerar o payload para o pedido sem itens
-                const pedidoPayload = {
-                    idCliente: this.data.cliente.id,  // ID do cliente selecionado
+                const pedidoPayload: any = {
+                    idCliente: this.clienteSelecionado ? this.clienteSelecionado.id : null,  // ID do cliente selecionado ou null
+                    clienteFinal: !this.clienteSelecionado && this.clienteInput.trim() ? this.clienteInput.trim() : null, // Nome do cliente final se não houver cliente vinculado
                     idVendedor: vendedor.id,  // ID do vendedor encontrado
                     dataEmissao: '', // Data atual
                     valorTotal: this.total,  // Usar o total passado no modal
@@ -139,14 +155,17 @@ export class FinalizarPedidoModalComponent implements OnInit {
                     },
                     error: (err) => {
                         console.error('Erro ao criar o pedido:', err);
+                        alert('Erro ao criar o pedido. Tente novamente.');
                     }
                 });
             } else {
                 console.error('Vendedor não encontrado.');
+                alert('Vendedor não encontrado.');
             }
         },
         error: (err) => {
             console.error('Erro ao buscar vendedor:', err);
+            alert('Erro ao buscar vendedor. Tente novamente.');
         }
     });
 }

@@ -4,13 +4,14 @@ import { PedidosService } from '../../services/pedidos.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { BaixarPedidosModalComponent } from '../baixar-pedidos-modal/baixar-pedidos-modal.component';
+import { NomeClientePipe } from '../../pipes/nome-cliente.pipe';
 
 @Component({
   selector: 'app-pedidos-aberto',
   templateUrl: './pedidos-aberto.component.html',
   styleUrls: ['./pedidos-aberto.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NomeClientePipe],
 })
 export class PedidosAbertoComponent implements OnInit {
   pedidosEmAberto: any[] = [];

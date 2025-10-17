@@ -5,9 +5,9 @@
       <!-- Busca de Cliente -->
       <div class="form-group">
         <label for="cliente">Cliente:</label>
-        <input [(ngModel)]="clienteInput" type="text" id="cliente" (input)="onSearchClientes($event)" placeholder="Digite o nome do cliente">
+        <input [(ngModel)]="clienteInput" type="text" id="cliente" (input)="onSearchClientes($event)" (blur)="onClienteBlur()" (focus)="onClienteFocus()" placeholder="Digite o nome do cliente">
         <ul *ngIf="clientes.length > 0 && showClientesList" class="autocomplete-list">
-          <li *ngFor="let cliente of clientes" (click)="onSelectCliente(cliente)">
+          <li *ngFor="let cliente of clientes" (mousedown)="onSelectCliente(cliente)">
             {{ cliente.razaoSocial || cliente.nomeFantasia }}
           </li>
         </ul>

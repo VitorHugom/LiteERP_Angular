@@ -12,6 +12,7 @@ import { PedidosService } from '../../services/pedidos.service';
 import { ProdutosService } from '../../services/produtos.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { EnviarCarteiraModalComponent } from '../enviar-carteira-modal/enviar-carteira-modal.component';
+import { NomeClientePipe } from '../../pipes/nome-cliente.pipe';
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -24,7 +25,8 @@ import autoTable from 'jspdf-autotable';
   imports: [
     CommonModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    NomeClientePipe
   ]
 })
 export class BaixarPedidosModalComponent implements OnInit {
@@ -116,10 +118,9 @@ export class BaixarPedidosModalComponent implements OnInit {
     y += 10;
 
     doc.setFontSize(12);
-    const nomeCliente =
-      this.selectedPedido.cliente.razaoSocial ||
-      this.selectedPedido.cliente.nomeFantasia ||
-      '-';
+    const nomeCliente = this.selectedPedido.cliente
+      ? (this.selectedPedido.cliente.razaoSocial || this.selectedPedido.cliente.nomeFantasia)
+      : (this.selectedPedido.clienteFinal || '-');
     doc.text(`Cliente: ${nomeCliente}`, marginLeft, y);
     y += 6;
 

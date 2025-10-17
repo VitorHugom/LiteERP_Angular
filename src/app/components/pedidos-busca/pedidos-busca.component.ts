@@ -7,13 +7,14 @@ import { Router } from '@angular/router';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 import { PedidoBuscaDTO } from '../../models/pedido.model';
 import { StatusPedidoPipe } from '../../pipes/status-pedido.pipe';
+import { NomeClientePipe } from '../../pipes/nome-cliente.pipe';
 
 @Component({
   selector: 'app-busca-pedidos',
   standalone: true,
   templateUrl: './pedidos-busca.component.html',
   styleUrls: ['./pedidos-busca.component.scss'],
-  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent, StatusPedidoPipe],
+  imports: [FormsModule, CommonModule, RouterModule, NavigateToSearchButtonComponent, StatusPedidoPipe, NomeClientePipe],
   providers: [PedidosService]
 })
 export class PedidosBuscaComponent implements OnInit {

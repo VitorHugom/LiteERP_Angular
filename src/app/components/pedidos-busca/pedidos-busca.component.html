@@ -25,7 +25,7 @@
     <tbody>
       <tr *ngFor="let pedido of pedidos" (click)="viewPedido(pedido.id)" class="pedido-item">
         <td data-label="ID">{{ pedido.id }}</td>
-        <td data-label="Cliente">{{ pedido.nomeCliente }}</td>
+        <td data-label="Cliente">{{ pedido | nomeCliente }}</td>
         <td data-label="Vendedor">{{ pedido.nomeVendedor }}</td>
         <td data-label="Emissão">{{ pedido.dataEmissao | date:'dd/MM/yyyy' }}</td>
         <td data-label="Status">{{ pedido.status | statusPedido }}</td>
