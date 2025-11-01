@@ -167,7 +167,7 @@ export class ContasReceberRelatorioComponent implements OnInit {
       `R$ ${c.valorTotal.toFixed(2)}`,
       c.formaPagamento.descricao,
       c.tipoCobranca.descricao,
-      this.formatarDataBR(c.dataVencimento.split('T')[0] || c.dataVencimento),
+      this.formatarDataVencimento(c.dataVencimento),
       c.status
     ]);
 
@@ -180,6 +180,28 @@ export class ContasReceberRelatorioComponent implements OnInit {
     });
 
     return doc;
+  }
+
+  /**
+   * Formata a data de vencimento que pode vir como array Java ou string
+   */
+  private formatarDataVencimento(dataVencimento: any): string {
+    if (!dataVencimento) return '';
+
+    // Se for array Java LocalDate [year, month, day]
+    if (Array.isArray(dataVencimento) && dataVencimento.length >= 3) {
+      const [year, month, day] = dataVencimento;
+      const dataISO = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      return this.formatarDataBR(dataISO);
+    }
+
+    // Se for string ISO
+    if (typeof dataVencimento === 'string') {
+      const data = dataVencimento.split('T')[0];
+      return this.formatarDataBR(data);
+    }
+
+    return '';
   }
 
   private formatarDataBR(dataIso: string): string {

@@ -264,7 +264,7 @@ export class FluxoCaixaRelatorioComponent implements OnInit {
     ]];
 
     const body = dados.movimentos.map(m => [
-      this.formatarDataBR(m.data),
+      this.formatarDataMovimentacao(m.data),
       m.descricao,
       m.tipo,
       `R$ ${m.valor.toFixed(2)}`,
@@ -293,6 +293,28 @@ export class FluxoCaixaRelatorioComponent implements OnInit {
     });
 
     return doc;
+  }
+
+  /**
+   * Formata a data de movimentação que pode vir como array Java ou string
+   */
+  private formatarDataMovimentacao(dataMovimentacao: any): string {
+    if (!dataMovimentacao) return '';
+
+    // Se for array Java LocalDate [year, month, day]
+    if (Array.isArray(dataMovimentacao) && dataMovimentacao.length >= 3) {
+      const [year, month, day] = dataMovimentacao;
+      const dataISO = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      return this.formatarDataBR(dataISO);
+    }
+
+    // Se for string ISO
+    if (typeof dataMovimentacao === 'string') {
+      const data = dataMovimentacao.split('T')[0];
+      return this.formatarDataBR(data);
+    }
+
+    return '';
   }
 
   private formatarDataBR(dataIso: string): string {

@@ -173,7 +173,7 @@ export class FornecedoresRelatorioComponent {
       const cidadeNome = c.cidade ? c.cidade.nome : '';
 
       // Formata dataCadastro
-      const dataCadBR = this.formatarDataBR(c.dataCadastro);
+      const dataCadBR = this.formatarDataCadastro(c.dataCadastro);
 
       return [
         c.id,
@@ -196,6 +196,27 @@ export class FornecedoresRelatorioComponent {
     });
 
     return doc;
+  }
+
+  /**
+   * Formata a data de cadastro que pode vir como array Java ou string
+   */
+  private formatarDataCadastro(dataCadastro: any): string {
+    if (!dataCadastro) return '';
+
+    // Se for array Java LocalDate [year, month, day]
+    if (Array.isArray(dataCadastro) && dataCadastro.length >= 3) {
+      const [year, month, day] = dataCadastro;
+      const dataISO = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      return this.formatarDataBR(dataISO);
+    }
+
+    // Se for string ISO
+    if (typeof dataCadastro === 'string') {
+      return this.formatarDataBR(dataCadastro);
+    }
+
+    return '';
   }
 
   private abrirPdfEmNovaAba(doc: jsPDF): void {

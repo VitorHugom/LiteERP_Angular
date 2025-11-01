@@ -130,7 +130,7 @@ export class ProdutosRelatorioComponent implements OnInit {
       p.id,
       p.descricao,
       p.grupoProdutos?.nome || '',
-      p.dataUltimaCompra ? this.formatarDataBR(p.dataUltimaCompra) : '',
+      this.formatarDataUltimaCompra(p.dataUltimaCompra),
       `R$ ${p.precoVenda?.toFixed(2) || '0,00'}`,
       `R$ ${p.precoCompra?.toFixed(2) || '0,00'}`,
       p.peso?.toFixed(3) || '0.000'
@@ -145,6 +145,27 @@ export class ProdutosRelatorioComponent implements OnInit {
     });
 
     return doc;
+  }
+
+  /**
+   * Formata a data de última compra que pode vir como array Java ou string
+   */
+  private formatarDataUltimaCompra(dataUltimaCompra: any): string {
+    if (!dataUltimaCompra) return '';
+
+    // Se for array Java LocalDate [year, month, day]
+    if (Array.isArray(dataUltimaCompra) && dataUltimaCompra.length >= 3) {
+      const [year, month, day] = dataUltimaCompra;
+      const dataISO = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      return this.formatarDataBR(dataISO);
+    }
+
+    // Se for string ISO
+    if (typeof dataUltimaCompra === 'string') {
+      return this.formatarDataBR(dataUltimaCompra);
+    }
+
+    return '';
   }
 
   private formatarDataBR(dataIso: string): string {
