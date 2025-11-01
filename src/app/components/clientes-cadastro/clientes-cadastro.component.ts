@@ -103,17 +103,6 @@ export class ClientesCadastroComponent implements OnInit {
           this.cliente = data;
           this.cidadeInput = this.cliente.cidade?.nome || '';
           this.vendedorInput = this.cliente.vendedor?.nome || '';
-
-          if (this.cliente.dataNascimento && Array.isArray(this.cliente.dataNascimento)) {
-            const [year, month, day] = this.cliente.dataNascimento;
-            this.cliente.dataNascimento = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-          }
-
-          if (this.cliente.dataCadastro && Array.isArray(this.cliente.dataCadastro)) {
-            const [year, month, day] = this.cliente.dataCadastro;
-            this.cliente.dataCadastro = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-          }
-
           this.isLoading = false;
         },
         error: (err) => {

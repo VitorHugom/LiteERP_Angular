@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export interface ClientesFiltro {
@@ -20,12 +21,39 @@ export class ClientesService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Converte uma data Java LocalDate [year, month, day] para string ISO (YYYY-MM-DD)
+   */
+  private convertJavaLocalDateToISO(javaDate: any): string | null {
+    if (!javaDate) return null;
+    if (Array.isArray(javaDate) && javaDate.length >= 3) {
+      const [year, month, day] = javaDate;
+      return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
+    return javaDate;
+  }
+
+  /**
+   * Converte as datas de um cliente do formato Java para ISO
+   */
+  private convertClienteDates(cliente: any): any {
+    if (!cliente) return cliente;
+
+    return {
+      ...cliente,
+      dataNascimento: this.convertJavaLocalDateToISO(cliente.dataNascimento),
+      dataCadastro: this.convertJavaLocalDateToISO(cliente.dataCadastro)
+    };
+  }
+
   getClientes(): Observable<any> {
     return this.http.get(this.baseUrl);
   }
 
   getClienteById(id: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
+    return this.http.get(`${this.baseUrl}/${id}`).pipe(
+      map(cliente => this.convertClienteDates(cliente))
+    );
   }
 
   getClienteByIdBusca(id: string): Observable<any> {
