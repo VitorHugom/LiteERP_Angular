@@ -186,9 +186,9 @@ export class PedidosRelatorioComponent implements OnInit {
     const head = [['ID', 'Cliente', 'Vendedor', 'Data Emissão', 'Valor Total']];
     const body = dados.map(p => [
       p.id,
-      p.cliente?.razaoSocial || '',
+      this.getNomeCliente(p),
       p.vendedor?.nome || '',
-      p.dataEmissao?.split('T')[0] || '',
+      this.formatarDataEmissao(p.dataEmissao),
       `R$ ${p.valorTotal?.toFixed(2) || '0,00'}`
     ]);
 
@@ -201,6 +201,38 @@ export class PedidosRelatorioComponent implements OnInit {
     });
 
     return doc;
+  }
+
+  /**
+   * Obtém o nome do cliente, priorizando cliente cadastrado ou clienteFinal
+   */
+  private getNomeCliente(pedido: any): string {
+    if (pedido.cliente) {
+      return pedido.cliente.razaoSocial || pedido.cliente.nomeFantasia || '';
+    }
+    return pedido.clienteFinal || '';
+  }
+
+  /**
+   * Formata a data de emissão que pode vir como array Java ou string
+   */
+  private formatarDataEmissao(dataEmissao: any): string {
+    if (!dataEmissao) return '';
+
+    // Se for array Java LocalDateTime [year, month, day, hour, minute, second, nano]
+    if (Array.isArray(dataEmissao) && dataEmissao.length >= 3) {
+      const [year, month, day] = dataEmissao;
+      const dataISO = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      return this.formatarDataBR(dataISO);
+    }
+
+    // Se for string ISO
+    if (typeof dataEmissao === 'string') {
+      const data = dataEmissao.split('T')[0];
+      return this.formatarDataBR(data);
+    }
+
+    return '';
   }
 
   private formatarDataBR(dataIso: string): string {
