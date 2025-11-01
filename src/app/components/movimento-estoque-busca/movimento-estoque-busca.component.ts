@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MovimentoEstoqueService } from '../../services/movimento-estoque.service';
+import { MovimentoEstoqueService, MovimentoEstoque } from '../../services/movimento-estoque.service';
 import { Router } from '@angular/router';
 import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-button/navigate-to-search-button.component';
 
@@ -15,7 +15,7 @@ import { NavigateToSearchButtonComponent } from '../shared/navigate-to-search-bu
   providers: [MovimentoEstoqueService]
 })
 export class MovimentoEstoqueBuscaComponent implements OnInit {
-  movimentos: any[] = [];
+  movimentos: MovimentoEstoque[] = [];
   dataInicio: string = '';
   dataFim: string = '';
   page: number = 0;
