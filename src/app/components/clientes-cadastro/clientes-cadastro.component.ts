@@ -103,6 +103,17 @@ export class ClientesCadastroComponent implements OnInit {
           this.cliente = data;
           this.cidadeInput = this.cliente.cidade?.nome || '';
           this.vendedorInput = this.cliente.vendedor?.nome || '';
+
+          if (this.cliente.dataNascimento && Array.isArray(this.cliente.dataNascimento)) {
+            const [year, month, day] = this.cliente.dataNascimento;
+            this.cliente.dataNascimento = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          }
+
+          if (this.cliente.dataCadastro && Array.isArray(this.cliente.dataCadastro)) {
+            const [year, month, day] = this.cliente.dataCadastro;
+            this.cliente.dataCadastro = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          }
+
           this.isLoading = false;
         },
         error: (err) => {
@@ -192,9 +203,11 @@ export class ClientesCadastroComponent implements OnInit {
 
       if (this.isPessoaFisica && !this.cliente.cpfCnpj) {
         this.exibirMensagem('Preencha o CPF.', false);
+        this.isLoading = false;
         return;
       } else if (!this.isPessoaFisica && !this.cliente.cpfCnpj) {
         this.exibirMensagem('Preencha o CNPJ.', false);
+        this.isLoading = false;
         return;
       }
       if (this.isPessoaFisica) {
@@ -205,8 +218,9 @@ export class ClientesCadastroComponent implements OnInit {
         this.cliente.cpf = '';
       }
 
+      const clientePayload = this.prepararPayloadCliente();
 
-      this.clientesService.createCliente(this.cliente).subscribe({
+      this.clientesService.createCliente(clientePayload).subscribe({
         next: (response) => {
           this.cliente = response;
           this.isNew = false;
@@ -220,7 +234,9 @@ export class ClientesCadastroComponent implements OnInit {
         }
       });
     } else {
-      this.clientesService.updateCliente(this.cliente.id, this.cliente).subscribe({
+      const clientePayload = this.prepararPayloadCliente();
+
+      this.clientesService.updateCliente(this.cliente.id, clientePayload).subscribe({
         next: () => {
           this.isLoading = false;
           this.exibirMensagem('Cliente atualizado com sucesso!', true);
@@ -232,6 +248,33 @@ export class ClientesCadastroComponent implements OnInit {
         }
       });
     }
+  }
+
+  /**
+   * Prepara o payload do cliente garantindo que as datas estejam no formato ISO correto
+   */
+  private prepararPayloadCliente(): any {
+    const payload = { ...this.cliente };
+
+    if (payload.dataNascimento) {
+      if (Array.isArray(payload.dataNascimento)) {
+        const [year, month, day] = payload.dataNascimento;
+        payload.dataNascimento = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      } else if (typeof payload.dataNascimento === 'string') {
+        payload.dataNascimento = payload.dataNascimento.split('T')[0];
+      }
+    }
+
+    if (payload.dataCadastro) {
+      if (Array.isArray(payload.dataCadastro)) {
+        const [year, month, day] = payload.dataCadastro;
+        payload.dataCadastro = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      } else if (typeof payload.dataCadastro === 'string') {
+        payload.dataCadastro = payload.dataCadastro.split('T')[0];
+      }
+    }
+
+    return payload;
   }
 
   onDelete(): void {
@@ -259,6 +302,8 @@ export class ClientesCadastroComponent implements OnInit {
 
   onNew(): void {
     const today = new Date();
+    const dataCadastroISO = today.toISOString().split('T')[0];
+
     this.cliente = {
       id: null,
       tipoPessoa: 'fisica',
@@ -306,7 +351,7 @@ export class ClientesCadastroComponent implements OnInit {
       },
       observacao: '',
       status: true,
-      dataCadastro: today.toISOString(),
+      dataCadastro: dataCadastroISO,
       limiteCredito: 0
     };
     this.cidadeInput = '',
