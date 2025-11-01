@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { UploadXmlResponse, VinculacaoProdutoRequest, VinculacaoProdutoResponse } from '../models/upload-xml.models';
 
@@ -12,6 +13,34 @@ export class RecebimentoMercadoriasService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Converte array Java LocalDate para string ISO (YYYY-MM-DD)
+   */
+  private convertJavaLocalDateToISO(javaDate: any): string | null {
+    if (!javaDate) return null;
+
+    // Se for array Java LocalDate [year, month, day]
+    if (Array.isArray(javaDate) && javaDate.length >= 3) {
+      const [year, month, day] = javaDate;
+      return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
+
+    // Se já for string, retorna como está
+    return javaDate;
+  }
+
+  /**
+   * Converte as datas de um recebimento de mercadorias
+   */
+  private convertRecebimentoDates(recebimento: any): any {
+    if (!recebimento) return recebimento;
+
+    return {
+      ...recebimento,
+      dataRecebimento: this.convertJavaLocalDateToISO(recebimento.dataRecebimento)
+    };
+  }
+
   // Listar todos os recebimentos
   getRecebimentos(): Observable<any> {
     return this.http.get(this.baseUrl);
@@ -19,21 +48,29 @@ export class RecebimentoMercadoriasService {
 
   // Buscar recebimento por ID
   getRecebimentoById(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
+    return this.http.get(`${this.baseUrl}/${id}`).pipe(
+      map(recebimento => this.convertRecebimentoDates(recebimento))
+    );
   }
 
   getSimpleRecebimentoById(id: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/busca/${id}`);
+    return this.http.get(`${this.baseUrl}/busca/${id}`).pipe(
+      map(recebimento => this.convertRecebimentoDates(recebimento))
+    );
   }
 
   // Criar um novo recebimento
   createRecebimento(recebimento: any): Observable<any> {
-    return this.http.post(this.baseUrl, recebimento);
+    return this.http.post(this.baseUrl, recebimento).pipe(
+      map(response => this.convertRecebimentoDates(response))
+    );
   }
 
   // Atualizar recebimento por ID
   updateRecebimento(id: number, recebimento: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, recebimento);
+    return this.http.put(`${this.baseUrl}/${id}`, recebimento).pipe(
+      map(response => this.convertRecebimentoDates(response))
+    );
   }
 
   // Deletar recebimento por ID

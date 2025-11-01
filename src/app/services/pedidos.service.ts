@@ -27,7 +27,7 @@ export class PedidosService {
 
   /**
    * Converte array de data do Java [ano, mês, dia, hora, minuto, segundo, nano]
-   * para objeto Date do JavaScript
+   * para objeto Date do JavaScript (usado para exibição em tabelas)
    */
   private convertJavaDateToDate(dateArray: any): Date | null {
     if (!dateArray) {
@@ -55,6 +55,43 @@ export class PedidosService {
   }
 
   /**
+   * Converte array Java LocalDateTime para string ISO compatível com datetime-local
+   * Formato: YYYY-MM-DDTHH:mm
+   */
+  private convertJavaLocalDateTimeToISO(javaDateTime: any): string | null {
+    if (!javaDateTime) return null;
+
+    // Se já for string, retorna como está
+    if (typeof javaDateTime === 'string') {
+      // Remove segundos e milissegundos se existirem para compatibilidade com datetime-local
+      return javaDateTime.substring(0, 16);
+    }
+
+    // Se for array Java LocalDateTime [year, month, day, hour, minute, second, nanosecond]
+    if (Array.isArray(javaDateTime) && javaDateTime.length >= 5) {
+      const [year, month, day, hour, minute] = javaDateTime;
+      const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const timeStr = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+      return `${dateStr}T${timeStr}`;
+    }
+
+    return null;
+  }
+
+  /**
+   * Converte as datas de um pedido para uso em formulários
+   */
+  private convertPedidoDates(pedido: any): any {
+    if (!pedido) return pedido;
+
+    return {
+      ...pedido,
+      dataEmissao: this.convertJavaLocalDateTimeToISO(pedido.dataEmissao),
+      ultimaAtualizacao: this.convertJavaLocalDateTimeToISO(pedido.ultimaAtualizacao)
+    };
+  }
+
+  /**
    * Converte um pedido de busca, transformando a data de array para Date
    */
   private convertPedidoBusca(pedido: any): PedidoBuscaDTO {
@@ -75,19 +112,20 @@ export class PedidosService {
 
   getPedidoById(id: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(
-      map(pedido => ({
-        ...pedido,
-        dataEmissao: this.convertJavaDateToDate(pedido.dataEmissao) || pedido.dataEmissao
-      }))
+      map(pedido => this.convertPedidoDates(pedido))
     );
   }
 
   createPedido(pedido: any): Observable<any> {
-    return this.http.post(this.baseUrl, pedido);
+    return this.http.post(this.baseUrl, pedido).pipe(
+      map(response => this.convertPedidoDates(response))
+    );
   }
-  
+
   updatePedido(id: string, pedido: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, pedido);
+    return this.http.put(`${this.baseUrl}/${id}`, pedido).pipe(
+      map(response => this.convertPedidoDates(response))
+    );
   }
   
   deletePedido(id: string): Observable<any> {
