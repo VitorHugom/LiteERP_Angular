@@ -1,0 +1,87 @@
+<div class="fechamento-caixa-container">
+  <div class="top-bar">
+    <button class="voltar-button" (click)="voltarParaHome()" [disabled]="carregandoRelatorio">
+      ← Voltar
+    </button>
+  </div>
+
+  <div class="content">
+    <div class="header">
+      <h1 class="title">📊 Fechamento de Caixa</h1>
+      <p class="subtitle">Gerar relatório de movimentações do caixa</p>
+    </div>
+
+    <!-- Loading inicial -->
+    <div *ngIf="carregando" class="loading">
+      <div class="spinner"></div>
+      <p>Carregando dados...</p>
+    </div>
+
+    <!-- Informação da Conta -->
+    <div *ngIf="!carregando && contaCaixa" class="conta-info-card">
+      <div class="conta-info-header">
+        <span class="conta-icon">💼</span>
+        <div class="conta-details">
+          <h3>{{ contaCaixa.descricao }}</h3>
+          <p>Responsável: {{ contaCaixa.usuarioResponsavelNome }}</p>
+        </div>
+      </div>
+      <div class="conta-saldo">
+        <span class="saldo-label">Saldo Atual:</span>
+        <span class="saldo-valor">R$ {{ contaCaixa.saldoAtual.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</span>
+      </div>
+    </div>
+
+    <!-- Formulário -->
+    <form *ngIf="!carregando && contaCaixa" [formGroup]="fechamentoCaixaForm" (ngSubmit)="onSubmit()" class="form">
+      <!-- Período -->
+      <div class="periodo-group">
+        <h3>Período do Relatório</h3>
+        <div class="periodo-inputs">
+          <div class="form-group">
+            <label for="dataInicio" class="required">Data de Início</label>
+            <input
+              type="date"
+              id="dataInicio"
+              formControlName="dataInicio"
+              [disabled]="carregandoRelatorio"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="dataFim" class="required">Data de Fim</label>
+            <input
+              type="date"
+              id="dataFim"
+              formControlName="dataFim"
+              [disabled]="carregandoRelatorio"
+              required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão de Gerar Relatório -->
+      <button type="submit" class="btn btn-primary" [disabled]="carregandoRelatorio">
+        <span *ngIf="!carregandoRelatorio">📄 Gerar Relatório PDF</span>
+        <span *ngIf="carregandoRelatorio">⏳ Gerando Relatório...</span>
+      </button>
+
+      <!-- Mensagem de Erro -->
+      <div *ngIf="erro" class="alert alert-error">
+        <span class="icon">⚠️</span>
+        <span>{{ erro }}</span>
+      </div>
+    </form>
+
+    <!-- Informações sobre o relatório -->
+    <div *ngIf="!carregando && contaCaixa" class="info-card">
+      <h3>ℹ️ Sobre o Relatório</h3>
+      <ul>
+        <li>O relatório será gerado em formato PDF</li>
+        <li>Contém todas as movimentações do período selecionado</li>
+        <li>Inclui saldo inicial, entradas, saídas e saldo final</li>
+        <li>Mostra detalhes de cada movimentação (data, descrição, valor, etc.)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+

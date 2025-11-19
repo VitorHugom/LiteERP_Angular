@@ -71,6 +71,36 @@ export interface MovimentacaoFluxoCaixaResponse {
   empty: boolean;
 }
 
+// Interface para tipo de movimentação
+export interface TipoMovimentacao {
+  id: number;
+  descricao: string;
+  categoria: 'RECEITA' | 'DESPESA' | 'TRANSFERENCIA';
+  corHex: string;
+  ativo: boolean;
+  dataCriacao: string;
+}
+
+// Interface para saldo de conta
+export interface SaldoConta {
+  contaCaixaId: number;
+  descricao: string;
+  tipo: string;
+  saldoAtual: number;
+}
+
+// Interface para criar movimentação
+export interface CriarMovimentacaoRequest {
+  contaCaixaId: number;
+  tipoMovimentacaoId: number;
+  centroCustoId?: number | null;
+  numeroDocumento?: string | null;
+  descricao: string;
+  valor: number;
+  dataMovimentacao: string;
+  observacoes?: string | null;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -106,5 +136,39 @@ export class FluxoCaixaService {
       .set('dataReferencia', dataReferencia);
 
     return this.http.get<{saldo: number}>(`${this.baseUrl}/saldo-anterior/conta/${contaId}`, { params });
+  }
+
+  // Listar contas acessíveis ao usuário
+  getContasAcessiveis(): Observable<ContaCaixa[]> {
+    return this.http.get<ContaCaixa[]>(`${this.baseUrl}/contas/acessiveis`);
+  }
+
+  // Obter saldos das contas
+  getSaldosContas(): Observable<SaldoConta[]> {
+    return this.http.get<SaldoConta[]>(`${this.baseUrl}/contas/saldos`);
+  }
+
+  // Listar tipos de movimentação ativos
+  getTiposMovimentacaoAtivos(): Observable<TipoMovimentacao[]> {
+    return this.http.get<TipoMovimentacao[]>(`${this.baseUrl}/tipos-movimentacao/ativos`);
+  }
+
+  // Listar tipos de movimentação por categoria
+  getTiposMovimentacaoPorCategoria(categoria: 'RECEITA' | 'DESPESA' | 'TRANSFERENCIA'): Observable<TipoMovimentacao[]> {
+    return this.http.get<TipoMovimentacao[]>(`${this.baseUrl}/tipos-movimentacao/categoria/${categoria}`);
+  }
+
+  // Criar movimentação (sangria ou suprimento)
+  criarMovimentacao(movimentacao: CriarMovimentacaoRequest): Observable<MovimentacaoFluxoCaixa> {
+    return this.http.post<MovimentacaoFluxoCaixa>(`${this.baseUrl}/movimentacoes`, movimentacao);
+  }
+
+  // Filtrar movimentações
+  filtrarMovimentacoes(filtro: any, page: number = 0, size: number = 20): Observable<MovimentacaoFluxoCaixaResponse> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.post<MovimentacaoFluxoCaixaResponse>(`${this.baseUrl}/movimentacoes/filtrar`, filtro, { params });
   }
 }

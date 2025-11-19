@@ -64,6 +64,7 @@
         cursor: pointer;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+        min-width: 200px;
 
         &:hover {
           background: linear-gradient(90deg, #303f9f, #1e3a8a);
@@ -74,6 +75,30 @@
         &:active {
           transform: translateY(0);
           box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        &.sangria-button {
+          background: linear-gradient(90deg, #f44336, #e53935);
+
+          &:hover {
+            background: linear-gradient(90deg, #e53935, #d32f2f);
+          }
+        }
+
+        &.suprimento-button {
+          background: linear-gradient(90deg, #4caf50, #43a047);
+
+          &:hover {
+            background: linear-gradient(90deg, #43a047, #388e3c);
+          }
+        }
+
+        &.fechamento-button {
+          background: linear-gradient(90deg, #667eea, #764ba2);
+
+          &:hover {
+            background: linear-gradient(90deg, #764ba2, #667eea);
+          }
         }
       }
     }

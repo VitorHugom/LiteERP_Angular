@@ -1,0 +1,181 @@
+<div class="suprimento-container">
+  <div class="top-bar">
+    <button class="voltar-button" (click)="voltarParaHome()" [disabled]="salvando">
+      ← Voltar
+    </button>
+  </div>
+
+  <div class="content">
+    <div class="header">
+      <h1 class="title">💰 Suprimento de Caixa</h1>
+      <p class="subtitle">Adição de dinheiro ao caixa</p>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="carregando" class="loading">
+      <div class="spinner"></div>
+      <p>Carregando dados...</p>
+    </div>
+
+    <!-- Formulário -->
+    <form *ngIf="!carregando" (ngSubmit)="realizarSuprimento()" class="form">
+      <!-- Informação da Conta (somente leitura) -->
+      <div class="form-group" *ngIf="contaCaixa">
+        <label>Conta de Caixa</label>
+        <div class="conta-info">
+          <span class="conta-nome">{{ contaCaixa.descricao }}</span>
+          <span class="conta-saldo">Saldo: R$ {{ contaCaixa.saldoAtual.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</span>
+        </div>
+      </div>
+
+      <!-- Tipo de Movimentação -->
+      <div class="form-group">
+        <label for="tipo" class="required">Tipo de Movimentação</label>
+        <select 
+          id="tipo" 
+          [(ngModel)]="tipoMovimentacaoId" 
+          name="tipo"
+          [disabled]="salvando"
+          required>
+          <option [value]="null" disabled>Selecione um tipo</option>
+          <option *ngFor="let tipo of tiposMovimentacao" [value]="tipo.id">
+            {{ tipo.descricao }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Valor -->
+      <div class="form-group">
+        <label for="valor" class="required">Valor (R$)</label>
+        <input 
+          type="number" 
+          id="valor" 
+          [(ngModel)]="valor" 
+          name="valor"
+          (input)="onValorChange()"
+          [disabled]="salvando"
+          placeholder="0,00"
+          step="0.01"
+          min="0.01"
+          required>
+      </div>
+
+      <!-- Data -->
+      <div class="form-group">
+        <label for="data" class="required">Data da Movimentação</label>
+        <input 
+          type="date" 
+          id="data" 
+          [(ngModel)]="dataMovimentacao" 
+          name="data"
+          [disabled]="salvando"
+          [max]="dataMovimentacao"
+          required>
+      </div>
+
+      <!-- Descrição -->
+      <div class="form-group">
+        <label for="descricao" class="required">Descrição</label>
+        <textarea 
+          id="descricao" 
+          [(ngModel)]="descricao" 
+          name="descricao"
+          [disabled]="salvando"
+          placeholder="Ex: Suprimento para troco inicial"
+          rows="3"
+          required></textarea>
+      </div>
+
+      <!-- Número do Documento (Opcional) -->
+      <div class="form-group">
+        <label for="numeroDocumento">Número do Documento</label>
+        <input 
+          type="text" 
+          id="numeroDocumento" 
+          [(ngModel)]="numeroDocumento" 
+          name="numeroDocumento"
+          [disabled]="salvando"
+          placeholder="Ex: SUP-001">
+      </div>
+
+      <!-- Observações (Opcional) -->
+      <div class="form-group">
+        <label for="observacoes">Observações</label>
+        <textarea 
+          id="observacoes" 
+          [(ngModel)]="observacoes" 
+          name="observacoes"
+          [disabled]="salvando"
+          placeholder="Observações adicionais (opcional)"
+          rows="2"></textarea>
+      </div>
+
+      <!-- Cards de Resumo -->
+      <div class="resumo-cards" *ngIf="contaCaixa">
+        <div class="card">
+          <div class="card-icon">💰</div>
+          <div class="card-content">
+            <p class="card-label">Saldo Atual</p>
+            <p class="card-value">R$ {{ saldoAtual.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</p>
+          </div>
+        </div>
+
+        <div class="card" *ngIf="valor && valor > 0">
+          <div class="card-icon">💵</div>
+          <div class="card-content">
+            <p class="card-label">Valor do Suprimento</p>
+            <p class="card-value positive">+ R$ {{ valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</p>
+          </div>
+        </div>
+
+        <div class="card" *ngIf="valor && valor > 0">
+          <div class="card-icon">📊</div>
+          <div class="card-content">
+            <p class="card-label">Saldo Após Suprimento</p>
+            <p class="card-value positive">
+              R$ {{ saldoAposSuprimento.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-back" (click)="voltarParaHome()" [disabled]="salvando">
+          ← Voltar
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="limparFormulario()" [disabled]="salvando">
+          Limpar
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="salvando">
+          <span *ngIf="!salvando">Realizar Suprimento</span>
+          <span *ngIf="salvando">Processando...</span>
+        </button>
+      </div>
+
+      <!-- Mensagem de Erro (abaixo dos botões) -->
+      <div *ngIf="erro" class="alert alert-error">
+        <span class="icon">⚠️</span>
+        <span>{{ erro }}</span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de Sucesso -->
+<div *ngIf="mostrarModalSucesso" class="modal-overlay" (click)="fecharModalEVoltar()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-icon success">✓</div>
+    <h2 class="modal-title">Suprimento Realizado!</h2>
+    <p class="modal-message">
+      O suprimento foi realizado com sucesso.
+    </p>
+    <p class="modal-valor">
+      Valor: <strong>R$ {{ valorSuprimento.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</strong>
+    </p>
+    <button class="btn btn-modal" (click)="fecharModalEVoltar()">
+      OK
+    </button>
+  </div>
+</div>
+

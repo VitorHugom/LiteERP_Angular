@@ -45,13 +45,16 @@ import { ContasReceberRelatorioComponent } from './components/contas-receber-rel
 import { FluxoCaixaRelatorioComponent } from './components/fluxo-caixa-relatorio/fluxo-caixa-relatorio.component';
 import { RecebimentoComponent } from './components/recebimento/recebimento.component';
 import { PagamentosComponent } from './components/pagamentos/pagamentos.component';
+import { SangriaComponent } from './components/sangria/sangria.component';
+import { SuprimentoComponent } from './components/suprimento/suprimento.component';
+import { FechamentoCaixaComponent } from './components/fechamento-caixa/fechamento-caixa.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
 
   { path: 'signup', component: SignupComponent },
 
-  // Rotas de recuperação de senha (sem autenticação)
+  // Rotas de recupera??o de senha (sem autentica??o)
   { path: 'recuperar-senha', component: SolicitarRecuperacaoComponent },
   { path: 'recuperar-senha/validar', component: ValidarCodigoComponent },
   { path: 'recuperar-senha/redefinir', component: RedefinirSenhaComponent },
@@ -70,6 +73,12 @@ export const routes: Routes = [
   { path: 'estoque-busca', component: EstoqueBuscaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_GERENCIAL'] }},
 
   { path: 'caixa', component: CaixaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
+
+  { path: 'sangria', component: SangriaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
+
+  { path: 'suprimento', component: SuprimentoComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
+
+  { path: 'fechamento-caixa', component: FechamentoCaixaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_CAIXA'] }},
 
   { path: 'vendas', component: VendaComponent, canActivate: [AuthGuard], data: { expectedRoles: ['ROLE_VENDAS'] }},
 
