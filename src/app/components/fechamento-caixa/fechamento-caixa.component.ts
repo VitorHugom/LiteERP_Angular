@@ -180,11 +180,18 @@ export class FechamentoCaixaComponent implements OnInit {
     dataFim: string,
     saldoInicial: number
   ): FechamentoCaixaRelatorio {
+    const movimentacoesOrdenadas = [...response.content].sort((a, b) => {
+      const timestampA = this.converterDataLancamentoParaTimestamp(a.dataLancamento);
+      const timestampB = this.converterDataLancamentoParaTimestamp(b.dataLancamento);
+
+      return timestampA - timestampB;
+    });
+
     let saldoAtual = saldoInicial;
     let totalEntradas = 0;
     let totalSaidas = 0;
 
-    const movimentos: FechamentoCaixaMovimento[] = response.content.map(mov => {
+    const movimentos: FechamentoCaixaMovimento[] = movimentacoesOrdenadas.map(mov => {
       const saldoAnterior = saldoAtual;
       const valorAbsoluto = Math.abs(mov.valor);
 
@@ -237,6 +244,15 @@ export class FechamentoCaixaComponent implements OnInit {
     }
     // Se já for string, retorna como está
     return data;
+  }
+
+  converterDataLancamentoParaTimestamp(dataLancamento: any): number {
+    if (Array.isArray(dataLancamento) && dataLancamento.length >= 6) {
+      const [ano, mes, dia, hora, minuto, segundo] = dataLancamento;
+      const date = new Date(ano, mes - 1, dia, hora, minuto, segundo);
+      return date.getTime();
+    }
+    return 0;
   }
 
   gerarPdf(dados: FechamentoCaixaRelatorio): jsPDF {
