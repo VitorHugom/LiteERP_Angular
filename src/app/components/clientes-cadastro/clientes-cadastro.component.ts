@@ -101,6 +101,15 @@ export class ClientesCadastroComponent implements OnInit {
       this.clientesService.getClienteById(id).subscribe({
         next: (data) => {
           this.cliente = data;
+
+          // Converter datas de array para string
+          if (this.cliente.dataNascimento) {
+            this.cliente.dataNascimento = this.converterDataParaString(this.cliente.dataNascimento);
+          }
+          if (this.cliente.dataCadastro) {
+            this.cliente.dataCadastro = this.converterDataParaString(this.cliente.dataCadastro);
+          }
+
           this.cidadeInput = this.cliente.cidade?.nome || '';
           this.vendedorInput = this.cliente.vendedor?.nome || '';
           this.isLoading = false;
@@ -212,6 +221,15 @@ export class ClientesCadastroComponent implements OnInit {
       this.clientesService.createCliente(clientePayload).subscribe({
         next: (response) => {
           this.cliente = response;
+
+          // Converter datas de array para string
+          if (this.cliente.dataNascimento) {
+            this.cliente.dataNascimento = this.converterDataParaString(this.cliente.dataNascimento);
+          }
+          if (this.cliente.dataCadastro) {
+            this.cliente.dataCadastro = this.converterDataParaString(this.cliente.dataCadastro);
+          }
+
           this.isNew = false;
           this.isLoading = false;
           this.exibirMensagem('Cliente cadastrado com sucesso!', true);
@@ -290,8 +308,7 @@ export class ClientesCadastroComponent implements OnInit {
   }
 
   onNew(): void {
-    const today = new Date();
-    const dataCadastroISO = today.toISOString().split('T')[0];
+    const dataCadastroISO = this.obterDataLocal();
 
     this.cliente = {
       id: null,
@@ -513,5 +530,28 @@ export class ClientesCadastroComponent implements OnInit {
     } else {
       console.error('CEP inválido');
     }
+  }
+
+  converterDataParaString(data: any): string {
+    if (!data) return '';
+
+    if (Array.isArray(data) && data.length >= 3) {
+      const [ano, mes, dia] = data;
+      return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+    }
+
+    if (typeof data === 'string') {
+      return data.split('T')[0];
+    }
+
+    return '';
+  }
+
+  obterDataLocal(): string {
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    return `${ano}-${mes}-${dia}`;
   }
 }

@@ -89,7 +89,7 @@ export class ProdutosCadastroComponent implements OnInit {
           this.geralForm.patchValue({
             descricao: this.produto.descricao,
             grupoProdutos: this.produto.grupoProdutos,
-            dataUltimaCompra: this.produto.dataUltimaCompra,
+            dataUltimaCompra: this.converterDataParaString(this.produto.dataUltimaCompra),
           });
           this.tributacaoForm.patchValue({
             codEan: this.produto.codEan,
@@ -174,7 +174,7 @@ export class ProdutosCadastroComponent implements OnInit {
 
           this.geralForm.patchValue({
             descricao: created.descricao,
-            dataUltimaCompra: created.dataUltimaCompra,
+            dataUltimaCompra: this.converterDataParaString(created.dataUltimaCompra),
             grupoProdutos: this.gruposProdutos.find(g => g.id === created.grupoProdutos.id) ?? null
           });
           this.tributacaoForm.patchValue({
@@ -291,6 +291,21 @@ export class ProdutosCadastroComponent implements OnInit {
         this.tributacaoForm.get('codEan')!.setValue(barcode);
       }
     });
+  }
+
+  converterDataParaString(data: any): string {
+    if (!data) return '';
+
+    if (Array.isArray(data) && data.length >= 3) {
+      const [ano, mes, dia] = data;
+      return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+    }
+
+    if (typeof data === 'string') {
+      return data;
+    }
+
+    return '';
   }
 
 }
